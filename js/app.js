@@ -1,0 +1,549 @@
+/**
+ * App Principal - Magia Disney & Royal
+ * Versión 2.0 - Robusto y Profesional
+ */
+
+const App = {
+    // ===== STATE =====
+    state: {
+        currentTab: 'inicio',
+        currentStage: null,
+        currentResponse: null,
+        currentQuote: null,
+        editingQuoteId: null,
+        viewingQuoteId: null,
+        unsavedChanges: false,
+        isLoading: false
+    },
+    
+    // ===== INITIALIZATION =====
+    init() {
+        console.log('🚀 Iniciando Magia Disney & Royal v2.0');
+        
+        // Load saved state
+        this.loadTheme();
+        this.loadConfig();
+        
+        // Initialize UI
+        this.renderFavorites();
+        this.renderRecents();
+        this.renderQuotesList();
+        this.loadChecklist();
+        this.updateStats();
+        
+        // Setup event listeners
+        this.setupEventListeners();
+        
+        // Register Service Worker
+        this.registerSW();
+        
+        // Check onboarding
+        if (!Storage.isOnboardingComplete()) {
+            setTimeout(() => this.showOnboarding(), 500);
+        }
+        
+        console.log('✅ App iniciada correctamente');
+    },
+    
+    setupEventListeners() {
+        // Prevent accidental navigation with unsaved changes
+        window.addEventListener('beforeunload', (e) => {
+            if (this.state.unsavedChanges) {
+                e.preventDefault();
+                e.returnValue = '¿Seguro que quieres salir? Tienes cambios sin guardar.';
+            }
+        });
+        
+        // Handle back button
+        window.addEventListener('popstate', (e) => {
+            this.handleBackNavigation();
+        });
+        
+        // Global keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 's') {
+                    e.preventDefault();
+                    this.handleQuickSave();
+                }
+            }
+            if (e.key === 'Escape') {
+                this.closeAllModals();
+            }
+        });
+    },
+    
+    registerSW() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => {
+                    console.log('✅ Service Worker registrado');
+                    // Check for updates
+                    reg.addEventListener('updatefound', () => {
+                        this.showToast('🔄 Nueva versión disponible. Recarga para actualizar.', 'info', 5000);
+                    });
+                })
+                .catch(err => console.error('SW error:', err));
+        }
+    },
+    
+    // ===== THEME =====
+    loadTheme() {
+        const isDark = Storage.isDarkMode();
+        document.body.classList.toggle('dark-mode', isDark);
+        const checkbox = document.getElementById('config-darkmode');
+        if (checkbox) checkbox.checked = isDark;
+    },
+    
+    toggleDarkMode() {
+        const isDark = !document.body.classList.contains('dark-mode');
+        document.body.classList.toggle('dark-mode', isDark);
+        Storage.setDarkMode(isDark);
+        const checkbox = document.getElementById('config-darkmode');
+        if (checkbox) checkbox.checked = isDark;
+    },
+    
+    // ===== CONFIG =====
+    loadConfig() {
+        const config = Storage.getConfig();
+        
+        // Business info
+        this.setInputValue('config-phone', config.business?.phone || '55 8095 5139');
+        this.setInputValue('config-email', config.business?.email || '');
+        this.setInputValue('config-instagram', config.business?.instagram || '');
+        this.setInputValue('config-facebook', config.business?.facebook || '');
+        
+        // Quotes config
+        this.setInputValue('config-prefix', config.quotes?.prefix || 'MDR');
+        this.setInputValue('config-validity', config.quotes?.validityDays || 7);
+        this.setInputValue('config-currency', config.quotes?.currency || 'USD');
+        this.setInputValue('config-exchange', config.quotes?.exchangeRate || 17.5);
+        this.setInputValue('config-legal', config.quotes?.legalText || 'Precios sujetos a disponibilidad.');
+        
+        // Appearance
+        const checkbox = document.getElementById('config-darkmode');
+        if (checkbox) checkbox.checked = config.appearance?.darkMode || false;
+    },
+    
+    saveConfig() {
+        const config = Storage.getConfig();
+        
+        config.business = {
+            name: 'Magia Disney & Royal',
+            slogan: 'Parques • Cruceros • Descuentos',
+            phone: this.getInputValue('config-phone'),
+            email: this.getInputValue('config-email'),
+            instagram: this.getInputValue('config-instagram'),
+            facebook: this.getInputValue('config-facebook')
+        };
+        
+        config.quotes = {
+            ...config.quotes,
+            prefix: this.getInputValue('config-prefix') || 'MDR',
+            validityDays: parseInt(this.getInputValue('config-validity')) || 7,
+            currency: this.getInputValue('config-currency') || 'USD',
+            exchangeRate: parseFloat(this.getInputValue('config-exchange')) || 17.5,
+            legalText: this.getInputValue('config-legal')
+        };
+        
+        config.appearance = {
+            darkMode: document.getElementById('config-darkmode')?.checked || false,
+            theme: 'default'
+        };
+        
+        Storage.saveConfig(config);
+        this.showToast('💾 Configuración guardada', 'success');
+    },
+    
+    // ===== TAB NAVIGATION =====
+    showTab(tabId, element) {
+        // Check for unsaved changes
+        if (this.state.unsavedChanges && this.state.currentTab === 'cotizar') {
+            if (!confirm('¿Tienes cambios sin guardar. ¿Salir de todos modos?')) {
+                return;
+            }
+            this.state.unsavedChanges = false;
+        }
+        
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        
+        // Show selected tab
+        const tab = document.getElementById('tab-' + tabId);
+        if (tab) tab.classList.add('active');
+        if (element) element.classList.add('active');
+        
+        this.state.currentTab = tabId;
+        
+        // Reset screens within tab
+        if (tabId === 'inicio') this.showHomeMain();
+        if (tabId === 'cotizar') this.showQuotesList();
+        if (tabId === 'clientes') this.renderClientsList();
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    
+    // ===== HOME NAVIGATION =====
+    showHomeMain() {
+        this.switchScreen('tab-inicio', 'home-main');
+        this.state.currentStage = null;
+        this.state.currentResponse = null;
+    },
+    
+    showStage(stageId) {
+        const stage = Data.stages[stageId];
+        if (!stage) return;
+        
+        this.state.currentStage = stageId;
+        
+        // Update title
+        document.getElementById('stage-title').textContent = stage.name;
+        
+        // Render situations
+        const list = document.getElementById('situations-list');
+        list.innerHTML = stage.situations.map(id => {
+            const r = Data.responses[id];
+            if (!r) return '';
+            return `
+                <div class="option-item" onclick="App.showResponse('${id}')">
+                    <span class="emoji">${r.icon}</span>
+                    <div class="content">
+                        <div class="title">${r.title}</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </div>
+            `;
+        }).join('');
+        
+        this.switchScreen('tab-inicio', 'home-stage');
+    },
+    
+    showResponse(responseId) {
+        const response = Data.responses[responseId];
+        if (!response) {
+            this.showToast('Respuesta no encontrada', 'error');
+            return;
+        }
+        
+        this.state.currentResponse = responseId;
+        Storage.addRecent(responseId);
+        this.renderRecents();
+        
+        // Render breadcrumb
+        const isFav = Storage.isFavorite(responseId);
+        let breadcrumb = `
+            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="App.toggleFavorite('${responseId}')">
+                ${isFav ? '⭐' : '☆'}
+            </button>
+        `;
+        if (this.state.currentStage) {
+            breadcrumb += `
+                <span class="breadcrumb-item">${Data.stages[this.state.currentStage].name}</span>
+                <span class="breadcrumb-arrow">→</span>
+            `;
+        }
+        breadcrumb += `<span class="breadcrumb-item active">${response.title}</span>`;
+        document.getElementById('response-breadcrumb').innerHTML = breadcrumb;
+        
+        // Render next actions
+        const nextActionsHtml = response.nextActions?.map(a => 
+            `<div class="next-opt-btn" onclick="App.showResponse('${a.goto}')">${a.label}</div>`
+        ).join('') || '';
+        
+        // Render content
+        document.getElementById('response-content').innerHTML = `
+            <div class="composer">
+                <div class="composer-header">
+                    <span>📱</span> Mensaje para enviar
+                </div>
+                <div class="composer-body">
+                    <div class="message-preview">${this.escapeHtml(response.message)}</div>
+                    <div class="btn-row">
+                        <button class="btn-success" onclick="App.copyMessage()">
+                            📋 Copiar
+                        </button>
+                        <button class="btn-whatsapp" onclick="App.sendWhatsApp()">
+                            💬 WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 Tip</h4>
+                <p>${response.tip}</p>
+            </div>
+            
+            ${response.next ? `
+            <div class="next-box">
+                <h4>➡️ Probablemente te responda...</h4>
+                <p>${response.next}</p>
+                ${nextActionsHtml ? '<div class="next-options">' + nextActionsHtml + '</div>' : ''}
+            </div>
+            ` : ''}
+        `;
+        
+        this.switchScreen('tab-inicio', 'home-response');
+    },
+    
+    copyMessage() {
+        const response = Data.responses[this.state.currentResponse];
+        if (response) {
+            this.copyToClipboard(response.message);
+        }
+    },
+    
+    sendWhatsApp() {
+        const response = Data.responses[this.state.currentResponse];
+        if (response) {
+            const text = encodeURIComponent(response.message);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+    },
+    
+    backToHome() {
+        this.showHomeMain();
+    },
+    
+    backToStage() {
+        if (this.state.currentStage) {
+            this.showStage(this.state.currentStage);
+        } else {
+            this.showHomeMain();
+        }
+    },
+    
+    // ===== FAVORITES & RECENTS =====
+    renderFavorites() {
+        const favorites = Storage.getFavorites();
+        const section = document.getElementById('favorites-section');
+        const list = document.getElementById('favorites-list');
+        
+        if (!section || !list) return;
+        
+        if (favorites.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+        
+        section.style.display = 'block';
+        list.innerHTML = favorites.map(id => {
+            const r = Data.responses[id];
+            if (!r) return '';
+            return `
+                <div class="option-item compact" onclick="App.showResponse('${id}')">
+                    <span class="emoji">⭐</span>
+                    <div class="content">
+                        <div class="title">${r.title}</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </div>
+            `;
+        }).join('');
+    },
+    
+    renderRecents() {
+        const recents = Storage.getRecents();
+        const section = document.getElementById('recents-section');
+        const list = document.getElementById('recents-list');
+        
+        if (!section || !list) return;
+        
+        if (recents.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+        
+        section.style.display = 'block';
+        list.innerHTML = recents.map(id => {
+            const r = Data.responses[id];
+            if (!r) return '';
+            return `
+                <div class="option-item compact" onclick="App.showResponse('${id}')">
+                    <span class="emoji">🕐</span>
+                    <div class="content">
+                        <div class="title">${r.title}</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </div>
+            `;
+        }).join('');
+    },
+    
+    toggleFavorite(id) {
+        const isNowFav = Storage.toggleFavorite(id);
+        this.showToast(isNowFav ? '⭐ Agregado a favoritos' : 'Eliminado de favoritos', 'success');
+        this.renderFavorites();
+        
+        // Update button if visible
+        const btn = document.querySelector('.fav-btn');
+        if (btn) {
+            btn.classList.toggle('active', isNowFav);
+            btn.textContent = isNowFav ? '⭐' : '☆';
+        }
+    },
+    
+    // ===== SEARCH =====
+    handleSearch() {
+        const query = this.getInputValue('globalSearch')?.toLowerCase().trim();
+        const resultsContainer = document.getElementById('searchResults');
+        
+        if (!query || query.length < 2) {
+            resultsContainer?.classList.remove('show');
+            return;
+        }
+        
+        // Search in responses
+        const results = Object.entries(Data.responses).filter(([id, r]) => 
+            r.title.toLowerCase().includes(query) || 
+            r.message.toLowerCase().includes(query) ||
+            r.tags?.some(t => t.toLowerCase().includes(query))
+        ).slice(0, 10);
+        
+        if (!resultsContainer) return;
+        
+        if (results.length === 0) {
+            resultsContainer.innerHTML = '<div class="search-result-item"><div class="title">No se encontraron resultados</div></div>';
+        } else {
+            resultsContainer.innerHTML = results.map(([id, r]) => `
+                <div class="search-result-item" onmousedown="App.showResponse('${id}'); App.clearSearch();">
+                    <div class="title">${r.icon} ${r.title}</div>
+                    <div class="subtitle">${r.message.substring(0, 50)}...</div>
+                </div>
+            `).join('');
+        }
+        
+        resultsContainer.classList.add('show');
+    },
+    
+    clearSearch() {
+        const input = document.getElementById('globalSearch');
+        const results = document.getElementById('searchResults');
+        if (input) input.value = '';
+        if (results) results.classList.remove('show');
+    },
+    
+    showSearchResults() {
+        const query = this.getInputValue('globalSearch');
+        if (query && query.length >= 2) {
+            document.getElementById('searchResults')?.classList.add('show');
+        }
+    },
+    
+    hideSearchResults() {
+        setTimeout(() => {
+            document.getElementById('searchResults')?.classList.remove('show');
+        }, 200);
+    },
+
+    // ===== UTILITIES =====
+    switchScreen(tabId, screenId) {
+        document.querySelectorAll(`#${tabId} .screen`).forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId)?.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    
+    getInputValue(id) {
+        const el = document.getElementById(id);
+        return el ? el.value : '';
+    },
+    
+    setInputValue(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.value = value || '';
+    },
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML.replace(/\n/g, '<br>');
+    },
+    
+    formatCurrency(amount, currency = 'USD') {
+        return new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: currency,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(amount);
+    },
+    
+    formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+    },
+    
+    copyToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                this.showToast('✅ ¡Copiado!', 'success');
+            }).catch(() => {
+                this.fallbackCopy(text);
+            });
+        } else {
+            this.fallbackCopy(text);
+        }
+    },
+    
+    fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            this.showToast('✅ ¡Copiado!', 'success');
+        } catch (err) {
+            this.showToast('Error al copiar', 'error');
+        }
+        document.body.removeChild(textarea);
+    },
+    
+    showToast(message, type = 'success', duration = 3000) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        
+        toast.textContent = message;
+        toast.className = 'toast show ' + type;
+        
+        setTimeout(() => toast.classList.remove('show'), duration);
+    },
+    
+    setLoading(isLoading) {
+        this.state.isLoading = isLoading;
+        document.body.classList.toggle('loading', isLoading);
+    },
+    
+    handleBackNavigation() {
+        if (this.state.currentTab === 'inicio') {
+            if (this.state.currentResponse) {
+                this.backToStage();
+            } else if (this.state.currentStage) {
+                this.showHomeMain();
+            }
+        }
+    },
+    
+    handleQuickSave() {
+        if (this.state.currentTab === 'cotizar' && this.state.unsavedChanges) {
+            this.saveQuote();
+        } else if (this.state.currentTab === 'ajustes') {
+            this.saveConfig();
+        }
+    },
+    
+    closeAllModals() {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+    }
+};
+
+// Initialize on DOM ready
+document.addEventListener('DOMContentLoaded', () => App.init());
+
+// Make App available globally
+window.App = App;
