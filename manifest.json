@@ -1,28 +1,76 @@
 {
-    "name": "Magia Disney & Royal - Asistente de Ventas",
-    "short_name": "Magia Disney",
-    "description": "Asistente profesional para agentes de viajes. Parques, Cruceros, Descuentos.",
-    "start_url": "./index.html",
-    "display": "standalone",
-    "background_color": "#1e3c72",
-    "theme_color": "#1e3c72",
-    "orientation": "portrait-primary",
-    "scope": "./",
-    "icons": [
-        {
-            "src": "assets/logo.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
-        },
-        {
-            "src": "assets/logo.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-        }
-    ],
-    "categories": ["business", "productivity", "travel"],
-    "lang": "es-MX",
-    "dir": "ltr"
+  "name": "Magia Disney & Royal",
+  "short_name": "Magia Disney",
+  "description": "Plataforma profesional para cotizaciones de viajes Disney y Royal Caribbean",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e3c72",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logo-premium.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/screenshot-1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "label": "Pantalla principal de cotizaciones"
+    }
+  ],
+  "categories": [
+    "business",
+    "productivity",
+    "travel"
+  ],
+  "shortcuts": [
+    {
+      "name": "Nueva Cotización",
+      "short_name": "Nueva",
+      "description": "Crear una nueva cotización",
+      "url": "/?action=new-quote",
+      "icons": [{ "src": "/assets/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Clientes",
+      "short_name": "CRM",
+      "description": "Ver lista de clientes",
+      "url": "/?view=clients",
+      "icons": [{ "src": "/assets/logo.png", "sizes": "96x96" }]
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+magia",
+      "url": "/?quote=%s"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "iarc_rating_id": "",
+  "version": "2.0.0"
 }

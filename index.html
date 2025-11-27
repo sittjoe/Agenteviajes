@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="es-MX">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#1e3c72">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -11,10 +13,12 @@
     <link rel="icon" href="assets/logo.png">
     <link rel="apple-touch-icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/premium.css">
 </head>
+
 <body>
     <header class="header">
-        <img src="assets/logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+        <img src="assets/logo-premium.jpg" alt="Logo" class="header-logo" onerror="this.style.display='none'">
         <div class="header-title">
             <h1>Magia Disney & Royal</h1>
             <span>Parques • Cruceros • Descuentos</span>
@@ -30,32 +34,72 @@
             <div id="home-main" class="screen active">
                 <div class="search-container">
                     <span class="search-icon">🔍</span>
-                    <input type="text" id="globalSearch" class="search-input" placeholder="Buscar respuestas..." oninput="App.handleSearch()" onfocus="App.showSearchResults()" onblur="App.hideSearchResults()">
+                    <input type="text" id="globalSearch" class="search-input" placeholder="Buscar respuestas..."
+                        oninput="App.handleSearch()" onfocus="App.showSearchResults()" onblur="App.hideSearchResults()">
                     <div id="searchResults" class="search-results"></div>
                 </div>
                 <div class="quick-grid">
-                    <div class="quick-btn" onclick="App.showResponse('saludo')"><span class="emoji">👋</span><span class="label">Saludar</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('pedir_datos')"><span class="emoji">📋</span><span class="label">Pedir datos</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('precio_caro')"><span class="emoji">💸</span><span class="label">"Está caro"</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('plan_pagos')"><span class="emoji">💳</span><span class="label">Plan pagos</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('no_contesta')"><span class="emoji">🔔</span><span class="label">No contesta</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('cerrar')"><span class="emoji">✅</span><span class="label">Cerrar venta</span></div>
+                    <div class="quick-btn" onclick="App.showResponse('saludo')"><span class="emoji">👋</span><span
+                            class="label">Saludar</span></div>
+                    <div class="quick-btn" onclick="App.showResponse('pedir_datos')"><span class="emoji">📋</span><span
+                            class="label">Pedir datos</span></div>
+                    <div class="quick-btn" onclick="App.showResponse('precio_caro')"><span class="emoji">💸</span><span
+                            class="label">"Está caro"</span></div>
+                    <div class="quick-btn" onclick="App.showResponse('plan_pagos')"><span class="emoji">💳</span><span
+                            class="label">Plan pagos</span></div>
+                    <div class="quick-btn" onclick="App.showResponse('no_contesta')"><span class="emoji">🔔</span><span
+                            class="label">No contesta</span></div>
+                    <div class="quick-btn" onclick="App.showResponse('cerrar')"><span class="emoji">✅</span><span
+                            class="label">Cerrar venta</span></div>
                 </div>
-                <div id="favorites-section" class="section" style="display:none;"><div class="section-header"><span class="section-title">⭐ Favoritos</span></div><div id="favorites-list"></div></div>
-                <div id="recents-section" class="section" style="display:none;"><div class="section-header"><span class="section-title">🕐 Recientes</span></div><div id="recents-list"></div></div>
+                <div id="favorites-section" class="section" style="display:none;">
+                    <div class="section-header"><span class="section-title">⭐ Favoritos</span></div>
+                    <div id="favorites-list"></div>
+                </div>
+                <div id="recents-section" class="section" style="display:none;">
+                    <div class="section-header"><span class="section-title">🕐 Recientes</span></div>
+                    <div id="recents-list"></div>
+                </div>
                 <div class="section">
                     <div class="section-header"><span class="section-title">📊 Etapa del cliente</span></div>
                     <div class="stage-grid">
-                        <div class="stage-btn" onclick="App.showStage('nuevo')"><span class="icon">🆕</span><div class="content"><div class="title">Cliente nuevo</div><div class="subtitle">Primer contacto</div></div><span class="arrow">→</span></div>
-                        <div class="stage-btn" onclick="App.showStage('preguntando')"><span class="icon">💬</span><div class="content"><div class="title">Preguntando</div><div class="subtitle">Dudas, información</div></div><span class="arrow">→</span></div>
-                        <div class="stage-btn" onclick="App.showStage('cotizado')"><span class="icon">📋</span><div class="content"><div class="title">Ya cotizado</div><div class="subtitle">Objeciones, seguimiento</div></div><span class="arrow">→</span></div>
-                        <div class="stage-btn" onclick="App.showStage('cerrar')"><span class="icon">✅</span><div class="content"><div class="title">Cerrar venta</div><div class="subtitle">Confirmación</div></div><span class="arrow">→</span></div>
-                        <div class="stage-btn" onclick="App.showStage('postventa')"><span class="icon">🎉</span><div class="content"><div class="title">Post-venta</div><div class="subtitle">Seguimiento, referidos</div></div><span class="arrow">→</span></div>
+                        <div class="stage-btn" onclick="App.showStage('nuevo')"><span class="icon">🆕</span>
+                            <div class="content">
+                                <div class="title">Cliente nuevo</div>
+                                <div class="subtitle">Primer contacto</div>
+                            </div><span class="arrow">→</span>
+                        </div>
+                        <div class="stage-btn" onclick="App.showStage('preguntando')"><span class="icon">💬</span>
+                            <div class="content">
+                                <div class="title">Preguntando</div>
+                                <div class="subtitle">Dudas, información</div>
+                            </div><span class="arrow">→</span>
+                        </div>
+                        <div class="stage-btn" onclick="App.showStage('cotizado')"><span class="icon">📋</span>
+                            <div class="content">
+                                <div class="title">Ya cotizado</div>
+                                <div class="subtitle">Objeciones, seguimiento</div>
+                            </div><span class="arrow">→</span>
+                        </div>
+                        <div class="stage-btn" onclick="App.showStage('cerrar')"><span class="icon">✅</span>
+                            <div class="content">
+                                <div class="title">Cerrar venta</div>
+                                <div class="subtitle">Confirmación</div>
+                            </div><span class="arrow">→</span>
+                        </div>
+                        <div class="stage-btn" onclick="App.showStage('postventa')"><span class="icon">🎉</span>
+                            <div class="content">
+                                <div class="title">Post-venta</div>
+                                <div class="subtitle">Seguimiento, referidos</div>
+                            </div><span class="arrow">→</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div id="home-stage" class="screen">
-                <div class="back-row"><button class="back-btn" onclick="App.backToHome()">← Volver</button><h2 id="stage-title" class="screen-title"></h2></div>
+                <div class="back-row"><button class="back-btn" onclick="App.backToHome()">← Volver</button>
+                    <h2 id="stage-title" class="screen-title"></h2>
+                </div>
                 <div id="situations-list"></div>
             </div>
             <div id="home-response" class="screen">
@@ -68,71 +112,249 @@
         <!-- TAB: COTIZAR -->
         <div id="tab-cotizar" class="tab-content">
             <div id="quotes-list" class="screen active">
-                <div class="section-header" style="margin-bottom:16px;"><h2 style="font-size:20px;font-weight:700;">📝 Cotizaciones</h2><button class="btn-primary btn-sm" onclick="App.showNewQuote()">➕ Nueva</button></div>
-                <div class="search-container" style="margin-bottom:16px;"><span class="search-icon">🔍</span><input type="text" id="quoteSearch" class="search-input" placeholder="Buscar por cliente..." oninput="App.filterQuotes()"></div>
+                <div class="section-header" style="margin-bottom:16px;">
+                    <h2 style="font-size:20px;font-weight:700;">📝 Cotizaciones</h2><button class="btn-primary btn-sm"
+                        onclick="App.showNewQuote()">➕ Nueva</button>
+                </div>
+                <div class="search-container" style="margin-bottom:16px;"><span class="search-icon">🔍</span><input
+                        type="text" id="quoteSearch" class="search-input" placeholder="Buscar por cliente..."
+                        oninput="App.filterQuotes()"></div>
                 <div id="quotes-list-container"></div>
             </div>
             <div id="quote-form" class="screen">
-                <div class="back-row"><button class="back-btn" onclick="App.showQuotesList()">← Volver</button><h2 id="quote-form-title" class="screen-title">📝 Nueva Cotización</h2></div>
-                <div id="quote-preview" class="quote-preview"><p class="preview-empty">Llena los campos para ver la vista previa...</p></div>
-                <div class="form-group"><label class="form-label">Número</label><input type="text" id="quote-id" class="form-input" readonly style="background:var(--bg-alt);"></div>
+                <div class="back-row"><button class="back-btn" onclick="App.showQuotesList()">← Volver</button>
+                    <h2 id="quote-form-title" class="screen-title">📝 Nueva Cotización</h2>
+                </div>
+                <div id="quote-preview" class="quote-preview">
+                    <p class="preview-empty">Llena los campos para ver la vista previa...</p>
+                </div>
+                <div class="form-group"><label class="form-label">Número</label><input type="text" id="quote-id"
+                        class="form-input" readonly style="background:var(--bg-alt);"></div>
                 <div class="card">
                     <div class="card-title">👤 Cliente</div>
-                    <div class="form-group"><label class="form-label required">Nombre</label><input type="text" id="quote-client-name" class="form-input" placeholder="Familia García" oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
+                    <div class="form-group"><label class="form-label required">Nombre</label><input type="text"
+                            id="quote-client-name" class="form-input" placeholder="Familia García"
+                            oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
                     <div class="form-row">
-                        <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" id="quote-client-phone" class="form-input" placeholder="55 1234 5678" oninput="App.markQuoteChanged()"></div>
-                        <div class="form-group"><label class="form-label">Email</label><input type="email" id="quote-client-email" class="form-input" placeholder="email@ejemplo.com" oninput="App.markQuoteChanged()"></div>
+                        <div class="form-group"><label class="form-label">Teléfono</label><input type="tel"
+                                id="quote-client-phone" class="form-input" placeholder="55 1234 5678"
+                                oninput="App.markQuoteChanged()"></div>
+                        <div class="form-group"><label class="form-label">Email</label><input type="email"
+                                id="quote-client-email" class="form-input" placeholder="email@ejemplo.com"
+                                oninput="App.markQuoteChanged()"></div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-title">✈️ Viaje</div>
                     <div class="form-row">
-                        <div class="form-group"><label class="form-label">Tipo</label><select id="quote-type" class="form-select" onchange="App.markQuoteChanged();App.updateQuotePreview()"><option value="crucero-disney">🚢 Crucero Disney</option><option value="crucero-royal">⚓ Royal Caribbean</option><option value="parques-wdw">🏰 Disney World</option><option value="parques-dl">🎢 Disneyland</option><option value="hotel-disney">🏨 Hotel Disney</option><option value="paquete">📦 Paquete</option><option value="otro">✈️ Otro</option></select></div>
-                        <div class="form-group"><label class="form-label">Estado</label><select id="quote-status" class="form-select" onchange="App.markQuoteChanged()"><option value="draft">📝 Borrador</option><option value="sent">📤 Enviada</option><option value="negotiating">💬 Negociando</option><option value="accepted">✅ Aceptada</option><option value="rejected">❌ Rechazada</option></select></div>
+                        <div class="form-group"><label class="form-label">Tipo</label><select id="quote-type"
+                                class="form-select" onchange="App.markQuoteChanged();App.updateQuotePreview()">
+                                <option value="crucero-disney">🚢 Crucero Disney</option>
+                                <option value="crucero-royal">⚓ Royal Caribbean</option>
+                                <option value="parques-wdw">🏰 Disney World</option>
+                                <option value="parques-dl">🎢 Disneyland</option>
+                                <option value="hotel-disney">🏨 Hotel Disney</option>
+                                <option value="paquete">📦 Paquete</option>
+                                <option value="otro">✈️ Otro</option>
+                            </select></div>
+                        <div class="form-group"><label class="form-label">Estado</label><select id="quote-status"
+                                class="form-select" onchange="App.markQuoteChanged()">
+                                <option value="draft">📝 Borrador</option>
+                                <option value="sent">📤 Enviada</option>
+                                <option value="negotiating">💬 Negociando</option>
+                                <option value="accepted">✅ Aceptada</option>
+                                <option value="rejected">❌ Rechazada</option>
+                            </select></div>
                     </div>
-                    <div class="form-group"><label class="form-label required">Producto / Destino</label><input type="text" id="quote-product" class="form-input" placeholder="Disney Wish - Bahamas 4 noches" oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
+                    <div class="form-group"><label class="form-label required">Producto / Destino</label><input
+                            type="text" id="quote-product" class="form-input"
+                            placeholder="Disney Wish - Bahamas 4 noches"
+                            oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
                     <div class="form-row">
-                        <div class="form-group"><label class="form-label">Fechas</label><input type="text" id="quote-dates" class="form-input" placeholder="15-22 marzo 2025" oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
-                        <div class="form-group"><label class="form-label">Viajeros</label><input type="text" id="quote-travelers" class="form-input" placeholder="2 adultos, 2 niños" oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
+                        <div class="form-group"><label class="form-label">Fecha salida</label><input type="date"
+                                id="quote-date-start" class="form-input"
+                                oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
+                        <div class="form-group"><label class="form-label">Fecha regreso</label><input type="date"
+                                id="quote-date-end" class="form-input"
+                                oninput="App.markQuoteChanged();App.updateQuotePreview()"></div>
                     </div>
-                    <div class="form-group"><label class="form-label">Qué incluye</label><textarea id="quote-includes" class="form-textarea" placeholder="Hospedaje&#10;Boletos&#10;Transporte" oninput="App.markQuoteChanged()"></textarea></div>
-                    <div class="form-group"><label class="form-label">Qué NO incluye</label><textarea id="quote-excludes" class="form-textarea" placeholder="Vuelos&#10;Comidas&#10;Propinas" oninput="App.markQuoteChanged()"></textarea></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Adultos</label>
+                            <select id="quote-adults" class="form-select"
+                                onchange="App.markQuoteChanged();App.updateQuotePreview()">
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Niños</label>
+                            <select id="quote-children" class="form-select"
+                                onchange="App.markQuoteChanged();App.updateQuotePreview();App.updateChildrenAges()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Qué incluye</label><textarea id="quote-includes"
+                            class="form-textarea" placeholder="Hospedaje&#10;Boletos&#10;Transporte"
+                            oninput="App.markQuoteChanged()"></textarea></div>
+                    <div class="form-group"><label class="form-label">Qué NO incluye</label><textarea
+                            id="quote-excludes" class="form-textarea" placeholder="Vuelos&#10;Comidas&#10;Propinas"
+                            oninput="App.markQuoteChanged()"></textarea></div>
                 </div>
                 <div class="card">
                     <div class="card-title">💰 Inversión</div>
                     <div class="form-row">
-                        <div class="form-group"><label class="form-label required">Total (USD)</label><input type="number" id="quote-total" class="form-input" placeholder="3500" oninput="App.markQuoteChanged();App.calculateMonthly()"></div>
-                        <div class="form-group"><label class="form-label">Apartado</label><input type="number" id="quote-deposit" class="form-input" placeholder="200" oninput="App.markQuoteChanged();App.calculateMonthly()"></div>
+                        <div class="form-group"><label class="form-label required">Total (USD)</label><input
+                                type="number" id="quote-total" class="form-input" placeholder="3500"
+                                oninput="App.markQuoteChanged();App.calculateMonthly()"></div>
+                        <div class="form-group"><label class="form-label">Apartado</label><input type="number"
+                                id="quote-deposit" class="form-input" placeholder="200"
+                                oninput="App.markQuoteChanged();App.calculateMonthly()"></div>
                     </div>
-                    <div class="form-group"><label class="form-label">Meses</label><input type="range" id="quote-months" class="calc-slider" min="1" max="12" value="6" oninput="App.markQuoteChanged();App.calculateMonthly()"><div id="monthly-display" class="months-display">$0/mes</div></div>
+                    <div class="form-group"><label class="form-label">Meses</label><input type="range" id="quote-months"
+                            class="calc-slider" min="1" max="12" value="6"
+                            oninput="App.markQuoteChanged();App.calculateMonthly()">
+                        <div id="monthly-display" class="months-display">$0/mes</div>
+                    </div>
+                    <div id="children-ages-container"></div>
                     <div class="form-row">
-                        <div class="form-group"><label class="form-label">Pago final</label><input type="text" id="quote-deadline" class="form-input" placeholder="15 feb 2025" oninput="App.markQuoteChanged()"></div>
-                        <div class="form-group"><label class="form-label">Válida hasta</label><input type="date" id="quote-valid-until" class="form-input" oninput="App.markQuoteChanged()"></div>
+                        <div class="form-group"><label class="form-label">Pago final</label><input type="date"
+                                id="quote-deadline" class="form-input" oninput="App.markQuoteChanged()"></div>
+                        <div class="form-group"><label class="form-label">Válida hasta</label><input type="date"
+                                id="quote-valid-until" class="form-input" oninput="App.markQuoteChanged()"></div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-title">📝 Notas</div>
-                    <div class="form-group"><label class="form-label">Notas internas</label><textarea id="quote-notes-internal" class="form-textarea" placeholder="Solo para ti..." oninput="App.markQuoteChanged()"></textarea></div>
-                    <div class="form-group"><label class="form-label">Notas cliente</label><textarea id="quote-notes-client" class="form-textarea" placeholder="Para el cliente..." oninput="App.markQuoteChanged()"></textarea></div>
+                    <div class="form-group"><label class="form-label">Notas internas</label><textarea
+                            id="quote-notes-internal" class="form-textarea" placeholder="Solo para ti..."
+                            oninput="App.markQuoteChanged()"></textarea></div>
+                    <div class="form-group"><label class="form-label">Notas cliente</label><textarea
+                            id="quote-notes-client" class="form-textarea" placeholder="Para el cliente..."
+                            oninput="App.markQuoteChanged()"></textarea></div>
                 </div>
-                <div class="action-row"><button class="btn-primary" onclick="App.saveQuote()">💾 Guardar</button><button class="btn-secondary" onclick="App.copyQuoteText()">📋 Copiar</button></div>
+                <div class="action-row"><button class="btn-primary" onclick="App.saveQuote()">💾 Guardar</button><button
+                        class="btn-secondary" onclick="App.copyQuoteText()">📋 Copiar</button></div>
             </div>
             <div id="quote-view" class="screen">
                 <div class="back-row"><button class="back-btn" onclick="App.showQuotesList()">← Volver</button></div>
                 <div id="view-quote-content"></div>
-                <div class="action-row"><button class="btn-whatsapp" onclick="App.sendQuoteWhatsApp()">💬 WhatsApp</button><button class="btn-secondary" onclick="App.copyCurrentQuoteText()">📋 Copiar</button></div>
-                <div class="action-row"><button class="btn-primary" onclick="App.generatePDF()">📄 PDF</button><button class="btn-secondary" onclick="App.editQuote(App.state.viewingQuoteId)">✏️ Editar</button><button class="btn-secondary" onclick="App.duplicateQuote()">📋 Duplicar</button></div>
-                <div class="action-row"><button class="btn-danger btn-sm" onclick="App.deleteQuote()">🗑️ Eliminar</button></div>
+                <div class="action-row"><button class="btn-whatsapp" onclick="App.sendQuoteWhatsApp()">💬
+                        WhatsApp</button><button class="btn-secondary" onclick="App.copyCurrentQuoteText()">📋
+                        Copiar</button></div>
+                <div class="action-row"><button class="btn-primary" onclick="App.generatePDF()">📄 PDF</button><button
+                        class="btn-secondary" onclick="App.editQuote(App.state.viewingQuoteId)">✏️
+                        Editar</button><button class="btn-secondary" onclick="App.duplicateQuote()">📋 Duplicar</button>
+                </div>
+                <div class="action-row"><button class="btn-danger btn-sm" onclick="App.deleteQuote()">🗑️
+                        Eliminar</button></div>
             </div>
         </div>
 
         <!-- TAB: INFO -->
         <div id="tab-info" class="tab-content">
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">📚 Información</h2>
-            <div class="info-card"><div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">🚢</span><span class="title">Disney Cruise Line</span><span class="arrow">▼</span></div><div class="info-card-body"><div class="info-section"><div class="info-section-title">🚢 Barcos</div><div class="info-section-content"><b>Wish</b> (2022), <b>Treasure</b> (2024), Fantasy, Dream, Magic</div></div><div class="info-section"><div class="info-section-title">💰 Precios</div><div class="info-section-content">Desde <b>$1,500/persona</b> hasta $5,000+ USD</div></div><div class="info-section"><div class="info-section-title">✅ Incluye</div><div class="info-section-content">Comidas, refrescos, shows, clubs niños, Castaway Cay</div></div><div class="info-section"><div class="info-section-title">❌ No incluye</div><div class="info-section-content">Alcohol, excursiones, wifi, propinas ($14.50/noche)</div></div><div class="info-section"><div class="info-section-title">💳 Pagos</div><div class="info-section-content">Apartado $200 • Pago final 120 días antes</div></div></div></div>
-            <div class="info-card"><div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">⚓</span><span class="title">Royal Caribbean</span><span class="arrow">▼</span></div><div class="info-card-body"><div class="info-section"><div class="info-section-title">🚢 Barcos</div><div class="info-section-content"><b>Icon of the Seas</b> (el más grande), Oasis Class, Quantum</div></div><div class="info-section"><div class="info-section-title">💰 Precios</div><div class="info-section-content">Desde <b>$400/persona</b> hasta $3,000+ USD</div></div><div class="info-section"><div class="info-section-title">🎁 Kids Sail Free</div><div class="info-section-content">3er y 4to pasajero GRATIS (ahorro $800-1,500)</div></div><div class="info-section"><div class="info-section-title">❌ No incluye</div><div class="info-section-content">Refrescos ($15/día), alcohol, propinas ($16-18.50/noche)</div></div></div></div>
-            <div class="info-card"><div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">🏰</span><span class="title">Parques Disney</span><span class="arrow">▼</span></div><div class="info-card-body"><div class="info-section"><div class="info-section-title">🏰 Disney World</div><div class="info-section-content">4 parques: Magic Kingdom, EPCOT, Hollywood Studios, Animal Kingdom</div></div><div class="info-section"><div class="info-section-title">💰 Precios</div><div class="info-section-content">Boletos desde <b>$109/día</b>. Paquete familia 4: $2,000-2,500</div></div><div class="info-section"><div class="info-section-title">📅 Mejor época</div><div class="info-section-content"><b>IDEAL:</b> Septiembre, enero, febrero. <b>EVITAR:</b> Semana Santa, verano, Navidad</div></div></div></div>
-            <div class="info-card"><div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">💡</span><span class="title">Tips de Venta</span><span class="arrow">▼</span></div><div class="info-card-body"><div class="info-section"><div class="info-section-title">💸 "Está caro"</div><div class="info-section-content">• NUNCA justifiques<br>• Enfócate en soluciones<br>• "¿Qué te funcionaría mejor?"</div></div><div class="info-section"><div class="info-section-title">🤝 Tu valor</div><div class="info-section-content">Mismo precio • Monitoreas bajadas • Soporte siempre • <b>"Mismo precio, cero estrés"</b></div></div></div></div>
+            <div class="info-card">
+                <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">🚢</span><span
+                        class="title">Disney Cruise Line</span><span class="arrow">▼</span></div>
+                <div class="info-card-body">
+                    <div class="info-section">
+                        <div class="info-section-title">🚢 Barcos</div>
+                        <div class="info-section-content"><b>Wish</b> (2022), <b>Treasure</b> (2024), Fantasy, Dream,
+                            Magic</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">💰 Precios</div>
+                        <div class="info-section-content">Desde <b>$1,500/persona</b> hasta $5,000+ USD</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">✅ Incluye</div>
+                        <div class="info-section-content">Comidas, refrescos, shows, clubs niños, Castaway Cay</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">❌ No incluye</div>
+                        <div class="info-section-content">Alcohol, excursiones, wifi, propinas ($14.50/noche)</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">💳 Pagos</div>
+                        <div class="info-section-content">Apartado $200 • Pago final 120 días antes</div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">⚓</span><span
+                        class="title">Royal Caribbean</span><span class="arrow">▼</span></div>
+                <div class="info-card-body">
+                    <div class="info-section">
+                        <div class="info-section-title">🚢 Barcos</div>
+                        <div class="info-section-content"><b>Icon of the Seas</b> (el más grande), Oasis Class, Quantum
+                        </div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">💰 Precios</div>
+                        <div class="info-section-content">Desde <b>$400/persona</b> hasta $3,000+ USD</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">🎁 Kids Sail Free</div>
+                        <div class="info-section-content">3er y 4to pasajero GRATIS (ahorro $800-1,500)</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">❌ No incluye</div>
+                        <div class="info-section-content">Refrescos ($15/día), alcohol, propinas ($16-18.50/noche)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">🏰</span><span
+                        class="title">Parques Disney</span><span class="arrow">▼</span></div>
+                <div class="info-card-body">
+                    <div class="info-section">
+                        <div class="info-section-title">🏰 Disney World</div>
+                        <div class="info-section-content">4 parques: Magic Kingdom, EPCOT, Hollywood Studios, Animal
+                            Kingdom</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">💰 Precios</div>
+                        <div class="info-section-content">Boletos desde <b>$109/día</b>. Paquete familia 4: $2,000-2,500
+                        </div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">📅 Mejor época</div>
+                        <div class="info-section-content"><b>IDEAL:</b> Septiembre, enero, febrero. <b>EVITAR:</b>
+                            Semana Santa, verano, Navidad</div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span class="icon">💡</span><span
+                        class="title">Tips de Venta</span><span class="arrow">▼</span></div>
+                <div class="info-card-body">
+                    <div class="info-section">
+                        <div class="info-section-title">💸 "Está caro"</div>
+                        <div class="info-section-content">• NUNCA justifiques<br>• Enfócate en soluciones<br>• "¿Qué te
+                            funcionaría mejor?"</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-section-title">🤝 Tu valor</div>
+                        <div class="info-section-content">Mismo precio • Monitoreas bajadas • Soporte siempre •
+                            <b>"Mismo precio, cero estrés"</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- TAB: TOOLS -->
@@ -140,58 +362,275 @@
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">🧮 Herramientas</h2>
             <div class="calculator">
                 <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">💰 Calculadora de pagos</h3>
-                <div class="form-row"><div class="form-group"><label class="form-label">Total (USD)</label><input type="number" id="calc-total" class="form-input" placeholder="3500" oninput="App.calculatePayment()"></div><div class="form-group"><label class="form-label">Apartado</label><input type="number" id="calc-deposit" class="form-input" placeholder="200" oninput="App.calculatePayment()"></div></div>
-                <div class="form-group"><label class="form-label">Meses</label><input type="range" id="calc-months" class="calc-slider" min="1" max="12" value="6" oninput="App.calculatePayment()"><div id="calc-months-label" class="months-display">6 meses</div></div>
-                <div class="calc-result-box"><div id="calc-result" class="calc-result">$0</div><div class="calc-result-label">por mes</div></div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Total (USD)</label><input type="number"
+                            id="calc-total" class="form-input" placeholder="3500" oninput="App.calculatePayment()">
+                    </div>
+                    <div class="form-group"><label class="form-label">Apartado</label><input type="number"
+                            id="calc-deposit" class="form-input" placeholder="200" oninput="App.calculatePayment()">
+                    </div>
+                </div>
+                <div class="form-group"><label class="form-label">Meses</label><input type="range" id="calc-months"
+                        class="calc-slider" min="1" max="12" value="6" oninput="App.calculatePayment()">
+                    <div id="calc-months-label" class="months-display">6 meses</div>
+                </div>
+                <div class="calc-result-box">
+                    <div id="calc-result" class="calc-result">$0</div>
+                    <div class="calc-result-label">por mes</div>
+                </div>
                 <button class="btn-success btn-block" onclick="App.copyCalcResult()">📋 Copiar plan</button>
             </div>
             <div class="checklist">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:16px;font-weight:600;">📋 Checklist datos</h3><button class="btn-secondary btn-sm" onclick="App.resetChecklist()">🔄</button></div>
-                <div class="checklist-item" data-id="names" onclick="App.toggleCheckItem(this)"><div class="checkbox">✓</div><span class="checklist-text">Nombres completos</span></div>
-                <div class="checklist-item" data-id="birthdays" onclick="App.toggleCheckItem(this)"><div class="checkbox">✓</div><span class="checklist-text">Fechas nacimiento</span></div>
-                <div class="checklist-item" data-id="email" onclick="App.toggleCheckItem(this)"><div class="checkbox">✓</div><span class="checklist-text">Email</span></div>
-                <div class="checklist-item" data-id="phone" onclick="App.toggleCheckItem(this)"><div class="checkbox">✓</div><span class="checklist-text">Teléfono</span></div>
-                <div class="checklist-item" data-id="passport" onclick="App.toggleCheckItem(this)"><div class="checkbox">✓</div><span class="checklist-text">Pasaporte</span></div>
-                <div class="checklist-item" data-id="passportExp" onclick="App.toggleCheckItem(this)"><div class="checkbox">✓</div><span class="checklist-text">Vencimiento pasaporte</span></div>
-                <button class="btn-secondary btn-block btn-sm" style="margin-top:12px;" onclick="App.copyChecklist()">📋 Copiar pendientes</button>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                    <h3 style="font-size:16px;font-weight:600;">📋 Checklist datos</h3><button
+                        class="btn-secondary btn-sm" onclick="App.resetChecklist()">🔄</button>
+                </div>
+                <div class="checklist-item" data-id="names" onclick="App.toggleCheckItem(this)">
+                    <div class="checkbox">✓</div><span class="checklist-text">Nombres completos</span>
+                </div>
+                <div class="checklist-item" data-id="birthdays" onclick="App.toggleCheckItem(this)">
+                    <div class="checkbox">✓</div><span class="checklist-text">Fechas nacimiento</span>
+                </div>
+                <div class="checklist-item" data-id="email" onclick="App.toggleCheckItem(this)">
+                    <div class="checkbox">✓</div><span class="checklist-text">Email</span>
+                </div>
+                <div class="checklist-item" data-id="phone" onclick="App.toggleCheckItem(this)">
+                    <div class="checkbox">✓</div><span class="checklist-text">Teléfono</span>
+                </div>
+                <div class="checklist-item" data-id="passport" onclick="App.toggleCheckItem(this)">
+                    <div class="checkbox">✓</div><span class="checklist-text">Pasaporte</span>
+                </div>
+                <div class="checklist-item" data-id="passportExp" onclick="App.toggleCheckItem(this)">
+                    <div class="checkbox">✓</div><span class="checklist-text">Vencimiento pasaporte</span>
+                </div>
+                <button class="btn-secondary btn-block btn-sm" style="margin-top:12px;" onclick="App.copyChecklist()">📋
+                    Copiar pendientes</button>
             </div>
-            <div class="card"><div class="card-title">📊 Estadísticas</div><div class="stats-grid"><div class="stat-card"><div id="stat-total-quotes" class="stat-value">0</div><div class="stat-label">Cotizaciones</div></div><div class="stat-card"><div id="stat-accepted" class="stat-value">0</div><div class="stat-label">Aceptadas</div></div><div class="stat-card"><div id="stat-conversion" class="stat-value">0%</div><div class="stat-label">Conversión</div></div><div class="stat-card"><div id="stat-pending" class="stat-value">0</div><div class="stat-label">Pendientes</div></div></div><div class="chart-container"><div class="chart-title">Por estado</div><div id="status-chart"></div></div><div class="chart-container"><div class="chart-title">Por producto</div><div id="type-chart"></div></div></div>
+            <div class="card">
+                <div class="card-title">📊 Estadísticas</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div id="stat-total-quotes" class="stat-value">0</div>
+                        <div class="stat-label">Cotizaciones</div>
+                    </div>
+                    <!-- Pipeline View -->
+                    <div id="view-pipeline" class="view-section" style="display: none;">
+                        <div class="crm-header">
+                            <h2>Pipeline de Ventas</h2>
+                            <div class="pipeline-filters">
+                                <select id="pipeline-filter-date" class="form-select-sm">
+                                    <option value="all">Todo el tiempo</option>
+                                    <option value="month">Este mes</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="pipeline-board" class="pipeline-board">
+                            <!-- Kanban columns rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Analytics View -->
+                    <div id="view-analytics" class="view-section" style="display: none;">
+                        <div class="crm-header">
+                            <h2>Analytics & Reportes</h2>
+                            <div class="date-range">
+                                <select id="analytics-period" class="form-select-sm"
+                                    onchange="Analytics_UI.renderDashboard()">
+                                    <option value="month">Este Mes</option>
+                                    <option value="quarter">Este Trimestre</option>
+                                    <option value="year">Este Año</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="analytics-grid">
+                            <!-- KPI Cards -->
+                            <div class="kpi-card">
+                                <div class="kpi-label">Ventas Totales</div>
+                                <div class="kpi-value" id="kpi-total-sales">$0</div>
+                                <div class="kpi-trend positive">↑ 12% vs mes anterior</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Cotizaciones</div>
+                                <div class="kpi-value" id="kpi-total-quotes">0</div>
+                                <div class="kpi-trend neutral">-- vs mes anterior</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Tasa de Cierre</div>
+                                <div class="kpi-value" id="kpi-conversion">0%</div>
+                                <div class="kpi-trend positive">↑ 2% vs mes anterior</div>
+                            </div>
+                            <div class="kpi-card">
+                                <div class="kpi-label">Comisiones Est.</div>
+                                <div class="kpi-value" id="kpi-commissions">$0</div>
+                                <div class="kpi-trend positive">↑ 8% vs mes anterior</div>
+                            </div>
+
+                            <!-- Charts -->
+                            <div class="chart-container wide">
+                                <h3>Tendencia de Ventas</h3>
+                                <canvas id="salesChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Destinos Top</h3>
+                                <canvas id="destinationsChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Fuentes de Leads</h3>
+                                <canvas id="leadsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div id="stat-accepted" class="stat-value">0</div>
+                    <div class="stat-label">Aceptadas</div>
+                </div>
+                <div class="stat-card">
+                    <div id="stat-conversion" class="stat-value">0%</div>
+                    <div class="stat-label">Conversión</div>
+                </div>
+                <div class="stat-card">
+                    <div id="stat-pending" class="stat-value">0</div>
+                    <div class="stat-label">Pendientes</div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Por estado</div>
+                <div id="status-chart"></div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Por producto</div>
+                <div id="type-chart"></div>
+            </div>
+        </div>
         </div>
 
         <!-- TAB: AJUSTES -->
         <div id="tab-ajustes" class="tab-content">
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">⚙️ Ajustes</h2>
-            <div class="config-section"><div class="config-section-title">👤 Mis datos</div><div class="form-group"><label class="form-label">WhatsApp</label><input type="tel" id="config-phone" class="form-input" placeholder="55 8095 5139"></div><div class="form-group"><label class="form-label">Email</label><input type="email" id="config-email" class="form-input" placeholder="tu@email.com"></div><div class="form-row"><div class="form-group"><label class="form-label">Instagram</label><input type="text" id="config-instagram" class="form-input" placeholder="@usuario"></div><div class="form-group"><label class="form-label">Facebook</label><input type="text" id="config-facebook" class="form-input" placeholder="Página"></div></div></div>
-            <div class="config-section"><div class="config-section-title">📝 Cotizaciones</div><div class="form-row"><div class="form-group"><label class="form-label">Prefijo</label><input type="text" id="config-prefix" class="form-input" placeholder="MDR" maxlength="5"></div><div class="form-group"><label class="form-label">Validez</label><select id="config-validity" class="form-select"><option value="3">3 días</option><option value="5">5 días</option><option value="7" selected>7 días</option><option value="10">10 días</option></select></div></div><div class="form-row"><div class="form-group"><label class="form-label">Moneda</label><select id="config-currency" class="form-select"><option value="USD">USD</option><option value="MXN">MXN</option></select></div><div class="form-group"><label class="form-label">Tipo cambio</label><input type="number" id="config-exchange" class="form-input" placeholder="17.5" step="0.1"></div></div><div class="form-group"><label class="form-label">Texto legal</label><textarea id="config-legal" class="form-textarea" placeholder="Precios sujetos a disponibilidad..."></textarea></div></div>
-            <div class="config-section"><div class="config-section-title">🎨 Apariencia</div><div class="toggle-row"><span class="toggle-label">Modo oscuro</span><label class="toggle"><input type="checkbox" id="config-darkmode" onchange="App.toggleDarkMode()"><span class="toggle-slider"></span></label></div></div>
+            <div class="config-section">
+                <div class="config-section-title">👤 Mis datos</div>
+                <div class="form-group"><label class="form-label">WhatsApp</label><input type="tel" id="config-phone"
+                        class="form-input" placeholder="55 8095 5139"></div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" id="config-email"
+                        class="form-input" placeholder="tu@email.com"></div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Instagram</label><input type="text"
+                            id="config-instagram" class="form-input" placeholder="@usuario"></div>
+                    <div class="form-group"><label class="form-label">Facebook</label><input type="text"
+                            id="config-facebook" class="form-input" placeholder="Página"></div>
+                </div>
+            </div>
+            <div class="config-section">
+                <div class="config-section-title">📝 Cotizaciones</div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Prefijo</label><input type="text"
+                            id="config-prefix" class="form-input" placeholder="MDR" maxlength="5"></div>
+                    <div class="form-group"><label class="form-label">Validez</label><select id="config-validity"
+                            class="form-select">
+                            <option value="3">3 días</option>
+                            <option value="5">5 días</option>
+                            <option value="7" selected>7 días</option>
+                            <option value="10">10 días</option>
+                        </select></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Moneda</label><select id="config-currency"
+                            class="form-select">
+                            <option value="USD">USD</option>
+                            <option value="MXN">MXN</option>
+                        </select></div>
+                    <div class="form-group"><label class="form-label">Tipo cambio</label><input type="number"
+                            id="config-exchange" class="form-input" placeholder="17.5" step="0.1"></div>
+                </div>
+                <div class="form-group"><label class="form-label">Texto legal</label><textarea id="config-legal"
+                        class="form-textarea" placeholder="Precios sujetos a disponibilidad..."></textarea></div>
+            </div>
+            <div class="config-section">
+                <div class="config-section-title">🎨 Apariencia</div>
+                <div class="toggle-row"><span class="toggle-label">Modo oscuro</span><label class="toggle"><input
+                            type="checkbox" id="config-darkmode" onchange="App.toggleDarkMode()"><span
+                            class="toggle-slider"></span></label></div>
+            </div>
             <button class="btn-primary btn-block" onclick="App.saveConfig()">💾 Guardar</button>
-            <div class="config-section" style="margin-top:24px;"><div class="config-section-title">📤 Datos</div><div class="action-row"><button class="btn-secondary" onclick="App.exportAllData()">📤 Exportar</button><label class="btn-secondary" style="cursor:pointer;">📥 Importar<input type="file" accept=".json" onchange="App.importData(event)" style="display:none;"></label></div><button class="btn-danger btn-block" style="margin-top:12px;" onclick="App.clearAllData()">🗑️ Borrar datos</button></div>
+            <div class="config-section" style="margin-top:24px;">
+                <div class="config-section-title">📤 Datos</div>
+                <div class="action-row"><button class="btn-secondary" onclick="App.exportAllData()">📤
+                        Exportar</button><label class="btn-secondary" style="cursor:pointer;">📥 Importar<input
+                            type="file" accept=".json" onchange="App.importData(event)" style="display:none;"></label>
+                </div><button class="btn-danger btn-block" style="margin-top:12px;" onclick="App.clearAllData()">🗑️
+                    Borrar datos</button>
+            </div>
         </div>
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="App.showTab('inicio', this)"><span class="icon">🏠</span><span>Inicio</span></button>
-        <button class="nav-item" onclick="App.showTab('cotizar', this)"><span class="icon">📝</span><span>Cotizar</span></button>
-        <button class="nav-item" onclick="App.showTab('info', this)"><span class="icon">📚</span><span>Info</span></button>
-        <button class="nav-item" onclick="App.showTab('tools', this)"><span class="icon">🧮</span><span>Tools</span></button>
-        <button class="nav-item" onclick="App.showTab('ajustes', this)"><span class="icon">⚙️</span><span>Ajustes</span></button>
+        <button class="nav-item active" onclick="App.showTab('inicio', this)"><span
+                class="icon">🏠</span><span>Inicio</span></button>
+        <button class="nav-item" onclick="App.showTab('cotizar', this)"><span
+                class="icon">📝</span><span>Cotizar</span></button>
+        <a href="#" class="nav-item" onclick="App.switchTab('pipeline')">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Pipeline</span>
+        </a>
+        <a href="#" class="nav-item" onclick="App.switchTab('analytics')">
+            <span class="nav-icon">📈</span>
+            <span class="nav-label">Reportes</span>
+        </a>
+        <a href="#" class="nav-item" onclick="App.switchTab('crm')">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Clientes</span>
+        </a>
+        <button class="nav-item" onclick="App.showTab('ajustes', this)"><span
+                class="icon">⚙️</span><span>Ajustes</span></button>
     </nav>
 
     <div id="toast" class="toast"></div>
 
     <div id="modal-overlay" class="modal-overlay" onclick="if(event.target===this)App.closeModal()">
-        <div class="modal"><div id="modal-title" class="modal-title"></div><div id="modal-body" class="modal-body"></div><div class="modal-actions"><button class="btn-secondary" onclick="App.closeModal()">Cancelar</button><button id="modal-confirm" class="btn-danger">Confirmar</button></div></div>
+        <div class="modal">
+            <div id="modal-title" class="modal-title"></div>
+            <div id="modal-body" class="modal-body"></div>
+            <div class="modal-actions"><button class="btn-secondary" onclick="App.closeModal()">Cancelar</button><button
+                    id="modal-confirm" class="btn-danger">Confirmar</button></div>
+        </div>
     </div>
 
     <div id="onboarding-overlay" class="onboarding-overlay">
-        <div class="onboarding-card"><div class="emoji">✨</div><h2>¡Bienvenido!</h2><p>Tu asistente de ventas para Disney y Royal Caribbean</p><div class="onboarding-features"><div class="onboarding-feature"><span class="icon">💬</span><span>Respuestas listas</span></div><div class="onboarding-feature"><span class="icon">📝</span><span>Cotizaciones con PDF</span></div><div class="onboarding-feature"><span class="icon">📴</span><span>Funciona sin internet</span></div></div><button class="btn-primary btn-block" onclick="App.completeOnboarding()">¡Empezar! 🚀</button></div>
+        <div class="onboarding-card">
+            <div class="emoji">✨</div>
+            <h2>¡Bienvenido!</h2>
+            <p>Tu asistente de ventas para Disney y Royal Caribbean</p>
+            <div class="onboarding-features">
+                <div class="onboarding-feature"><span class="icon">💬</span><span>Respuestas listas</span></div>
+                <div class="onboarding-feature"><span class="icon">📝</span><span>Cotizaciones con PDF</span></div>
+                <div class="onboarding-feature"><span class="icon">📴</span><span>Funciona sin internet</span></div>
+            </div><button class="btn-primary btn-block" onclick="App.completeOnboarding()">¡Empezar! 🚀</button>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/data.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script src="js/form-validation.js"></script>
+    <script src="js/form-enhancer.js"></script>
+    <script src="js/crm.js"></script>
+    <script src="js/pipeline.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="js/advanced-quotes.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/personalization.js"></script>
+    <script src="js/pwa.js"></script>
+    <script src="js/ui-controller.js"></script>
+    <script src="js/analytics-ui.js"></script>
     <script src="js/app.js"></script>
     <script src="js/quotes.js"></script>
     <script src="js/tools.js"></script>
 </body>
+
 </html>
