@@ -15,36 +15,36 @@ const App = {
         unsavedChanges: false,
         isLoading: false
     },
-    
+
     // ===== INITIALIZATION =====
     init() {
         console.log('🚀 Iniciando Magia Disney & Royal v2.0');
-        
+
         // Load saved state
         this.loadTheme();
         this.loadConfig();
-        
+
         // Initialize UI
         this.renderFavorites();
         this.renderRecents();
         this.renderQuotesList();
         this.loadChecklist();
         this.updateStats();
-        
+
         // Setup event listeners
         this.setupEventListeners();
-        
+
         // Register Service Worker
         this.registerSW();
-        
+
         // Check onboarding
         if (!Storage.isOnboardingComplete()) {
             setTimeout(() => this.showOnboarding(), 500);
         }
-        
+
         console.log('✅ App iniciada correctamente');
     },
-    
+
     setupEventListeners() {
         // Prevent accidental navigation with unsaved changes
         window.addEventListener('beforeunload', (e) => {
@@ -53,12 +53,12 @@ const App = {
                 e.returnValue = '¿Seguro que quieres salir? Tienes cambios sin guardar.';
             }
         });
-        
+
         // Handle back button
         window.addEventListener('popstate', (e) => {
             this.handleBackNavigation();
         });
-        
+
         // Global keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
@@ -72,7 +72,7 @@ const App = {
             }
         });
     },
-    
+
     registerSW() {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
@@ -86,7 +86,7 @@ const App = {
                 .catch(err => console.error('SW error:', err));
         }
     },
-    
+
     // ===== THEME =====
     loadTheme() {
         const isDark = Storage.isDarkMode();
@@ -94,7 +94,7 @@ const App = {
         const checkbox = document.getElementById('config-darkmode');
         if (checkbox) checkbox.checked = isDark;
     },
-    
+
     toggleDarkMode() {
         const isDark = !document.body.classList.contains('dark-mode');
         document.body.classList.toggle('dark-mode', isDark);
@@ -102,32 +102,32 @@ const App = {
         const checkbox = document.getElementById('config-darkmode');
         if (checkbox) checkbox.checked = isDark;
     },
-    
+
     // ===== CONFIG =====
     loadConfig() {
         const config = Storage.getConfig();
-        
+
         // Business info
         this.setInputValue('config-phone', config.business?.phone || '55 8095 5139');
         this.setInputValue('config-email', config.business?.email || '');
         this.setInputValue('config-instagram', config.business?.instagram || '');
         this.setInputValue('config-facebook', config.business?.facebook || '');
-        
+
         // Quotes config
         this.setInputValue('config-prefix', config.quotes?.prefix || 'MDR');
         this.setInputValue('config-validity', config.quotes?.validityDays || 7);
         this.setInputValue('config-currency', config.quotes?.currency || 'USD');
         this.setInputValue('config-exchange', config.quotes?.exchangeRate || 17.5);
         this.setInputValue('config-legal', config.quotes?.legalText || 'Precios sujetos a disponibilidad.');
-        
+
         // Appearance
         const checkbox = document.getElementById('config-darkmode');
         if (checkbox) checkbox.checked = config.appearance?.darkMode || false;
     },
-    
+
     saveConfig() {
         const config = Storage.getConfig();
-        
+
         config.business = {
             name: 'Magia Disney & Royal',
             slogan: 'Parques • Cruceros • Descuentos',
@@ -136,7 +136,7 @@ const App = {
             instagram: this.getInputValue('config-instagram'),
             facebook: this.getInputValue('config-facebook')
         };
-        
+
         config.quotes = {
             ...config.quotes,
             prefix: this.getInputValue('config-prefix') || 'MDR',
@@ -145,16 +145,16 @@ const App = {
             exchangeRate: parseFloat(this.getInputValue('config-exchange')) || 17.5,
             legalText: this.getInputValue('config-legal')
         };
-        
+
         config.appearance = {
             darkMode: document.getElementById('config-darkmode')?.checked || false,
             theme: 'default'
         };
-        
+
         Storage.saveConfig(config);
         this.showToast('💾 Configuración guardada', 'success');
     },
-    
+
     // ===== TAB NAVIGATION =====
     showTab(tabId, element) {
         // Check for unsaved changes
@@ -164,43 +164,43 @@ const App = {
             }
             this.state.unsavedChanges = false;
         }
-        
+
         // Hide all tabs
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        
+
         // Show selected tab
         const tab = document.getElementById('tab-' + tabId);
         if (tab) tab.classList.add('active');
         if (element) element.classList.add('active');
-        
+
         this.state.currentTab = tabId;
-        
+
         // Reset screens within tab
         if (tabId === 'inicio') this.showHomeMain();
         if (tabId === 'cotizar') this.showQuotesList();
         if (tabId === 'clientes') this.renderClientsList();
-        
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    
+
     // ===== HOME NAVIGATION =====
     showHomeMain() {
         this.switchScreen('tab-inicio', 'home-main');
         this.state.currentStage = null;
         this.state.currentResponse = null;
     },
-    
+
     showStage(stageId) {
         const stage = Data.stages[stageId];
         if (!stage) return;
-        
+
         this.state.currentStage = stageId;
-        
+
         // Update title
         document.getElementById('stage-title').textContent = stage.name;
-        
+
         // Render situations
         const list = document.getElementById('situations-list');
         list.innerHTML = stage.situations.map(id => {
@@ -216,21 +216,21 @@ const App = {
                 </div>
             `;
         }).join('');
-        
+
         this.switchScreen('tab-inicio', 'home-stage');
     },
-    
+
     showResponse(responseId) {
         const response = Data.responses[responseId];
         if (!response) {
             this.showToast('Respuesta no encontrada', 'error');
             return;
         }
-        
+
         this.state.currentResponse = responseId;
         Storage.addRecent(responseId);
         this.renderRecents();
-        
+
         // Render breadcrumb
         const isFav = Storage.isFavorite(responseId);
         let breadcrumb = `
@@ -246,12 +246,12 @@ const App = {
         }
         breadcrumb += `<span class="breadcrumb-item active">${response.title}</span>`;
         document.getElementById('response-breadcrumb').innerHTML = breadcrumb;
-        
+
         // Render next actions
-        const nextActionsHtml = response.nextActions?.map(a => 
+        const nextActionsHtml = response.nextActions?.map(a =>
             `<div class="next-opt-btn" onclick="App.showResponse('${a.goto}')">${a.label}</div>`
         ).join('') || '';
-        
+
         // Render content
         document.getElementById('response-content').innerHTML = `
             <div class="composer">
@@ -284,17 +284,17 @@ const App = {
             </div>
             ` : ''}
         `;
-        
+
         this.switchScreen('tab-inicio', 'home-response');
     },
-    
+
     copyMessage() {
         const response = Data.responses[this.state.currentResponse];
         if (response) {
             this.copyToClipboard(response.message);
         }
     },
-    
+
     sendWhatsApp() {
         const response = Data.responses[this.state.currentResponse];
         if (response) {
@@ -302,11 +302,11 @@ const App = {
             window.open(`https://wa.me/?text=${text}`, '_blank');
         }
     },
-    
+
     backToHome() {
         this.showHomeMain();
     },
-    
+
     backToStage() {
         if (this.state.currentStage) {
             this.showStage(this.state.currentStage);
@@ -314,20 +314,20 @@ const App = {
             this.showHomeMain();
         }
     },
-    
+
     // ===== FAVORITES & RECENTS =====
     renderFavorites() {
         const favorites = Storage.getFavorites();
         const section = document.getElementById('favorites-section');
         const list = document.getElementById('favorites-list');
-        
+
         if (!section || !list) return;
-        
+
         if (favorites.length === 0) {
             section.style.display = 'none';
             return;
         }
-        
+
         section.style.display = 'block';
         list.innerHTML = favorites.map(id => {
             const r = Data.responses[id];
@@ -343,19 +343,19 @@ const App = {
             `;
         }).join('');
     },
-    
+
     renderRecents() {
         const recents = Storage.getRecents();
         const section = document.getElementById('recents-section');
         const list = document.getElementById('recents-list');
-        
+
         if (!section || !list) return;
-        
+
         if (recents.length === 0) {
             section.style.display = 'none';
             return;
         }
-        
+
         section.style.display = 'block';
         list.innerHTML = recents.map(id => {
             const r = Data.responses[id];
@@ -371,12 +371,12 @@ const App = {
             `;
         }).join('');
     },
-    
+
     toggleFavorite(id) {
         const isNowFav = Storage.toggleFavorite(id);
         this.showToast(isNowFav ? '⭐ Agregado a favoritos' : 'Eliminado de favoritos', 'success');
         this.renderFavorites();
-        
+
         // Update button if visible
         const btn = document.querySelector('.fav-btn');
         if (btn) {
@@ -384,26 +384,26 @@ const App = {
             btn.textContent = isNowFav ? '⭐' : '☆';
         }
     },
-    
+
     // ===== SEARCH =====
     handleSearch() {
         const query = this.getInputValue('globalSearch')?.toLowerCase().trim();
         const resultsContainer = document.getElementById('searchResults');
-        
+
         if (!query || query.length < 2) {
             resultsContainer?.classList.remove('show');
             return;
         }
-        
+
         // Search in responses
-        const results = Object.entries(Data.responses).filter(([id, r]) => 
-            r.title.toLowerCase().includes(query) || 
+        const results = Object.entries(Data.responses).filter(([id, r]) =>
+            r.title.toLowerCase().includes(query) ||
             r.message.toLowerCase().includes(query) ||
             r.tags?.some(t => t.toLowerCase().includes(query))
         ).slice(0, 10);
-        
+
         if (!resultsContainer) return;
-        
+
         if (results.length === 0) {
             resultsContainer.innerHTML = '<div class="search-result-item"><div class="title">No se encontraron resultados</div></div>';
         } else {
@@ -414,24 +414,24 @@ const App = {
                 </div>
             `).join('');
         }
-        
+
         resultsContainer.classList.add('show');
     },
-    
+
     clearSearch() {
         const input = document.getElementById('globalSearch');
         const results = document.getElementById('searchResults');
         if (input) input.value = '';
         if (results) results.classList.remove('show');
     },
-    
+
     showSearchResults() {
         const query = this.getInputValue('globalSearch');
         if (query && query.length >= 2) {
             document.getElementById('searchResults')?.classList.add('show');
         }
     },
-    
+
     hideSearchResults() {
         setTimeout(() => {
             document.getElementById('searchResults')?.classList.remove('show');
@@ -444,23 +444,23 @@ const App = {
         document.getElementById(screenId)?.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    
+
     getInputValue(id) {
         const el = document.getElementById(id);
         return el ? el.value : '';
     },
-    
+
     setInputValue(id, value) {
         const el = document.getElementById(id);
         if (el) el.value = value || '';
     },
-    
+
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML.replace(/\n/g, '<br>');
     },
-    
+
     formatCurrency(amount, currency = 'USD') {
         return new Intl.NumberFormat('es-MX', {
             style: 'currency',
@@ -469,13 +469,13 @@ const App = {
             maximumFractionDigits: 0
         }).format(amount);
     },
-    
+
     formatDate(dateString) {
         if (!dateString) return '';
         const date = new Date(dateString);
         return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
     },
-    
+
     copyToClipboard(text) {
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(text).then(() => {
@@ -487,7 +487,7 @@ const App = {
             this.fallbackCopy(text);
         }
     },
-    
+
     fallbackCopy(text) {
         const textarea = document.createElement('textarea');
         textarea.value = text;
@@ -503,22 +503,26 @@ const App = {
         }
         document.body.removeChild(textarea);
     },
-    
+
     showToast(message, type = 'success', duration = 3000) {
         const toast = document.getElementById('toast');
         if (!toast) return;
-        
+
+        // Play sound based on type
+        if (type === 'success') this.playSound('success');
+        if (type === 'error') this.playSound('error');
+
         toast.textContent = message;
         toast.className = 'toast show ' + type;
-        
+
         setTimeout(() => toast.classList.remove('show'), duration);
     },
-    
+
     setLoading(isLoading) {
         this.state.isLoading = isLoading;
         document.body.classList.toggle('loading', isLoading);
     },
-    
+
     handleBackNavigation() {
         if (this.state.currentTab === 'inicio') {
             if (this.state.currentResponse) {
@@ -528,7 +532,7 @@ const App = {
             }
         }
     },
-    
+
     handleQuickSave() {
         if (this.state.currentTab === 'cotizar' && this.state.unsavedChanges) {
             this.saveQuote();
@@ -536,9 +540,53 @@ const App = {
             this.saveConfig();
         }
     },
-    
+
     closeAllModals() {
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+    },
+
+    // ===== SOUNDS =====
+    playSound(type) {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            if (type === 'success') {
+                // Nice "ding"
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(1046.5, ctx.currentTime + 0.1); // C6
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.5);
+            } else if (type === 'pop') {
+                // Short pop
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(200, ctx.currentTime);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.1);
+            } else if (type === 'error') {
+                // Low buzz
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            }
+        } catch (e) {
+            console.error('Audio error', e);
+        }
     }
 };
 

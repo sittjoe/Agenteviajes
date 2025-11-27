@@ -14,6 +14,7 @@
     <link rel="apple-touch-icon" href="assets/logo.png">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/premium.css">
+    <link rel="stylesheet" href="css/print.css" media="print">
 </head>
 
 <body>
@@ -255,7 +256,7 @@
                 <div class="action-row"><button class="btn-whatsapp" onclick="App.sendQuoteWhatsApp()">💬
                         WhatsApp</button><button class="btn-secondary" onclick="App.copyCurrentQuoteText()">📋
                         Copiar</button></div>
-                <div class="action-row"><button class="btn-primary" onclick="App.generatePDF()">📄 PDF</button><button
+                <div class="action-row"><button class="btn-primary" onclick="window.print()">📄 PDF</button><button
                         class="btn-secondary" onclick="App.editQuote(App.state.viewingQuoteId)">✏️
                         Editar</button><button class="btn-secondary" onclick="App.duplicateQuote()">📋 Duplicar</button>
                 </div>
@@ -424,85 +425,112 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="pipeline-board" class="pipeline-board">
-                            <!-- Kanban columns rendered here -->
-                        </div>
-                    </div>
-
-                    <!-- Analytics View -->
-                    <div id="view-analytics" class="view-section" style="display: none;">
-                        <div class="crm-header">
-                            <h2>Analytics & Reportes</h2>
-                            <div class="date-range">
-                                <select id="analytics-period" class="form-select-sm"
-                                    onchange="Analytics_UI.renderDashboard()">
-                                    <option value="month">Este Mes</option>
-                                    <option value="quarter">Este Trimestre</option>
-                                    <option value="year">Este Año</option>
-                                </select>
-                            </div>
+                        <div id="quotes-list" class="quotes-list">
+                            <!-- Quotes rendered here -->
                         </div>
 
-                        <div class="analytics-grid">
-                            <!-- KPI Cards -->
-                            <div class="kpi-card">
-                                <div class="kpi-label">Ventas Totales</div>
-                                <div class="kpi-value" id="kpi-total-sales">$0</div>
-                                <div class="kpi-trend positive">↑ 12% vs mes anterior</div>
+                        <!-- Quote Detail View -->
+                        <div id="quote-view" class="screen">
+                            <div class="back-row">
+                                <button class="back-btn" onclick="App.showQuotesList()">
+                                    <span>←</span> Volver
+                                </button>
+                                <div class="screen-title">Detalle de Cotización</div>
+                                <button class="btn-primary btn-sm" onclick="window.print()">🖨️ PDF</button>
                             </div>
-                            <div class="kpi-card">
-                                <div class="kpi-label">Cotizaciones</div>
-                                <div class="kpi-value" id="kpi-total-quotes">0</div>
-                                <div class="kpi-trend neutral">-- vs mes anterior</div>
-                            </div>
-                            <div class="kpi-card">
-                                <div class="kpi-label">Tasa de Cierre</div>
-                                <div class="kpi-value" id="kpi-conversion">0%</div>
-                                <div class="kpi-trend positive">↑ 2% vs mes anterior</div>
-                            </div>
-                            <div class="kpi-card">
-                                <div class="kpi-label">Comisiones Est.</div>
-                                <div class="kpi-value" id="kpi-commissions">$0</div>
-                                <div class="kpi-trend positive">↑ 8% vs mes anterior</div>
-                            </div>
-
-                            <!-- Charts -->
-                            <div class="chart-container wide">
-                                <h3>Tendencia de Ventas</h3>
-                                <canvas id="salesChart"></canvas>
-                            </div>
-                            <div class="chart-container">
-                                <h3>Destinos Top</h3>
-                                <canvas id="destinationsChart"></canvas>
-                            </div>
-                            <div class="chart-container">
-                                <h3>Fuentes de Leads</h3>
-                                <canvas id="leadsChart"></canvas>
-                            </div>
+                            <div id="quote-detail-content"></div>
                         </div>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div id="stat-accepted" class="stat-value">0</div>
-                    <div class="stat-label">Aceptadas</div>
+
+                <!-- CRM View -->
+                <div id="view-crm" class="view-section" style="display: none;">
+                    <div class="crm-header">
+                        <h2>👥 Clientes</h2>
+                        <button class="btn-primary btn-sm" onclick="CRM_UI.showAddClientModal()">➕ Nuevo</button>
+                    </div>
+                    <div class="search-container" style="margin-bottom:16px;">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="clientSearch" class="search-input" placeholder="Buscar clientes..."
+                            oninput="CRM_UI.renderClientList(this.value)">
+                    </div>
+                    <div id="client-list-container" class="client-list"></div>
                 </div>
-                <div class="stat-card">
-                    <div id="stat-conversion" class="stat-value">0%</div>
-                    <div class="stat-label">Conversión</div>
-                </div>
-                <div class="stat-card">
-                    <div id="stat-pending" class="stat-value">0</div>
-                    <div class="stat-label">Pendientes</div>
+
+                <!-- Analytics View -->
+                <div id="view-analytics" class="view-section" style="display: none;">
+                    <div class="crm-header">
+                        <h2>Analytics & Reportes</h2>
+                        <div class="date-range">
+                            <select id="analytics-period" class="form-select-sm"
+                                onchange="Analytics_UI.renderDashboard()">
+                                <option value="month">Este Mes</option>
+                                <option value="quarter">Este Trimestre</option>
+                                <option value="year">Este Año</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="analytics-grid">
+                        <!-- KPI Cards -->
+                        <div class="kpi-card">
+                            <div class="kpi-label">Ventas Totales</div>
+                            <div class="kpi-value" id="kpi-total-sales">$0</div>
+                            <div class="kpi-trend positive">↑ 12% vs mes anterior</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Cotizaciones</div>
+                            <div class="kpi-value" id="kpi-total-quotes">0</div>
+                            <div class="kpi-trend neutral">-- vs mes anterior</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Tasa de Cierre</div>
+                            <div class="kpi-value" id="kpi-conversion">0%</div>
+                            <div class="kpi-trend positive">↑ 2% vs mes anterior</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Comisiones Est.</div>
+                            <div class="kpi-value" id="kpi-commissions">$0</div>
+                            <div class="kpi-trend positive">↑ 8% vs mes anterior</div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="chart-container wide">
+                            <h3>Tendencia de Ventas</h3>
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Destinos Top</h3>
+                            <canvas id="destinationsChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Fuentes de Leads</h3>
+                            <canvas id="leadsChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="chart-container">
-                <div class="chart-title">Por estado</div>
-                <div id="status-chart"></div>
+            <div class="stat-card">
+                <div id="stat-accepted" class="stat-value">0</div>
+                <div class="stat-label">Aceptadas</div>
             </div>
-            <div class="chart-container">
-                <div class="chart-title">Por producto</div>
-                <div id="type-chart"></div>
+            <div class="stat-card">
+                <div id="stat-conversion" class="stat-value">0%</div>
+                <div class="stat-label">Conversión</div>
             </div>
+            <div class="stat-card">
+                <div id="stat-pending" class="stat-value">0</div>
+                <div class="stat-label">Pendientes</div>
+            </div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title">Por estado</div>
+            <div id="status-chart"></div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title">Por producto</div>
+            <div id="type-chart"></div>
+        </div>
         </div>
         </div>
 
@@ -570,18 +598,14 @@
                 class="icon">🏠</span><span>Inicio</span></button>
         <button class="nav-item" onclick="App.showTab('cotizar', this)"><span
                 class="icon">📝</span><span>Cotizar</span></button>
-        <a href="#" class="nav-item" onclick="App.switchTab('pipeline')">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Pipeline</span>
-        </a>
-        <a href="#" class="nav-item" onclick="App.switchTab('analytics')">
-            <span class="nav-icon">📈</span>
-            <span class="nav-label">Reportes</span>
-        </a>
-        <a href="#" class="nav-item" onclick="App.switchTab('crm')">
-            <span class="nav-icon">👥</span>
-            <span class="nav-label">Clientes</span>
-        </a>
+        <button class="nav-item" onclick="App.switchTab('pipeline'); App.showTab('tools', this)">
+            <span class="icon">📊</span>
+            <span>Pipeline</span>
+        </button>
+        <button class="nav-item" onclick="App.switchTab('crm'); App.showTab('tools', this)">
+            <span class="icon">👥</span>
+            <span>Clientes</span>
+        </button>
         <button class="nav-item" onclick="App.showTab('ajustes', this)"><span
                 class="icon">⚙️</span><span>Ajustes</span></button>
     </nav>
@@ -630,6 +654,7 @@
     <script src="js/analytics-ui.js"></script>
     <script src="js/app.js"></script>
     <script src="js/quotes.js"></script>
+    <script src="js/data-manager.js"></script>
     <script src="js/tools.js"></script>
 </body>
 
