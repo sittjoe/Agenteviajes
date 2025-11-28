@@ -25,7 +25,7 @@
             <span>Parques • Cruceros • Descuentos</span>
         </div>
         <div class="header-actions">
-            <button class="header-btn" onclick="App.toggleDarkMode()" title="Modo oscuro">🌙</button>
+            <button class="header-btn" onclick="App.toggleDarkMode()" title="Modo oscuro" aria-label="Alternar modo oscuro">🌙</button>
         </div>
     </header>
 
@@ -479,7 +479,7 @@
             </div>
 
             <!-- Vista principal de herramientas -->
-            <div id="view-tools-main" class="view-section">
+            <div id="view-tools-main" class="view-section" style="display: block;">
                 <div class="calculator">
                     <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">💰 Calculadora de pagos</h3>
                     <div class="form-row">
@@ -701,20 +701,26 @@
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="App.showTab('inicio', this)"><span
-                class="icon">🏠</span><span>Inicio</span></button>
-        <button class="nav-item" onclick="App.showTab('cotizar', this)"><span
-                class="icon">📝</span><span>Cotizar</span></button>
-        <button class="nav-item" onclick="App.showTab('tools', this); setTimeout(() => App.switchTab('pipeline'), 50);">
-            <span class="icon">📊</span>
-            <span>Pipeline</span>
+        <button class="nav-item active" onclick="App.showTab('inicio', this)">
+            <span class="icon">🏠</span>
+            <span>Inicio</span>
         </button>
-        <button class="nav-item" onclick="App.showTab('tools', this); setTimeout(() => App.switchTab('crm'), 50);">
-            <span class="icon">👥</span>
-            <span>Clientes</span>
+        <button class="nav-item" onclick="App.showTab('cotizar', this)">
+            <span class="icon">📝</span>
+            <span>Cotizar</span>
         </button>
-        <button class="nav-item" onclick="App.showTab('ajustes', this)"><span
-                class="icon">⚙️</span><span>Ajustes</span></button>
+        <button class="nav-item" onclick="App.showTab('info', this)">
+            <span class="icon">📚</span>
+            <span>Info</span>
+        </button>
+        <button class="nav-item" onclick="App.showTab('tools', this)">
+            <span class="icon">🧮</span>
+            <span>Tools</span>
+        </button>
+        <button class="nav-item" onclick="App.showTab('ajustes', this)">
+            <span class="icon">⚙️</span>
+            <span>Ajustes</span>
+        </button>
     </nav>
 
     <div id="toast" class="toast"></div>

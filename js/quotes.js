@@ -682,17 +682,36 @@ ${config.quotes?.legalText || ''}`;
     },
 
     // ===== MODAL =====
-    showModal(title, body, onConfirm) {
-        document.getElementById('modal-title').textContent = title;
-        document.getElementById('modal-body').textContent = body;
-        document.getElementById('modal-confirm').onclick = () => {
-            onConfirm();
-            this.closeModal();
-        };
-        document.getElementById('modal-overlay').classList.add('show');
+    showModal(title, body, onConfirm, infoOnly = false) {
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalConfirm = document.getElementById('modal-confirm');
+        const modalOverlay = document.getElementById('modal-overlay');
+        
+        if (modalTitle) modalTitle.textContent = title;
+        if (modalBody) modalBody.innerHTML = body; // Use innerHTML to support HTML content
+        
+        if (modalConfirm) {
+            if (infoOnly || !onConfirm) {
+                modalConfirm.style.display = 'none';
+            } else {
+                modalConfirm.style.display = '';
+                modalConfirm.onclick = () => {
+                    const result = onConfirm();
+                    if (result !== false) {
+                        this.closeModal();
+                    }
+                };
+            }
+        }
+        
+        if (modalOverlay) modalOverlay.classList.add('show');
     },
 
     closeModal() {
-        document.getElementById('modal-overlay').classList.remove('show');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalConfirm = document.getElementById('modal-confirm');
+        if (modalOverlay) modalOverlay.classList.remove('show');
+        if (modalConfirm) modalConfirm.style.display = ''; // Reset display
     }
 });
