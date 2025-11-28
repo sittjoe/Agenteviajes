@@ -1582,6 +1582,124 @@ body {
     background: linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(30, 41, 59, 0.9));
 }
 
+/* Extra finesse para KPIs, pipeline, CRM y modales */
+.kpi-card,
+.stat-card {
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    background: linear-gradient(150deg, var(--card), var(--bg-alt));
+    box-shadow: var(--shadow);
+}
+
+.kpi-value,
+.stat-value {
+    letter-spacing: -0.01em;
+}
+
+.kpi-label,
+.stat-label {
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.kpi-trend {
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+}
+
+.pipeline-board {
+    gap: var(--space-2);
+    padding-bottom: var(--space-3);
+}
+
+.pipeline-column {
+    background: linear-gradient(180deg, var(--card), var(--bg-alt));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+}
+
+.column-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+}
+
+.column-count {
+    background: var(--bg);
+    box-shadow: var(--shadow-sm);
+}
+
+.column-body {
+    gap: 12px;
+}
+
+.kanban-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(145deg, var(--card), var(--bg-alt));
+    box-shadow: var(--shadow-sm);
+}
+
+.kanban-card:hover {
+    border-color: rgba(30, 60, 114, 0.35);
+    box-shadow: var(--shadow-md);
+}
+
+.kanban-price {
+    color: var(--primary);
+    letter-spacing: 0.01em;
+}
+
+.kanban-date {
+    color: var(--text-muted);
+}
+
+.client-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(150deg, var(--card), var(--bg-alt));
+    box-shadow: var(--shadow);
+}
+
+.client-avatar {
+    box-shadow: var(--shadow-sm);
+}
+
+.client-tags .tag,
+.tag {
+    border: 1px solid var(--border);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    font-weight: 600;
+}
+
+.tools-nav {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(140deg, var(--card), var(--bg-alt));
+    box-shadow: var(--shadow);
+}
+
+.tools-nav-btn {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.tools-nav-btn.active {
+    border-color: transparent;
+}
+
+.stage-btn .arrow,
+.option-item .arrow {
+    color: var(--text-secondary);
+}
+
+.modal-overlay {
+    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.7);
+}
+
 @media (max-width: 900px) {
     .hero-grid {
         grid-template-columns: 1fr;
