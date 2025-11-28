@@ -270,7 +270,9 @@ const App = {
                     </div>
                 </div>
             </div>
-            
+
+            <div class="vote-box" id="vote-container"></div>
+
             <div class="tip-box">
                 <h4>💡 Tip</h4>
                 <p>${response.tip}</p>
@@ -286,6 +288,9 @@ const App = {
         `;
 
         this.switchScreen('tab-inicio', 'home-response');
+
+        // Render votes after DOM is updated
+        this.renderVoteControls(responseId);
     },
 
     copyMessage() {
@@ -383,6 +388,39 @@ const App = {
             btn.classList.toggle('active', isNowFav);
             btn.textContent = isNowFav ? '⭐' : '☆';
         }
+    },
+
+    // ===== RESPONSE VOTES =====
+    renderVoteControls(responseId) {
+        const container = document.getElementById('vote-container');
+        if (!container) return;
+
+        const { up, down, userVote } = Storage.getResponseVoteStatus(responseId);
+        const total = up + down;
+        const helpfulPercent = total > 0 ? Math.round((up / total) * 100) : 0;
+
+        container.innerHTML = `
+            <div class="vote-actions">
+                <button class="vote-btn ${userVote === 1 ? 'active' : ''}" onclick="App.handleVote('${responseId}', 1)">👍 Útil</button>
+                <button class="vote-btn ${userVote === -1 ? 'active' : ''}" onclick="App.handleVote('${responseId}', -1)">👎 No útil</button>
+            </div>
+            <div class="vote-stats">
+                <span>${up} votos útiles</span>
+                <span>${down} votos no útiles</span>
+                <span>${helpfulPercent}% de utilidad</span>
+            </div>
+        `;
+    },
+
+    handleVote(responseId, value) {
+        const result = Storage.toggleResponseVote(responseId, value);
+        this.renderVoteControls(responseId);
+
+        let message = 'Voto eliminado';
+        if (result.userVote === 1) message = '👍 Gracias por marcarlo como útil';
+        if (result.userVote === -1) message = '🤔 Registrado como no útil';
+
+        this.showToast(message, 'success');
     },
 
     // ===== SEARCH =====
