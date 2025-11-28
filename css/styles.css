@@ -189,6 +189,168 @@ body.loading {
     animation: fadeIn 0.2s;
 }
 
+/* Home hero */
+.welcome-card {
+    background: linear-gradient(135deg, #1e3c72, #243b55);
+    color: white;
+    padding: 18px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.welcome-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+}
+
+.welcome-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.welcome-title {
+    font-size: 22px;
+    line-height: 1.25;
+}
+
+.welcome-sub {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+.cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.welcome-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.metric-card {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 12px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metric-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 6px;
+}
+
+.metric-value {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.insight-banner {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Business identity */
+.business-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.business-card .eyebrow {
+    color: var(--text-secondary);
+}
+
+.business-sub {
+    color: var(--text-secondary);
+    margin: 2px 0 12px;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+}
+
+.contact-chip {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-alt);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.contact-chip:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+}
+
+.chip-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    background: white;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+}
+
+.chip-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.chip-value {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.business-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.business-note {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -617,6 +779,27 @@ body.loading {
 .btn-primary:active,
 .btn-success:active {
     transform: scale(0.98);
+}
+
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(30, 60, 114, 0.04);
 }
 
 .btn-block {
@@ -2224,6 +2407,23 @@ body.loading {
 }
 
 @media (max-width: 640px) {
+    .welcome-grid,
+    .business-card {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-card {
+        padding: 16px;
+    }
+
+    .welcome-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
     .wdw-plan-step {
         grid-template-columns: 1fr;
     }

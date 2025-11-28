@@ -134,7 +134,17 @@ Restante: ${this.formatCurrency(remaining)}
         this.setStatValue('stat-conversion', conversionRate + '%');
         this.setStatValue('stat-value', this.formatCurrency(valueThisMonth));
         this.setStatValue('stat-pending', byStatus.draft + byStatus.sent + byStatus.negotiating);
-        
+
+        // Home overview
+        this.setStatValue('home-total-quotes', quotes.length);
+        this.setStatValue('home-accepted', byStatus.accepted);
+        this.setStatValue('home-conversion', conversionRate + '%');
+        this.setStatValue('home-pending', byStatus.draft + byStatus.sent + byStatus.negotiating);
+
+        const insight = this.buildInsightMessage(byStatus, Number(conversionRate), quotesThisMonth.length);
+        const insightEl = document.getElementById('home-insight');
+        if (insightEl) insightEl.textContent = insight;
+
         // Render charts if containers exist
         this.renderStatusChart(byStatus);
         this.renderTypeChart(byType);
@@ -143,6 +153,24 @@ Restante: ${this.formatCurrency(remaining)}
     setStatValue(id, value) {
         const el = document.getElementById(id);
         if (el) el.textContent = value;
+    },
+
+    buildInsightMessage(byStatus, conversionRate, quotesThisMonth) {
+        const pending = byStatus.draft + byStatus.sent + byStatus.negotiating;
+
+        if (pending > 0 && conversionRate < 20) {
+            return `Tienes ${pending} seguimientos abiertos. Prioriza llamadas o mensajes personalizados hoy.`;
+        }
+
+        if (byStatus.accepted > 0 && conversionRate >= 40) {
+            return `¡Excelente! ${conversionRate}% de cierre. Mantén el ritmo con recordatorios y propuestas claras.`;
+        }
+
+        if (quotesThisMonth === 0) {
+            return 'Aún no hay actividad este mes. Crea la primera cotización o envía un mensaje proactivo.';
+        }
+
+        return 'Estado listo para operar. Usa los accesos rápidos para responder con precisión en segundos.';
     },
     
     renderStatusChart(byStatus) {

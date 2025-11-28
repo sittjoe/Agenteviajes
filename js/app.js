@@ -24,6 +24,7 @@ const App = {
         // Load saved state
         this.loadTheme();
         this.loadConfig();
+        this.renderBusinessIdentity();
 
         // Initialize UI
         this.renderFavorites();
@@ -155,6 +156,42 @@ const App = {
 
         Storage.saveConfig(config);
         this.showToast('💾 Configuración guardada', 'success');
+        this.renderBusinessIdentity();
+    },
+
+    renderBusinessIdentity() {
+        const business = Storage.getConfig().business || {};
+
+        const setText = (id, value, fallback = '') => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value || fallback;
+        };
+
+        setText('business-name', business.name || 'Tu agencia');
+        setText('business-slogan', business.slogan || 'Define tu propuesta de valor');
+        setText('business-phone', business.phone || 'Agrega tu teléfono');
+        setText('business-email', business.email || 'Configura tu correo');
+        setText('business-ig', business.instagram || 'Añade Instagram');
+        setText('business-fb', business.facebook || 'Añade Facebook');
+    },
+
+    copyBusinessContact(type) {
+        const business = Storage.getConfig().business || {};
+        const values = {
+            phone: business.phone,
+            email: business.email,
+            instagram: business.instagram,
+            facebook: business.facebook
+        };
+
+        const value = values[type];
+
+        if (!value) {
+            this.showToast('Configura este dato en Ajustes para poder compartirlo.', 'warning');
+            return;
+        }
+
+        this.copyToClipboard(value);
     },
 
     // ===== TAB NAVIGATION =====
