@@ -2787,6 +2787,7 @@ body {
     transition: background 0.15s ease, transform 0.1s ease;
     color: var(--text);
     font-weight: 700;
+    border-radius: 0;
 }
 
 .cmd-item:last-child {
@@ -2796,6 +2797,8 @@ body {
 .cmd-item:hover,
 .cmd-item:focus-visible {
     background: var(--bg-alt);
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
 }
 
 .cmd-item:active {
@@ -2837,8 +2840,9 @@ button {
 .btn-whatsapp {
     min-height: 44px;
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-flat);
     transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    font-weight: 700;
 }
 
 .btn-primary:hover,
@@ -2854,6 +2858,12 @@ button {
 .btn-danger:active,
 .btn-ghost:active {
     transform: translateY(1px);
+}
+
+.btn-secondary:hover,
+.btn-ghost:hover {
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 .card,
@@ -2888,10 +2898,16 @@ button {
 
 .nav-item {
     padding: 12px 6px;
+    border-bottom: 2px solid transparent;
 }
 
 .nav-item .icon {
     font-size: 22px;
+}
+
+.nav-item.active {
+    background: linear-gradient(180deg, rgba(30, 60, 114, 0.08), transparent);
+    border-bottom-color: var(--primary);
 }
 
 .quote-item,
@@ -2899,6 +2915,8 @@ button {
 .kanban-card,
 .client-card {
     box-shadow: var(--shadow-flat);
+    border: 1px solid var(--border);
+    background: var(--card);
 }
 
 .status-chip {
