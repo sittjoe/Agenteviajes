@@ -2197,6 +2197,127 @@ small {
     transform: scale(0.985);
 }
 
+.header-logo {
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.header-logo:hover {
+    transform: rotate(-2deg) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.welcome-copy {
+    max-width: 560px;
+}
+
+.welcome-title {
+    letter-spacing: -0.02em;
+}
+
+.metric-card {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: var(--shadow);
+}
+
+.search-results {
+    backdrop-filter: blur(8px);
+}
+
+.search-result-item {
+    background: var(--card);
+}
+
+.search-result-item:hover {
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.05), rgba(212, 175, 55, 0.06));
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    min-height: 46px;
+}
+
+.modal {
+    max-height: 86vh;
+    overflow-y: auto;
+}
+
+.modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+}
+
+.info-card-body {
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.insight-banner {
+    letter-spacing: 0.01em;
+}
+
+.timeline-content {
+    background: linear-gradient(180deg, var(--card), var(--bg-alt));
+}
+
+.quote-item-price .quote-id {
+    letter-spacing: 0.08em;
+}
+
+.calc-slider::-webkit-slider-thumb {
+    box-shadow: 0 4px 10px rgba(30, 60, 114, 0.25);
+}
+
+.bottom-nav {
+    border-top: 1px solid rgba(30, 60, 114, 0.08);
+}
+
+.bottom-nav .nav-item:hover .icon {
+    transform: translateY(-1px);
+}
+
+.wdw-hero {
+    border: 1px solid rgba(30, 60, 114, 0.12);
+}
+
+.wdw-park-name {
+    letter-spacing: -0.01em;
+}
+
+.wdw-badges span,
+.wdw-badge,
+.wdw-chip {
+    box-shadow: var(--shadow-sm);
+}
+
+.wdw-selector button {
+    border: 1px solid rgba(30, 60, 114, 0.12);
+}
+
+.wdw-selector button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.wdw-grid,
+.wdw-list {
+    gap: 10px;
+}
+
+.wdw-plan-step {
+    border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
 @media (max-width: 900px) {
     .hero-grid {
         grid-template-columns: 1fr;
