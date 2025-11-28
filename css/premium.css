@@ -2757,6 +2757,66 @@ body {
     border-color: #fecdd3;
 }
 
+/* Command palette */
+.command-palette {
+    display: grid;
+    gap: 10px;
+}
+
+.cmd-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
+}
+
+.cmd-item {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.cmd-item:last-child {
+    border-bottom: none;
+}
+
+.cmd-item:hover,
+.cmd-item:focus-visible {
+    background: var(--bg-alt);
+}
+
+.cmd-item:active {
+    transform: scale(0.99);
+}
+
+.cmd-title {
+    font-size: 14px;
+}
+
+.cmd-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.cmd-empty {
+    padding: 14px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
 .section-header::after {
     background: linear-gradient(90deg, var(--primary), var(--accent));
 }

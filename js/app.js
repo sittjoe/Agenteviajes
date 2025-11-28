@@ -88,6 +88,11 @@ const App = {
                     this.toggleDarkMode();
                     return;
                 }
+                if (e.shiftKey && e.key.toLowerCase() === 'p') {
+                    e.preventDefault();
+                    this.openCommandPalette();
+                    return;
+                }
             }
             if (e.key === 'Escape') {
                 this.closeAllModals();
@@ -155,6 +160,102 @@ const App = {
             </div>
         `;
         this.showModal('Atajos rápidos', content, () => true, true);
+    },
+
+    openCommandPalette() {
+        const actions = this.getCommandPaletteActions();
+        const body = `
+            <div class="command-palette">
+                <input id="cmd-search" class="form-input" placeholder="Escribe un comando... (Ej. 'cotizar', 'clientes', 'modo oscuro')">
+                <div id="cmd-list" class="cmd-list"></div>
+            </div>
+        `;
+        this.showModal('Paleta de comandos', body, null, true);
+        setTimeout(() => {
+            const input = document.getElementById('cmd-search');
+            const list = document.getElementById('cmd-list');
+            if (!input || !list) return;
+
+            const render = (query = '') => {
+                const q = query.toLowerCase();
+                const filtered = actions.filter(a =>
+                    a.label.toLowerCase().includes(q) ||
+                    (a.keywords && a.keywords.some(k => k.includes(q)))
+                );
+                list.innerHTML = filtered.map((a, idx) => `
+                    <button class="cmd-item" data-idx="${idx}">
+                        <div class="cmd-title">${a.label}</div>
+                        <div class="cmd-meta">${a.shortcut || ''}</div>
+                    </button>
+                `).join('') || '<div class="cmd-empty">Sin resultados</div>';
+
+                list.querySelectorAll('.cmd-item').forEach(btn => {
+                    btn.onclick = () => {
+                        const idx = parseInt(btn.dataset.idx, 10);
+                        const action = filtered[idx];
+                        if (action?.run) action.run();
+                        this.closeModal();
+                    };
+                });
+            };
+
+            input.addEventListener('input', () => render(input.value));
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const first = list.querySelector('.cmd-item');
+                    if (first) first.click();
+                }
+            });
+            input.focus();
+            render();
+        }, 10);
+    },
+
+    getCommandPaletteActions() {
+        return [
+            {
+                label: 'Nueva cotización',
+                shortcut: 'Ctrl/Cmd + N',
+                keywords: ['cotizar', 'quote', 'nuevo'],
+                run: () => { this.showTab('cotizar'); this.showNewQuote(); }
+            },
+            {
+                label: 'Ver cotizaciones',
+                shortcut: 'Cotizar',
+                keywords: ['cotizar', 'lista'],
+                run: () => { this.showTab('cotizar'); this.showQuotesList(); }
+            },
+            {
+                label: 'Abrir CRM',
+                shortcut: 'Clientes',
+                keywords: ['crm', 'clientes'],
+                run: () => { this.showTab('tools'); this.switchTab('crm'); }
+            },
+            {
+                label: 'Abrir Pipeline',
+                shortcut: 'Pipeline',
+                keywords: ['pipeline', 'kanban'],
+                run: () => { this.showTab('tools'); this.switchTab('pipeline'); }
+            },
+            {
+                label: 'Buscar respuestas',
+                shortcut: 'Ctrl/Cmd + K',
+                keywords: ['buscar', 'search'],
+                run: () => this.focusGlobalSearch()
+            },
+            {
+                label: 'Alternar modo oscuro',
+                shortcut: 'Ctrl/Cmd + B',
+                keywords: ['tema', 'oscuro', 'dark'],
+                run: () => this.toggleDarkMode()
+            },
+            {
+                label: 'Ver atajos',
+                shortcut: 'Shift + ?',
+                keywords: ['atajos', 'shortcuts'],
+                run: () => this.showShortcutsModal()
+            }
+        ];
     },
 
     registerSW() {
