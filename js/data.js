@@ -195,9 +195,9 @@ Te comento:
 📦 INCLUYE:
 • {incluye}
 
-💰 INVERSIÓN TOTAL: ${precio} USD
+💰 INVERSIÓN TOTAL: {precio} USD
 
-💳 Para apartar: ${apartado} USD
+💳 Para apartar: {apartado} USD
 📅 Resto a pagar antes de: {fecha_limite}
 
 ¿Qué te parece? ¿Alguna duda?`,
@@ -455,8 +455,8 @@ Con eso te genero el link de pago.
 📍 Destino: {destino}
 👥 Viajeros: {nombres}
 
-💰 Apartado pagado: ${monto} USD
-📅 Próximo pago: {fecha_pago} por ${monto_pago} USD
+💰 Apartado pagado: {monto} USD
+📅 Próximo pago: {fecha_pago} por {monto_pago} USD
 
 Pronto te envío:
 ✅ Itinerario personalizado
@@ -478,7 +478,7 @@ Pronto te envío:
             icon: '⏰',
             message: `¡Hola! 👋
 
-Recordatorio amigable: tu pago de ${monto} USD vence el {fecha}.
+Recordatorio amigable: tu pago de {monto} USD vence el {fecha}.
 
 ¿Todo bien para esa fecha? Si necesitas ajustar, me dices 😊`,
             tip: 'Manda recordatorio 5-7 días antes del vencimiento.',
