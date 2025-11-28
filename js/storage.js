@@ -16,7 +16,9 @@ const Storage = {
         CHECKLIST: 'checklist',
         STATS: 'stats',
         ONBOARDING: 'onboarding',
-        THEME: 'theme'
+        THEME: 'theme',
+        RESPONSE_VOTES: 'responseVotes',
+        USER_VOTES: 'userVotes'
     },
     
     // ===== CORE METHODS =====
@@ -209,6 +211,61 @@ const Storage = {
         recents.unshift(id);
         this.set(this.KEYS.RECENTS, recents.slice(0, 8));
     },
+
+    // ===== RESPONSE VOTES =====
+
+    _ensureVoteSlots(id) {
+        const votes = this.get(this.KEYS.RESPONSE_VOTES, {});
+        const userVotes = this.get(this.KEYS.USER_VOTES, {});
+
+        if (!votes[id]) {
+            votes[id] = { up: 0, down: 0 };
+            this.set(this.KEYS.RESPONSE_VOTES, votes);
+        }
+
+        return { votes, userVotes };
+    },
+
+    getResponseVoteStatus(id) {
+        const votes = this.get(this.KEYS.RESPONSE_VOTES, {});
+        const userVotes = this.get(this.KEYS.USER_VOTES, {});
+        const entry = votes[id] || { up: 0, down: 0 };
+
+        return {
+            up: entry.up || 0,
+            down: entry.down || 0,
+            userVote: userVotes[id] || 0
+        };
+    },
+
+    toggleResponseVote(id, value) {
+        const { votes, userVotes } = this._ensureVoteSlots(id);
+        const current = userVotes[id] || 0;
+        const targetValue = current === value ? 0 : value;
+
+        // Remove previous vote
+        if (current === 1) votes[id].up = Math.max(0, votes[id].up - 1);
+        if (current === -1) votes[id].down = Math.max(0, votes[id].down - 1);
+
+        // Apply new vote
+        if (targetValue === 1) votes[id].up += 1;
+        if (targetValue === -1) votes[id].down += 1;
+
+        if (targetValue === 0) {
+            delete userVotes[id];
+        } else {
+            userVotes[id] = targetValue;
+        }
+
+        this.set(this.KEYS.RESPONSE_VOTES, votes);
+        this.set(this.KEYS.USER_VOTES, userVotes);
+
+        return {
+            up: votes[id].up,
+            down: votes[id].down,
+            userVote: targetValue
+        };
+    },
     
     // ===== CHECKLIST =====
     
@@ -271,7 +328,9 @@ const Storage = {
             quotes: this.getQuotes(),
             clients: this.getClients(),
             favorites: this.getFavorites(),
-            stats: this.getStats()
+            stats: this.getStats(),
+            responseVotes: this.get(this.KEYS.RESPONSE_VOTES, {}),
+            userVotes: this.get(this.KEYS.USER_VOTES, {})
         };
         return JSON.stringify(data, null, 2);
     },
@@ -285,6 +344,8 @@ const Storage = {
             if (data.clients) this.set(this.KEYS.CLIENTS, data.clients);
             if (data.favorites) this.set(this.KEYS.FAVORITES, data.favorites);
             if (data.stats) this.set(this.KEYS.STATS, data.stats);
+            if (data.responseVotes) this.set(this.KEYS.RESPONSE_VOTES, data.responseVotes);
+            if (data.userVotes) this.set(this.KEYS.USER_VOTES, data.userVotes);
             
             return { success: true, message: 'Datos importados correctamente' };
         } catch (e) {
