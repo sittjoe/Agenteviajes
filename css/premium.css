@@ -55,6 +55,7 @@
     --shadow-gold: 0 4px 12px rgba(212, 175, 55, 0.15);
     --shadow-premium: 0 8px 24px rgba(30, 60, 114, 0.12), 0 16px 48px rgba(30, 60, 114, 0.08);
     --shadow-xxl: 0 18px 48px rgba(30, 60, 114, 0.18);
+    --shadow-flat: 0 1px 3px rgba(0, 0, 0, 0.08);
 
     /* === GLASSMORPHISM === */
     --glass-bg: rgba(255, 255, 255, 0.7);
@@ -126,6 +127,29 @@
     padding: 0;
 }
 
+.u-card {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    background: var(--card);
+}
+
+.u-flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.u-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    background: var(--bg-alt);
+    color: var(--text);
+    font-weight: 700;
+}
 html {
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
@@ -951,6 +975,13 @@ body::before {
     background: linear-gradient(180deg, rgba(30, 60, 114, 0.08), transparent);
     box-shadow: inset 0 0 0 2px var(--primary-blue-light);
     border: 1px dashed rgba(30, 60, 114, 0.25);
+}
+
+.column-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    backdrop-filter: blur(4px);
 }
 
 /* Premium Kanban Card */
@@ -2321,6 +2352,28 @@ body {
     font-feature-settings: "liga", "calt";
 }
 
+.empty-state.error {
+    border-color: rgba(239, 68, 68, 0.35);
+    background: rgba(254, 226, 226, 0.35);
+}
+
+.empty-state.error .emoji {
+    color: var(--danger);
+}
+
+.empty-state .cta {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .card,
 .surface-panel,
 .quote-preview,
@@ -2486,6 +2539,24 @@ body {
 .quote-preview {
     display: grid;
     gap: 12px;
+}
+
+.quote-preview .summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.quote-preview .summary-item {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.quote-preview .summary-item .icon {
+    font-size: 16px;
 }
 
 .quote-preview .preview-header {
@@ -2733,6 +2804,20 @@ body {
     box-shadow: inset 0 0 0 2px rgba(30, 60, 114, 0.25);
 }
 
+.toggle input:focus-visible + .toggle-slider {
+    box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.2);
+}
+
+.calc-slider:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.25);
+}
+
+.quick-btn:focus-visible,
+.contact-chip:focus-visible {
+    box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.2);
+    border-color: var(--primary);
+}
+
 .wdw-hero {
     border: 1px solid rgba(30, 60, 114, 0.12);
 }
@@ -2819,6 +2904,26 @@ body {
     .breadcrumb,
     .section-title {
         font-size: 13px;
+    }
+
+    .card,
+    .surface-panel,
+    .quote-preview,
+    .info-card {
+        box-shadow: var(--shadow-flat);
+        backdrop-filter: none;
+    }
+
+    .quote-view-header,
+    .quote-view-footer,
+    .search-results {
+        backdrop-filter: none;
+    }
+
+    .btn-primary,
+    .btn-success,
+    .btn-whatsapp {
+        box-shadow: var(--shadow);
     }
 }
 
