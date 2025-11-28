@@ -158,6 +158,33 @@ const App = {
     },
 
     // ===== TAB NAVIGATION =====
+    switchTab(viewId) {
+        // Show only the requested view inside the tools tab
+        document.querySelectorAll('.view-section').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        const target = document.getElementById(`view-${viewId}`);
+        if (target) {
+            target.style.display = 'block';
+        }
+
+        // Lazy-init heavy views
+        if (viewId === 'pipeline' && window.Pipeline_UI?.init) {
+            window.Pipeline_UI.init();
+        }
+
+        if (viewId === 'crm' && window.CRM_UI?.init) {
+            window.CRM_UI.init();
+        }
+
+        if (viewId === 'analytics' && window.Analytics_UI?.init) {
+            window.Analytics_UI.init();
+        }
+
+        this.state.currentToolView = viewId;
+    },
+
     showTab(tabId, element) {
         // Check for unsaved changes
         if (this.state.unsavedChanges && this.state.currentTab === 'cotizar') {

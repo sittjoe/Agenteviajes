@@ -294,13 +294,18 @@ const Pipeline_UI = {
 };
 
 // Hook into App.switchTab to render views when accessed
-const originalSwitchTab = App.switchTab;
-App.switchTab = function (tabId) {
-    originalSwitchTab.call(this, tabId);
+if (typeof App !== 'undefined') {
+    const originalSwitchTab = typeof App.switchTab === 'function' ? App.switchTab : null;
 
-    if (tabId === 'crm') {
-        CRM_UI.init();
-    } else if (tabId === 'pipeline') {
-        Pipeline_UI.init();
-    }
-};
+    App.switchTab = function (tabId) {
+        if (typeof originalSwitchTab === 'function') {
+            originalSwitchTab.call(this, tabId);
+        }
+
+        if (tabId === 'crm') {
+            CRM_UI.init();
+        } else if (tabId === 'pipeline') {
+            Pipeline_UI.init();
+        }
+    };
+}

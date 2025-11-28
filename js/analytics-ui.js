@@ -206,13 +206,16 @@ const Analytics_UI = {
 };
 
 // Hook into App.switchTab to refresh analytics when tab is opened
-const prevSwitchTab = App.switchTab;
-App.switchTab = function (tabId) {
-    if (typeof prevSwitchTab === 'function') {
-        prevSwitchTab.call(this, tabId);
-    }
+if (typeof App !== 'undefined') {
+    const prevSwitchTab = typeof App.switchTab === 'function' ? App.switchTab : null;
 
-    if (tabId === 'analytics') {
-        Analytics_UI.init();
-    }
-};
+    App.switchTab = function (tabId) {
+        if (typeof prevSwitchTab === 'function') {
+            prevSwitchTab.call(this, tabId);
+        }
+
+        if (tabId === 'analytics') {
+            Analytics_UI.init();
+        }
+    };
+}
