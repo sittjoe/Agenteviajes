@@ -248,6 +248,7 @@
                             oninput="App.markQuoteChanged()"></textarea></div>
                 </div>
                 <div class="action-row"><button class="btn-primary" onclick="App.saveQuote()">💾 Guardar</button><button
+                        class="btn-secondary" onclick="App.generatePDF()">📄 Exportar PDF</button><button
                         class="btn-secondary" onclick="App.copyQuoteText()">📋 Copiar</button></div>
             </div>
             <div id="quote-view" class="screen">
@@ -256,7 +257,7 @@
                 <div class="action-row"><button class="btn-whatsapp" onclick="App.sendQuoteWhatsApp()">💬
                         WhatsApp</button><button class="btn-secondary" onclick="App.copyCurrentQuoteText()">📋
                         Copiar</button></div>
-                <div class="action-row"><button class="btn-primary" onclick="window.print()">📄 PDF</button><button
+                <div class="action-row"><button class="btn-primary" onclick="App.generatePDF()">📄 Exportar PDF</button><button
                         class="btn-secondary" onclick="App.editQuote(App.state.viewingQuoteId)">✏️
                         Editar</button><button class="btn-secondary" onclick="App.duplicateQuote()">📋 Duplicar</button>
                 </div>
