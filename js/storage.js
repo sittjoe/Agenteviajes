@@ -18,7 +18,8 @@ const Storage = {
         ONBOARDING: 'onboarding',
         THEME: 'theme',
         RESPONSE_VOTES: 'responseVotes',
-        USER_VOTES: 'userVotes'
+        USER_VOTES: 'userVotes',
+        LAST_TAB: 'lastTab'
     },
     
     // ===== CORE METHODS =====
@@ -102,6 +103,15 @@ const Storage = {
     
     saveConfig(config) {
         return this.set(this.KEYS.CONFIG, config);
+    },
+
+    // ===== UI STATE =====
+    getLastTab() {
+        return this.get(this.KEYS.LAST_TAB, null);
+    },
+
+    setLastTab(tabId) {
+        this.set(this.KEYS.LAST_TAB, tabId);
     },
     
     // ===== QUOTES =====

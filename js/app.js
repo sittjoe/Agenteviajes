@@ -24,6 +24,7 @@ const App = {
         // Load saved state
         this.loadTheme();
         this.loadConfig();
+        this.restoreLastTab();
         this.renderBusinessIdentity();
 
         // Initialize UI
@@ -68,12 +69,66 @@ const App = {
                 if (e.key === 's') {
                     e.preventDefault();
                     this.handleQuickSave();
+                    return;
+                }
+                if (e.key.toLowerCase() === 'k') {
+                    e.preventDefault();
+                    this.focusGlobalSearch();
+                    return;
+                }
+                if (e.key.toLowerCase() === 'n') {
+                    e.preventDefault();
+                    this.showTab('cotizar');
+                    this.showNewQuote();
+                    return;
+                }
+                if (e.key.toLowerCase() === 'b') {
+                    e.preventDefault();
+                    this.toggleDarkMode();
+                    return;
                 }
             }
             if (e.key === 'Escape') {
                 this.closeAllModals();
             }
+            if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                e.preventDefault();
+                this.focusGlobalSearch();
+            }
+            if (e.shiftKey && e.key === '?') {
+                e.preventDefault();
+                this.showShortcutsModal();
+            }
         });
+    },
+
+    focusGlobalSearch() {
+        const input = document.getElementById('globalSearch');
+        if (input) {
+            input.focus();
+            input.select();
+            this.showSearchResults();
+        }
+    },
+
+    showShortcutsModal() {
+        const content = `
+            <div class="list" style="display:grid;gap:8px;">
+                <div class="u-flex" style="justify-content:space-between;">
+                    <span><b>Ctrl/Cmd + K</b> Buscar</span><span><b>Ctrl/Cmd + B</b> Modo oscuro</span>
+                </div>
+                <div class="u-flex" style="justify-content:space-between;">
+                    <span><b>Ctrl/Cmd + N</b> Nueva cotización</span><span><b>Ctrl/Cmd + S</b> Guardar rápido</span>
+                </div>
+                <div class="u-flex" style="justify-content:space-between;">
+                    <span><b>/</b> Enfocar buscador</span><span><b>Shift + ?</b> Ver atajos</span>
+                </div>
+                <div class="u-flex" style="justify-content:space-between;">
+                    <span><b>Esc</b> Cerrar modales</span><span><b>Alt + ←/→</b> Navegar navegador</span>
+                </div>
+            </div>
+        `;
+        this.showModal('Atajos rápidos', content, () => true, true);
     },
 
     registerSW() {
@@ -255,8 +310,17 @@ const App = {
         if (tabId === 'cotizar') this.showQuotesList();
         if (tabId === 'clientes') this.renderClientsList();
 
+        Storage.setLastTab(tabId);
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+
+    restoreLastTab() {
+        const saved = Storage.getLastTab();
+        if (saved && document.getElementById('tab-' + saved)) {
+            this.showTab(saved);
+        }
     },
 
     // ===== HOME NAVIGATION =====
