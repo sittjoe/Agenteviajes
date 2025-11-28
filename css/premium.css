@@ -2817,6 +2817,94 @@ body {
     color: var(--text-muted);
 }
 
+/* Clean & touch-friendly pass */
+button,
+input,
+select,
+textarea {
+    font-family: var(--font-sans);
+}
+
+button {
+    cursor: pointer;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-ghost,
+.btn-whatsapp {
+    min-height: 44px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.btn-primary:hover,
+.btn-success:hover,
+.btn-whatsapp:hover {
+    filter: brightness(1.02);
+}
+
+.btn-primary:active,
+.btn-success:active,
+.btn-whatsapp:active,
+.btn-secondary:active,
+.btn-danger:active,
+.btn-ghost:active {
+    transform: translateY(1px);
+}
+
+.card,
+.surface-panel,
+.info-card,
+.quote-preview {
+    box-shadow: var(--shadow-flat);
+    border: 1px solid var(--border);
+    background: var(--card);
+}
+
+.card::before,
+.surface-panel::before {
+    display: none;
+}
+
+.search-input,
+.form-input,
+.form-select,
+.form-textarea {
+    border: 1px solid var(--border);
+    box-shadow: none;
+}
+
+.search-input:focus,
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.08);
+    border-color: var(--primary);
+}
+
+.nav-item {
+    padding: 12px 6px;
+}
+
+.nav-item .icon {
+    font-size: 22px;
+}
+
+.quote-item,
+.pipeline-quote-card,
+.kanban-card,
+.client-card {
+    box-shadow: var(--shadow-flat);
+}
+
+.status-chip {
+    box-shadow: var(--shadow-flat);
+}
+
 .section-header::after {
     background: linear-gradient(90deg, var(--primary), var(--accent));
 }
