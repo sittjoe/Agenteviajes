@@ -196,116 +196,131 @@ const CRM_UI = {
 
 const Pipeline_UI = {
     init() {
-        this.renderBoard();
+        this.renderQuotesList();
     },
 
-    renderBoard() {
-        const container = document.getElementById('pipeline-board');
+    renderQuotesList() {
+        const container = document.getElementById('pipeline-quotes-list');
         if (!container) return;
 
-        const quotesByStage = Pipeline.getQuotesByStage();
-        const stats = Pipeline.getColumnStats();
+        const quotes = Storage.getQuotes ? Storage.getQuotes() : [];
+        const stats = Pipeline.getColumnStats ? Pipeline.getColumnStats() : {};
 
-        container.innerHTML = Pipeline.columns.map(col => `
-            <div class="pipeline-column" data-stage="${col.id}">
-                <div class="column-header" style="border-top: 3px solid ${col.color}">
-                    <div class="column-header-top">
-                        <span class="column-title">${col.name}</span>
-                        <span class="column-count">${stats[col.id].count}</span>
+        if (quotes.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+                    <h3>No hay cotizaciones</h3>
+                    <p>Crea una cotización para verla en el pipeline.</p>
+                    <button class="btn-primary" onclick="App.showTab('cotizar'); App.showNewQuote();">➕ Nueva cotización</button>
+                </div>
+            `;
+            return;
+        }
+
+        // Group by status
+        const groupedQuotes = {
+            draft: quotes.filter(q => q.status === 'draft'),
+            sent: quotes.filter(q => q.status === 'sent'),
+            negotiating: quotes.filter(q => q.status === 'negotiating'),
+            accepted: quotes.filter(q => q.status === 'accepted'),
+            rejected: quotes.filter(q => q.status === 'rejected')
+        };
+
+        const statusLabels = {
+            draft: { name: 'Borrador', color: '#94a3b8', icon: '📝' },
+            sent: { name: 'Enviada', color: '#3b82f6', icon: '📤' },
+            negotiating: { name: 'Negociando', color: '#f59e0b', icon: '💬' },
+            accepted: { name: 'Aceptada', color: '#10b981', icon: '✅' },
+            rejected: { name: 'Rechazada', color: '#ef4444', icon: '❌' }
+        };
+
+        container.innerHTML = Object.entries(statusLabels).map(([status, info]) => {
+            const statusQuotes = groupedQuotes[status] || [];
+            const totalValue = statusQuotes.reduce((sum, q) => sum + (parseFloat(q.total) || 0), 0);
+            
+            return `
+                <div class="pipeline-section">
+                    <div class="pipeline-section-header" style="border-left: 4px solid ${info.color}">
+                        <span class="pipeline-status-icon">${info.icon}</span>
+                        <span class="pipeline-status-name">${info.name}</span>
+                        <span class="pipeline-status-count">${statusQuotes.length}</span>
+                        <span class="pipeline-status-total">${this.formatCurrency(totalValue)}</span>
                     </div>
-                    <div class="column-total">${App.formatCurrency(stats[col.id].value)}</div>
+                    <div class="pipeline-section-quotes">
+                        ${statusQuotes.length > 0 ? statusQuotes.map(quote => this.renderQuoteCard(quote)).join('') : '<p class="empty-text">Sin cotizaciones</p>'}
+                    </div>
                 </div>
-                <div class="column-body" 
-                    ondrop="Pipeline_UI.drop(event, '${col.id}')" 
-                    ondragover="Pipeline_UI.allowDrop(event)"
-                    ondragenter="Pipeline_UI.dragEnter(event)"
-                    ondragleave="Pipeline_UI.dragLeave(event)">
-                    ${quotesByStage[col.id].map(quote => this.renderCard(quote)).join('')}
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     },
 
-    renderCard(quote) {
-        const urgency = Pipeline.getUrgency(quote);
+    renderQuoteCard(quote) {
         const clientName = quote.client?.name || 'Cliente sin nombre';
+        const urgency = Pipeline.getUrgency ? Pipeline.getUrgency(quote) : 'low';
 
         return `
-            <div class="kanban-card urgency-${urgency}" 
-                draggable="true" 
-                ondragstart="Pipeline_UI.drag(event, '${quote.id}')" 
-                onclick="App.viewQuote('${quote.id}')">
-                
-                <div class="kanban-card-header">
-                    <span class="kanban-client">${clientName}</span>
-                    <span class="kanban-id">#${quote.id}</span>
+            <div class="pipeline-quote-card urgency-${urgency}" onclick="App.viewQuote('${quote.id}')">
+                <div class="pipeline-quote-header">
+                    <span class="pipeline-quote-client">${clientName}</span>
+                    <span class="pipeline-quote-id">#${quote.id}</span>
                 </div>
-                
-                <div class="kanban-product">${quote.product || 'Sin producto'}</div>
-                
-                <div class="kanban-footer">
-                    <span class="kanban-price">${App.formatCurrency(quote.total)}</span>
-                    <span class="kanban-date">${new Date(quote.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                <div class="pipeline-quote-product">${quote.product || 'Sin producto'}</div>
+                <div class="pipeline-quote-footer">
+                    <span class="pipeline-quote-price">${this.formatCurrency(quote.total)}</span>
+                    <span class="pipeline-quote-date">${new Date(quote.createdAt).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}</span>
                 </div>
-                
                 ${urgency === 'high' || urgency === 'overdue' ?
-                `<div class="urgency-badge ${urgency}">⚠️ ${urgency === 'overdue' ? 'Vencida' : 'Pronto vence'}</div>`
+                    `<div class="urgency-badge ${urgency}">⚠️ ${urgency === 'overdue' ? 'Vencida' : 'Pronto vence'}</div>`
                 : ''}
             </div>
         `;
     },
 
-    allowDrop(ev) {
-        ev.preventDefault();
-    },
-
-    dragEnter(ev) {
-        ev.preventDefault();
-        ev.currentTarget.classList.add('drag-over');
-    },
-
-    dragLeave(ev) {
-        ev.currentTarget.classList.remove('drag-over');
-    },
-
-    drag(ev, quoteId) {
-        ev.dataTransfer.setData("text", quoteId);
-        ev.dataTransfer.effectAllowed = "move";
-        // Add a class to the dragged element for styling
-        ev.target.classList.add('dragging');
-    },
-
-    drop(e) {
-        e.preventDefault();
-        const column = e.target.closest('.pipeline-column');
-        if (column) {
-            column.classList.remove('drag-over');
-            const quoteId = e.dataTransfer.getData('text/plain');
-            const newStage = column.dataset.stage;
-
-            if (quoteId && newStage) {
-                Pipeline.moveQuote(quoteId, newStage);
-                this.renderBoard();
-                App.showToast('✅ Cotización movida', 'success');
-                App.playSound('pop'); // Sound effect
-            }
+    formatCurrency(value) {
+        if (typeof App !== 'undefined' && App.formatCurrency) {
+            return App.formatCurrency(value);
         }
+        return '$' + (value || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
 };
 
-// Hook into App.switchTab to render views when accessed
-if (typeof App !== 'undefined') {
-    const originalSwitchTab = typeof App.switchTab === 'function' ? App.switchTab : null;
+/**
+ * Extend App.switchTab to update tools nav buttons
+ * App.switchTab is already defined in app.js, we just add UI updates here
+ */
+function initToolsNavUpdates() {
+    if (typeof App === 'undefined') return;
 
-    App.switchTab = function (tabId) {
+    // Store original switchTab
+    const originalSwitchTab = App.switchTab;
+
+    App.switchTab = function(viewId) {
+        // Call original implementation first
         if (typeof originalSwitchTab === 'function') {
-            originalSwitchTab.call(this, tabId);
+            originalSwitchTab.call(App, viewId);
         }
 
-        if (tabId === 'crm') {
-            CRM_UI.init();
-        } else if (tabId === 'pipeline') {
-            Pipeline_UI.init();
+        // Update tools nav buttons active state
+        const navButtons = document.querySelectorAll('.tools-nav-btn');
+        navButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === viewId) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Handle special case for tools-main (default view)
+        if (viewId === 'tools-main') {
+            const toolsMain = document.getElementById('view-tools-main');
+            if (toolsMain) toolsMain.style.display = 'block';
         }
     };
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initToolsNavUpdates);
+} else {
+    initToolsNavUpdates();
 }

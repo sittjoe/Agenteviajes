@@ -469,177 +469,176 @@
         <!-- TAB: TOOLS -->
         <div id="tab-tools" class="tab-content">
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">🧮 Herramientas</h2>
-            <div class="calculator">
-                <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">💰 Calculadora de pagos</h3>
-                <div class="form-row">
-                    <div class="form-group"><label class="form-label">Total (USD)</label><input type="number"
-                            id="calc-total" class="form-input" placeholder="3500" oninput="App.calculatePayment()">
-                    </div>
-                    <div class="form-group"><label class="form-label">Apartado</label><input type="number"
-                            id="calc-deposit" class="form-input" placeholder="200" oninput="App.calculatePayment()">
-                    </div>
-                </div>
-                <div class="form-group"><label class="form-label">Meses</label><input type="range" id="calc-months"
-                        class="calc-slider" min="1" max="12" value="6" oninput="App.calculatePayment()">
-                    <div id="calc-months-label" class="months-display">6 meses</div>
-                </div>
-                <div class="calc-result-box">
-                    <div id="calc-result" class="calc-result">$0</div>
-                    <div class="calc-result-label">por mes</div>
-                </div>
-                <button class="btn-success btn-block" onclick="App.copyCalcResult()">📋 Copiar plan</button>
+            
+            <!-- Navegación de herramientas -->
+            <div class="tools-nav">
+                <button class="tools-nav-btn active" onclick="App.switchTab('tools-main')" data-view="tools-main">🧮 Calculadora</button>
+                <button class="tools-nav-btn" onclick="App.switchTab('pipeline')" data-view="pipeline">📊 Pipeline</button>
+                <button class="tools-nav-btn" onclick="App.switchTab('crm')" data-view="crm">👥 Clientes</button>
+                <button class="tools-nav-btn" onclick="App.switchTab('analytics')" data-view="analytics">📈 Analytics</button>
             </div>
-            <div class="checklist">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                    <h3 style="font-size:16px;font-weight:600;">📋 Checklist datos</h3><button
-                        class="btn-secondary btn-sm" onclick="App.resetChecklist()">🔄</button>
-                </div>
-                <div class="checklist-item" data-id="names" onclick="App.toggleCheckItem(this)">
-                    <div class="checkbox">✓</div><span class="checklist-text">Nombres completos</span>
-                </div>
-                <div class="checklist-item" data-id="birthdays" onclick="App.toggleCheckItem(this)">
-                    <div class="checkbox">✓</div><span class="checklist-text">Fechas nacimiento</span>
-                </div>
-                <div class="checklist-item" data-id="email" onclick="App.toggleCheckItem(this)">
-                    <div class="checkbox">✓</div><span class="checklist-text">Email</span>
-                </div>
-                <div class="checklist-item" data-id="phone" onclick="App.toggleCheckItem(this)">
-                    <div class="checkbox">✓</div><span class="checklist-text">Teléfono</span>
-                </div>
-                <div class="checklist-item" data-id="passport" onclick="App.toggleCheckItem(this)">
-                    <div class="checkbox">✓</div><span class="checklist-text">Pasaporte</span>
-                </div>
-                <div class="checklist-item" data-id="passportExp" onclick="App.toggleCheckItem(this)">
-                    <div class="checkbox">✓</div><span class="checklist-text">Vencimiento pasaporte</span>
-                </div>
-                <button class="btn-secondary btn-block btn-sm" style="margin-top:12px;" onclick="App.copyChecklist()">📋
-                    Copiar pendientes</button>
-            </div>
-            <div class="card">
-                <div class="card-title">📊 Estadísticas</div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div id="stat-total-quotes" class="stat-value">0</div>
-                        <div class="stat-label">Cotizaciones</div>
-                    </div>
-                    <!-- Pipeline View -->
-                    <div id="view-pipeline" class="view-section" style="display: none;">
-                        <div class="crm-header">
-                            <h2>Pipeline de Ventas</h2>
-                            <div class="pipeline-filters">
-                                <select id="pipeline-filter-date" class="form-select-sm">
-                                    <option value="all">Todo el tiempo</option>
-                                    <option value="month">Este mes</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div id="quotes-list" class="quotes-list">
-                            <!-- Quotes rendered here -->
-                        </div>
 
-                        <!-- Quote Detail View -->
-                        <div id="quote-view" class="screen">
-                            <div class="back-row">
-                                <button class="back-btn" onclick="App.showQuotesList()">
-                                    <span>←</span> Volver
-                                </button>
-                                <div class="screen-title">Detalle de Cotización</div>
-                                <button class="btn-primary btn-sm" onclick="window.print()">🖨️ PDF</button>
-                            </div>
-                            <div id="quote-detail-content"></div>
+            <!-- Vista principal de herramientas -->
+            <div id="view-tools-main" class="view-section">
+                <div class="calculator">
+                    <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">💰 Calculadora de pagos</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Total (USD)</label><input type="number"
+                                id="calc-total" class="form-input" placeholder="3500" oninput="App.calculatePayment()">
+                        </div>
+                        <div class="form-group"><label class="form-label">Apartado</label><input type="number"
+                                id="calc-deposit" class="form-input" placeholder="200" oninput="App.calculatePayment()">
                         </div>
                     </div>
+                    <div class="form-group"><label class="form-label">Meses</label><input type="range" id="calc-months"
+                            class="calc-slider" min="1" max="12" value="6" oninput="App.calculatePayment()">
+                        <div id="calc-months-label" class="months-display">6 meses</div>
+                    </div>
+                    <div class="calc-result-box">
+                        <div id="calc-result" class="calc-result">$0</div>
+                        <div class="calc-result-label">por mes</div>
+                    </div>
+                    <button class="btn-success btn-block" onclick="App.copyCalcResult()">📋 Copiar plan</button>
                 </div>
-
-                <!-- CRM View -->
-                <div id="view-crm" class="view-section" style="display: none;">
-                    <div class="crm-header">
-                        <h2>👥 Clientes</h2>
-                        <button class="btn-primary btn-sm" onclick="CRM_UI.showAddClientModal()">➕ Nuevo</button>
+                <div class="checklist">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h3 style="font-size:16px;font-weight:600;">📋 Checklist datos</h3><button
+                            class="btn-secondary btn-sm" onclick="App.resetChecklist()">🔄</button>
                     </div>
-                    <div class="search-container" style="margin-bottom:16px;">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="clientSearch" class="search-input" placeholder="Buscar clientes..."
-                            oninput="CRM_UI.renderClientList(this.value)">
+                    <div class="checklist-item" data-id="names" onclick="App.toggleCheckItem(this)">
+                        <div class="checkbox">✓</div><span class="checklist-text">Nombres completos</span>
                     </div>
-                    <div id="client-list-container" class="client-list"></div>
+                    <div class="checklist-item" data-id="birthdays" onclick="App.toggleCheckItem(this)">
+                        <div class="checkbox">✓</div><span class="checklist-text">Fechas nacimiento</span>
+                    </div>
+                    <div class="checklist-item" data-id="email" onclick="App.toggleCheckItem(this)">
+                        <div class="checkbox">✓</div><span class="checklist-text">Email</span>
+                    </div>
+                    <div class="checklist-item" data-id="phone" onclick="App.toggleCheckItem(this)">
+                        <div class="checkbox">✓</div><span class="checklist-text">Teléfono</span>
+                    </div>
+                    <div class="checklist-item" data-id="passport" onclick="App.toggleCheckItem(this)">
+                        <div class="checkbox">✓</div><span class="checklist-text">Pasaporte</span>
+                    </div>
+                    <div class="checklist-item" data-id="passportExp" onclick="App.toggleCheckItem(this)">
+                        <div class="checkbox">✓</div><span class="checklist-text">Vencimiento pasaporte</span>
+                    </div>
+                    <button class="btn-secondary btn-block btn-sm" style="margin-top:12px;" onclick="App.copyChecklist()">📋
+                        Copiar pendientes</button>
                 </div>
-
-                <!-- Analytics View -->
-                <div id="view-analytics" class="view-section" style="display: none;">
-                    <div class="crm-header">
-                        <h2>Analytics & Reportes</h2>
-                        <div class="date-range">
-                            <select id="analytics-period" class="form-select-sm"
-                                onchange="Analytics_UI.renderDashboard()">
-                                <option value="month">Este Mes</option>
-                                <option value="quarter">Este Trimestre</option>
-                                <option value="year">Este Año</option>
-                            </select>
+                <div class="card">
+                    <div class="card-title">📊 Estadísticas</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div id="stat-total-quotes" class="stat-value">0</div>
+                            <div class="stat-label">Cotizaciones</div>
+                        </div>
+                        <div class="stat-card">
+                            <div id="stat-accepted" class="stat-value">0</div>
+                            <div class="stat-label">Aceptadas</div>
+                        </div>
+                        <div class="stat-card">
+                            <div id="stat-conversion" class="stat-value">0%</div>
+                            <div class="stat-label">Conversión</div>
+                        </div>
+                        <div class="stat-card">
+                            <div id="stat-pending" class="stat-value">0</div>
+                            <div class="stat-label">Pendientes</div>
                         </div>
                     </div>
-
-                    <div class="analytics-grid">
-                        <!-- KPI Cards -->
-                        <div class="kpi-card">
-                            <div class="kpi-label">Ventas Totales</div>
-                            <div class="kpi-value" id="kpi-total-sales">$0</div>
-                            <div class="kpi-trend positive">↑ 12% vs mes anterior</div>
-                        </div>
-                        <div class="kpi-card">
-                            <div class="kpi-label">Cotizaciones</div>
-                            <div class="kpi-value" id="kpi-total-quotes">0</div>
-                            <div class="kpi-trend neutral">-- vs mes anterior</div>
-                        </div>
-                        <div class="kpi-card">
-                            <div class="kpi-label">Tasa de Cierre</div>
-                            <div class="kpi-value" id="kpi-conversion">0%</div>
-                            <div class="kpi-trend positive">↑ 2% vs mes anterior</div>
-                        </div>
-                        <div class="kpi-card">
-                            <div class="kpi-label">Comisiones Est.</div>
-                            <div class="kpi-value" id="kpi-commissions">$0</div>
-                            <div class="kpi-trend positive">↑ 8% vs mes anterior</div>
-                        </div>
-
-                        <!-- Charts -->
-                        <div class="chart-container wide">
-                            <h3>Tendencia de Ventas</h3>
-                            <canvas id="salesChart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <h3>Destinos Top</h3>
-                            <canvas id="destinationsChart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <h3>Fuentes de Leads</h3>
-                            <canvas id="leadsChart"></canvas>
-                        </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Por estado</div>
+                        <div id="status-chart"></div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Por producto</div>
+                        <div id="type-chart"></div>
                     </div>
                 </div>
             </div>
-            <div class="stat-card">
-                <div id="stat-accepted" class="stat-value">0</div>
-                <div class="stat-label">Aceptadas</div>
+
+            <!-- Pipeline View -->
+            <div id="view-pipeline" class="view-section" style="display: none;">
+                <div class="crm-header">
+                    <h2>📊 Pipeline de Ventas</h2>
+                    <div class="pipeline-filters">
+                        <select id="pipeline-filter-date" class="form-select-sm">
+                            <option value="all">Todo el tiempo</option>
+                            <option value="month">Este mes</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="pipeline-quotes-list" class="quotes-list">
+                    <!-- Quotes rendered here -->
+                </div>
             </div>
-            <div class="stat-card">
-                <div id="stat-conversion" class="stat-value">0%</div>
-                <div class="stat-label">Conversión</div>
+
+            <!-- CRM View -->
+            <div id="view-crm" class="view-section" style="display: none;">
+                <div class="crm-header">
+                    <h2>👥 Clientes</h2>
+                    <button class="btn-primary btn-sm" onclick="CRM_UI.showAddClientModal()">➕ Nuevo</button>
+                </div>
+                <div class="search-container" style="margin-bottom:16px;">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="clientSearch" class="search-input" placeholder="Buscar clientes..."
+                        oninput="CRM_UI.renderClientList(this.value)">
+                </div>
+                <div id="client-list-container" class="client-list"></div>
             </div>
-            <div class="stat-card">
-                <div id="stat-pending" class="stat-value">0</div>
-                <div class="stat-label">Pendientes</div>
+
+            <!-- Analytics View -->
+            <div id="view-analytics" class="view-section" style="display: none;">
+                <div class="crm-header">
+                    <h2>📈 Analytics & Reportes</h2>
+                    <div class="date-range">
+                        <select id="analytics-period" class="form-select-sm"
+                            onchange="Analytics_UI.renderDashboard()">
+                            <option value="month">Este Mes</option>
+                            <option value="quarter">Este Trimestre</option>
+                            <option value="year">Este Año</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <!-- KPI Cards -->
+                    <div class="kpi-card">
+                        <div class="kpi-label">Ventas Totales</div>
+                        <div class="kpi-value" id="kpi-total-sales">$0</div>
+                        <div class="kpi-trend positive">↑ 12% vs mes anterior</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Cotizaciones</div>
+                        <div class="kpi-value" id="kpi-total-quotes">0</div>
+                        <div class="kpi-trend neutral">-- vs mes anterior</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Tasa de Cierre</div>
+                        <div class="kpi-value" id="kpi-conversion">0%</div>
+                        <div class="kpi-trend positive">↑ 2% vs mes anterior</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Comisiones Est.</div>
+                        <div class="kpi-value" id="kpi-commissions">$0</div>
+                        <div class="kpi-trend positive">↑ 8% vs mes anterior</div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="chart-container wide">
+                        <h3>Tendencia de Ventas</h3>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Destinos Top</h3>
+                        <canvas id="destinationsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Fuentes de Leads</h3>
+                        <canvas id="leadsChart"></canvas>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="chart-container">
-            <div class="chart-title">Por estado</div>
-            <div id="status-chart"></div>
-        </div>
-        <div class="chart-container">
-            <div class="chart-title">Por producto</div>
-            <div id="type-chart"></div>
-        </div>
-        </div>
         </div>
 
         <!-- TAB: AJUSTES -->
@@ -706,11 +705,11 @@
                 class="icon">🏠</span><span>Inicio</span></button>
         <button class="nav-item" onclick="App.showTab('cotizar', this)"><span
                 class="icon">📝</span><span>Cotizar</span></button>
-        <button class="nav-item" onclick="App.switchTab('pipeline'); App.showTab('tools', this)">
+        <button class="nav-item" onclick="App.showTab('tools', this); setTimeout(() => App.switchTab('pipeline'), 50);">
             <span class="icon">📊</span>
             <span>Pipeline</span>
         </button>
-        <button class="nav-item" onclick="App.switchTab('crm'); App.showTab('tools', this)">
+        <button class="nav-item" onclick="App.showTab('tools', this); setTimeout(() => App.switchTab('crm'), 50);">
             <span class="icon">👥</span>
             <span>Clientes</span>
         </button>

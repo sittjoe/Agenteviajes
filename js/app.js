@@ -201,6 +201,14 @@ const App = {
             section.style.display = 'none';
         });
 
+        // Handle tools-main as default
+        if (viewId === 'tools-main') {
+            const toolsMain = document.getElementById('view-tools-main');
+            if (toolsMain) toolsMain.style.display = 'block';
+            this.state.currentToolView = viewId;
+            return;
+        }
+
         const target = document.getElementById(`view-${viewId}`);
         if (target) {
             target.style.display = 'block';

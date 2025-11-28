@@ -102,9 +102,7 @@ const FormEnhancer = {
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: var(--
-
-);
+                background: var(--card);
                 border: 1px solid var(--border);
                 border-radius: var(--radius);
                 box-shadow: var(--shadow-lg);
