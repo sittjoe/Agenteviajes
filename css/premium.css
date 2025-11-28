@@ -1479,6 +1479,109 @@ body {
     bottom: calc(var(--nav-height) + 20px);
 }
 
+/* Lists + cards polish */
+.quote-item {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(160deg, var(--card), var(--bg-alt));
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    gap: 12px;
+}
+
+.quote-item::after {
+    content: '';
+    position: absolute;
+    inset: 10px 10px auto auto;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0.2;
+}
+
+.quote-item:hover {
+    border-color: rgba(30, 60, 114, 0.35);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.quote-item-client {
+    font-size: 15px;
+    letter-spacing: 0.01em;
+}
+
+.quote-item-meta {
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.quote-status {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+}
+
+.quote-item-price .price {
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.quote-preview {
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.06), rgba(244, 228, 193, 0.08)), var(--card);
+    box-shadow: var(--shadow);
+    padding: var(--space-3);
+}
+
+.preview-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    font-size: 15px;
+}
+
+.preview-price .price-main {
+    font-size: 26px;
+}
+
+.quote-view-header,
+.quote-view-footer {
+    background: var(--card);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.quote-view-status {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.info-card {
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.info-card-header {
+    padding: 16px 18px;
+    font-weight: 700;
+}
+
+.modal {
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.9));
+}
+
+.dark-mode .modal {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(30, 41, 59, 0.9));
+}
+
 @media (max-width: 900px) {
     .hero-grid {
         grid-template-columns: 1fr;
