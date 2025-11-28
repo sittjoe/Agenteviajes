@@ -2311,6 +2311,111 @@ small {
     border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
+/* Ultra polish */
+body {
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga", "calt";
+}
+
+.card,
+.surface-panel,
+.quote-preview,
+.info-card {
+    background-clip: padding-box;
+}
+
+.card::before,
+.surface-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    mix-blend-mode: soft-light;
+}
+
+.dark-mode .card::before,
+.dark-mode .surface-panel::before {
+    border-color: rgba(255, 255, 255, 0.04);
+}
+
+.quote-preview {
+    backdrop-filter: blur(4px);
+}
+
+.btn-primary,
+.btn-success,
+.btn-whatsapp {
+    box-shadow: 0 10px 24px rgba(30, 60, 114, 0.25);
+}
+
+.dark-mode .btn-primary,
+.dark-mode .btn-success,
+.dark-mode .btn-whatsapp {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.header {
+    box-shadow: 0 10px 28px rgba(30, 60, 114, 0.28);
+}
+
+.bottom-nav {
+    box-shadow: 0 -12px 36px rgba(30, 60, 114, 0.18);
+}
+
+.insight-box {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(34, 197, 94, 0.16));
+}
+
+.dark-mode .insight-box {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(21, 128, 61, 0.22));
+}
+
+.toast {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dark-mode .toast {
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.quote-view-header,
+.quote-view-footer {
+    backdrop-filter: blur(4px);
+}
+
+.search-input {
+    border-color: rgba(30, 60, 114, 0.16);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+}
+
+.contact-chip {
+    background: linear-gradient(135deg, var(--card), rgba(241, 245, 249, 0.7));
+}
+
+.dark-mode .contact-chip {
+    background: linear-gradient(135deg, var(--card), rgba(51, 65, 85, 0.7));
+}
+
+.info-section-title {
+    letter-spacing: 0.02em;
+}
+
+.quote-item,
+.pipeline-quote-card,
+.kanban-card,
+.client-card {
+    backdrop-filter: blur(2px);
+}
+
+.modal-title {
+    text-transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     * {
         animation: none !important;
