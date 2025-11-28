@@ -23,6 +23,48 @@
         padding: 0;
         margin: 0;
         font-size: 12pt;
+        font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
+        line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: 'Playfair Display', 'Manrope', serif;
+        color: #1e3c72;
+        margin: 0 0 8px 0;
+    }
+
+    h2 {
+        font-size: 18pt;
+    }
+
+    h3 {
+        font-size: 15pt;
+    }
+
+    h4 {
+        font-size: 13pt;
+    }
+
+    p,
+    li {
+        line-height: 1.5;
+        color: #222;
+        margin: 0 0 6px 0;
+    }
+
+    a {
+        color: #1e3c72;
+        text-decoration: none;
+    }
+
+    /* Clean gradients/blur */
+    .card,
+    .surface-panel,
+    .quote-preview {
+        background: white;
     }
 
     /* Ensure Quote View is visible */
@@ -45,6 +87,10 @@
         border-bottom: 2px solid #1e3c72;
         padding-bottom: 20px;
         margin-bottom: 30px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
     }
 
     .quote-view-id {
@@ -77,6 +123,33 @@
         /* Remove shadows for print */
     }
 
+    .quote-preview {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 16px;
+    }
+
+    .preview-header {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+    }
+
+    .preview-price {
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+    }
+
+    .preview-price .price-main {
+        font-size: 22pt;
+        color: #1e3c72;
+    }
+
+    .preview-price .price-sub {
+        font-size: 10pt;
+        color: #555;
+    }
+
     .card-title {
         color: #1e3c72;
         border-bottom: 1px solid #ddd;
@@ -86,10 +159,22 @@
         font-weight: bold;
     }
 
-    /* Typography */
-    p,
-    li {
-        line-height: 1.5;
+    ul,
+    ol {
+        padding-left: 18px;
+        margin: 0 0 10px 0;
+    }
+
+    .includes-list li::before {
+        content: '✓';
+        color: #0f9d58;
+        margin-right: 6px;
+    }
+
+    .excludes-list li::before {
+        content: '✗';
+        color: #d93025;
+        margin-right: 6px;
     }
 
     /* Footer */
