@@ -456,11 +456,22 @@ const PDFGenerator = {
 // Integrate with App
 Object.assign(App, {
     async generatePDF() {
-        const quote = Storage.getQuoteById(this.state.viewingQuoteId);
+        const quote = this.state.viewingQuoteId
+            ? Storage.getQuoteById(this.state.viewingQuoteId)
+            : this.getQuoteFromForm?.();
+
         if (!quote) {
             this.showToast('❌ Error: Cotización no encontrada', 'error');
             return;
         }
+
+        const errors = this.validateQuote ? this.validateQuote(quote) : [];
+        if (errors.length > 0) {
+            this.showToast('⚠️ ' + errors[0] + ' para exportar', 'warning');
+            return;
+        }
+
+        this.setLoading?.(true);
 
         try {
             this.showToast('⏳ Generando PDF...', 'info');
@@ -473,6 +484,8 @@ Object.assign(App, {
         } catch (err) {
             console.error('PDF generation error:', err);
             this.showToast('❌ Error al generar PDF', 'error');
+        } finally {
+            this.setLoading?.(false);
         }
     }
 });
