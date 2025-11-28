@@ -33,6 +33,81 @@
         <!-- TAB: INICIO -->
         <div id="tab-inicio" class="tab-content active">
             <div id="home-main" class="screen active">
+                <div class="welcome-card">
+                    <div class="welcome-grid">
+                        <div class="welcome-copy">
+                            <p class="eyebrow">Escritorio ejecutivo</p>
+                            <h2 class="welcome-title">Atiende como concierge, responde como experto.</h2>
+                            <p class="welcome-sub">Organiza respuestas, cotizaciones y seguimiento con un tono impecable y procesos claros.</p>
+                            <div class="cta-row">
+                                <button class="btn-primary" onclick="App.showTab('cotizar'); App.showNewQuote();">➕ Nueva cotización</button>
+                                <button class="btn-ghost" onclick="App.switchTab('crm'); App.showTab('tools');">👥 Abrir CRM</button>
+                            </div>
+                        </div>
+                        <div class="welcome-stats">
+                            <div class="metric-card">
+                                <p class="metric-label">Cotizaciones activas</p>
+                                <p id="home-total-quotes" class="metric-value">0</p>
+                            </div>
+                            <div class="metric-card">
+                                <p class="metric-label">Aceptadas</p>
+                                <p id="home-accepted" class="metric-value">0</p>
+                            </div>
+                            <div class="metric-card">
+                                <p class="metric-label">Conversión</p>
+                                <p id="home-conversion" class="metric-value">0%</p>
+                            </div>
+                            <div class="metric-card">
+                                <p class="metric-label">Pendientes</p>
+                                <p id="home-pending" class="metric-value">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="home-insight" class="insight-banner">Estado listo para operar.</div>
+                </div>
+
+                <div class="business-card">
+                    <div>
+                        <p class="eyebrow">Identidad del agente</p>
+                        <h3 id="business-name">Magia Disney & Royal</h3>
+                        <p id="business-slogan" class="business-sub">Parques • Cruceros • Descuentos</p>
+                        <div class="contact-grid">
+                            <div class="contact-chip" onclick="App.copyBusinessContact('phone')">
+                                <div class="chip-icon">📞</div>
+                                <div>
+                                    <p class="chip-label">Teléfono</p>
+                                    <p id="business-phone" class="chip-value">55 8095 5139</p>
+                                </div>
+                            </div>
+                            <div class="contact-chip" onclick="App.copyBusinessContact('email')">
+                                <div class="chip-icon">✉️</div>
+                                <div>
+                                    <p class="chip-label">Email</p>
+                                    <p id="business-email" class="chip-value">Configura tu correo</p>
+                                </div>
+                            </div>
+                            <div class="contact-chip" onclick="App.copyBusinessContact('instagram')">
+                                <div class="chip-icon">📸</div>
+                                <div>
+                                    <p class="chip-label">Instagram</p>
+                                    <p id="business-ig" class="chip-value">@magia</p>
+                                </div>
+                            </div>
+                            <div class="contact-chip" onclick="App.copyBusinessContact('facebook')">
+                                <div class="chip-icon">📘</div>
+                                <div>
+                                    <p class="chip-label">Facebook</p>
+                                    <p id="business-fb" class="chip-value">/magia</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="business-actions">
+                        <p class="business-note">Comparte cualquier dato con un clic. Ajusta los valores en <b>Ajustes → Datos del negocio</b>.</p>
+                        <button class="btn-secondary" onclick="App.showTab('ajustes');">⚙️ Ajustar datos</button>
+                    </div>
+                </div>
+
                 <div class="search-container">
                     <span class="search-icon">🔍</span>
                     <input type="text" id="globalSearch" class="search-input" placeholder="Buscar respuestas..."
