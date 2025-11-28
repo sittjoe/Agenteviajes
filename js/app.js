@@ -13,7 +13,8 @@ const App = {
         editingQuoteId: null,
         viewingQuoteId: null,
         unsavedChanges: false,
-        isLoading: false
+        isLoading: false,
+        currentWDWPark: 'magicKingdom'
     },
 
     // ===== INITIALIZATION =====
@@ -30,6 +31,7 @@ const App = {
         this.renderQuotesList();
         this.loadChecklist();
         this.updateStats();
+        this.renderWDWGuide();
 
         // Setup event listeners
         this.setupEventListeners();
@@ -543,6 +545,90 @@ const App = {
 
     closeAllModals() {
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+    },
+
+    // ===== WDW VISUAL GUIDE =====
+    renderWDWGuide() {
+        const guide = Data.productInfo?.wdwParksGuide;
+        const selector = document.getElementById('wdw-park-selector');
+        const detail = document.getElementById('wdw-park-detail');
+
+        if (!guide || !selector || !detail) return;
+
+        selector.innerHTML = '';
+
+        Object.entries(guide).forEach(([key, park], index) => {
+            const btn = document.createElement('button');
+            btn.innerHTML = `${park.icon} ${park.name}`;
+            btn.classList.toggle('active', this.state.currentWDWPark === key || (!this.state.currentWDWPark && index === 0));
+            btn.addEventListener('click', () => this.renderWDWPark(key));
+            selector.appendChild(btn);
+        });
+
+        this.renderWDWPark(this.state.currentWDWPark || Object.keys(guide)[0]);
+    },
+
+    renderWDWPark(parkId) {
+        const guide = Data.productInfo?.wdwParksGuide;
+        const detail = document.getElementById('wdw-park-detail');
+        const selector = document.getElementById('wdw-park-selector');
+        if (!guide || !guide[parkId] || !detail) return;
+
+        this.state.currentWDWPark = parkId;
+        const park = guide[parkId];
+
+        if (selector) {
+            selector.querySelectorAll('button').forEach(btn => {
+                const isActive = btn.textContent.includes(park.name);
+                btn.classList.toggle('active', isActive);
+            });
+        }
+
+        const renderList = (items) => items.map(item => `<span class="wdw-chip">${item}</span>`).join('');
+        const renderPlan = (steps) => steps.map(step => `
+            <div class="wdw-plan-step">
+                <div class="wdw-plan-time">${step.time}</div>
+                <div>${step.detail}</div>
+            </div>
+        `).join('');
+
+        detail.innerHTML = `
+            <div class="wdw-hero">
+                <div class="wdw-park-main">
+                    <span class="wdw-park-icon">${park.icon}</span>
+                    <div>
+                        <div class="wdw-park-name">${park.name}</div>
+                        <div class="wdw-park-tagline">${park.tagline}</div>
+                    </div>
+                </div>
+                <div class="wdw-badges">${park.badges.map(b => `<span class="wdw-badge">${b}</span>`).join('')}</div>
+            </div>
+            <div class="wdw-grid">
+                <div class="wdw-block">
+                    <h4>✨ Imperdibles</h4>
+                    <div class="wdw-chip-list">${renderList(park.highlights)}</div>
+                    <div class="wdw-note">⚡ Combina Multi Pass + rope drop para filas mínimas.</div>
+                </div>
+                <div class="wdw-block">
+                    <h4>⚡ Lightning Lane prioridad</h4>
+                    <ul class="wdw-list">
+                        ${park.lightning.map(item => `<li>${item}<div class="wdw-meta-row"><span>Reserva temprano</span><span>⏱️ 7:00 AM</span></div></li>`).join('')}
+                    </ul>
+                </div>
+                <div class="wdw-block">
+                    <h4>🗺️ Plan de día perfecto</h4>
+                    <div class="wdw-plan">${renderPlan(park.plan)}</div>
+                    <div class="wdw-note">🕒 Ajusta horarios si tienes Early Entry o Park Hopper.</div>
+                </div>
+                <div class="wdw-block">
+                    <h4>🍦 Snacks & momentos WOW</h4>
+                    <ul class="wdw-list">
+                        <li><strong>Snacks icónicos:</strong> ${park.bites.join(' • ')}</li>
+                        <li><strong>Fotos obligadas:</strong> ${park.moments.join(' • ')}</li>
+                    </ul>
+                </div>
+            </div>
+        `;
     },
 
     // ===== SOUNDS =====

@@ -817,6 +817,76 @@ Salió una promoción que te puede interesar:
                 }
             ]
         },
+        wdwParksGuide: {
+            magicKingdom: {
+                name: 'Magic Kingdom',
+                icon: '🏰',
+                tagline: 'Clásicos, desfiles y fuegos artificiales',
+                badges: ['Fantasyland con niños', 'TRON por la noche', 'Happily Ever After'],
+                highlights: ['Seven Dwarfs Mine Train', 'TRON Lightcycle Run', 'Peter Pan', 'Jungle Cruise', 'Haunted Mansion'],
+                lightning: ['Seven Dwarfs (Multi Pass)', 'TRON (Individual)', 'Peter Pan', 'Space Mountain'],
+                plan: [
+                    { time: '8:00', detail: 'Rope drop en Fantasyland: Peter Pan → Seven Dwarfs' },
+                    { time: '10:30', detail: 'Personajes en Storybook Circus + snack Dole Whip' },
+                    { time: '13:00', detail: 'Space Mountain con Lightning Lane, almuerzo en Skipper Canteen' },
+                    { time: '15:00', detail: 'Festival of Fantasy Parade en Main Street (mejor sombra)' },
+                    { time: '20:00', detail: 'TRON Lightcycle al anochecer y show Happily Ever After' }
+                ],
+                bites: ['Dole Whip (Aloha Isle)', 'Corn Dog Nuggets (Casey’s Corner)', 'Waffle de Nutella (Sleepy Hollow)'],
+                moments: ['Foto en Partners Statue al atardecer', 'Castillo desde Tomorrowland Terrace', 'Fueguitos desde el puente hacia Tomorrowland']
+            },
+            epcot: {
+                name: 'EPCOT',
+                icon: '🌐',
+                tagline: 'Tecnología, comida y países del mundo',
+                badges: ['Guardians con LL', 'World Showcase de tarde', 'Show nocturno en laguna'],
+                highlights: ['Guardians of the Galaxy: Cosmic Rewind', 'Remy’s Ratatouille Adventure', 'Soarin’', 'Test Track', 'Frozen Ever After'],
+                lightning: ['Cosmic Rewind (Virtual Queue + Individual)', 'Remy', 'Frozen', 'Soarin’'],
+                plan: [
+                    { time: '8:30', detail: 'Rope drop a Test Track o Frozen (si hay niñas pequeñas)' },
+                    { time: '10:00', detail: 'Soarin’ + Living with the Land y café en Connections' },
+                    { time: '13:00', detail: 'Lunch en Sunshine Seasons o Regal Eagle' },
+                    { time: '16:00', detail: 'World Showcase: Francia → Japón → México (margaritas y fotos)' },
+                    { time: '21:00', detail: 'Show nocturno en la laguna + Cosmic Rewind con LL tardía' }
+                ],
+                bites: ['Macarons en Les Halles (Francia)', 'Margarita en La Cava del Tequila', 'Pretzel gigante en Alemania'],
+                moments: ['Foto con Spaceship Earth iluminado', 'Jardines en Japón', 'Atardecer sobre el lago']
+            },
+            hollywood: {
+                name: 'Hollywood Studios',
+                icon: '🎬',
+                tagline: 'Star Wars, Toy Story y shows espectaculares',
+                badges: ['Rise of the Resistance', 'LL para Slinky', 'Fantasmic!'],
+                highlights: ['Rise of the Resistance', 'Slinky Dog Dash', 'Mickey & Minnie’s Runaway Railway', 'Tower of Terror', 'Rock ’n’ Roller Coaster'],
+                lightning: ['Rise of the Resistance (Individual)', 'Slinky Dog Dash', 'Runaway Railway', 'Tower of Terror'],
+                plan: [
+                    { time: '7:30', detail: 'Entrada temprana a Galaxy’s Edge: Rise → Millennium Falcon' },
+                    { time: '10:00', detail: 'Slinky Dog Dash con LL + Toy Story Mania' },
+                    { time: '13:00', detail: 'Runaway Railway y almuerzo en Docking Bay 7' },
+                    { time: '16:00', detail: 'Indiana Jones Stunt Show o Frozen Sing-Along (aire acondicionado)' },
+                    { time: '20:00', detail: 'Tower of Terror de noche + cierre con Fantasmic!' }
+                ],
+                bites: ['Ronto Wrap (Galaxy’s Edge)', 'Jack-Jack Num Num Cookie', 'Milk azul o verde para foto'],
+                moments: ['Foto con el Halcón Milenario', 'Neón de Toy Story Land', 'Proyección nocturna en Chinese Theater']
+            },
+            animal: {
+                name: 'Animal Kingdom',
+                icon: '🦒',
+                tagline: 'Naturaleza, Pandora y ritmo relajado',
+                badges: ['Safari temprano', 'Flight of Passage', 'Tree of Life'],
+                highlights: ['Avatar Flight of Passage', 'Kilimanjaro Safaris', 'Expedition Everest', 'Na’vi River Journey', 'Festival of the Lion King'],
+                lightning: ['Flight of Passage (Individual)', 'Na’vi River Journey', 'Safari', 'Expedition Everest'],
+                plan: [
+                    { time: '7:30', detail: 'Safari al amanecer (animales más activos)' },
+                    { time: '9:30', detail: 'Flight of Passage con LL o fila si está baja' },
+                    { time: '12:00', detail: 'Everest antes del almuerzo en Satu’li Canteen' },
+                    { time: '14:30', detail: 'Festival of the Lion King + paseo relajado en Pandora' },
+                    { time: '18:00', detail: 'Tree of Life Awakening y fotos con luz dorada' }
+                ],
+                bites: ['Cheeseburger Pods (Satu’li Canteen)', 'Night Blossom (Pongu Pongu)', 'Churro con caramelo en DinoLand'],
+                moments: ['Foto con flotillas en el río Discovery', 'Montaña Everest reflejada en el agua', 'Pandora al atardecer']
+            }
+        },
         seasons: {
             title: 'Temporadas',
             icon: '📅',
