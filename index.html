@@ -33,6 +33,23 @@
         <!-- TAB: INICIO -->
         <div id="tab-inicio" class="tab-content active">
             <div id="home-main" class="screen active">
+                <div class="status-ribbon card-glass">
+                    <div class="ribbon-item">
+                        <div class="ribbon-label">Sesión</div>
+                        <div class="ribbon-value">Operativa</div>
+                        <span class="ribbon-pill">Tiempo real</span>
+                    </div>
+                    <div class="ribbon-item">
+                        <div class="ribbon-label">Promesa de respuesta</div>
+                        <div class="ribbon-value">&lt; 5 min</div>
+                        <span class="ribbon-pill">Clientes felices</span>
+                    </div>
+                    <div class="ribbon-item">
+                        <div class="ribbon-label">Checklist diario</div>
+                        <div class="ribbon-value">Listo</div>
+                        <span class="ribbon-pill">Scripts validados</span>
+                    </div>
+                </div>
                 <div class="experience-grid">
                     <div class="hero-panel card-glass">
                         <div class="hero-eyebrow">Suite premium de atención</div>
@@ -70,24 +87,52 @@
                 </div>
 
                 <div class="search-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="globalSearch" class="search-input" placeholder="Buscar respuestas..."
-                        oninput="App.handleSearch()" onfocus="App.showSearchResults()" onblur="App.hideSearchResults()">
-                    <div id="searchResults" class="search-results"></div>
+                    <div class="section-eyebrow">Acceso directo</div>
+                    <div class="section-heading">
+                        <div>
+                            <h3 class="section-title-lg">Encuentra la respuesta exacta</h3>
+                            <p class="section-sub">Busca scripts, cotizaciones o etapas sin perder el hilo.</p>
+                        </div>
+                        <div class="section-actions">
+                            <span class="badge-soft">⌘K</span>
+                            <span class="badge-soft">Limpieza automática</span>
+                        </div>
+                    </div>
+                    <div class="search-shell">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="globalSearch" class="search-input" placeholder="Buscar respuestas..."
+                            oninput="App.handleSearch()" onfocus="App.showSearchResults()"
+                            onblur="App.hideSearchResults()">
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
                 </div>
-                <div class="quick-grid">
-                    <div class="quick-btn" onclick="App.showResponse('saludo')"><span class="emoji">👋</span><span
-                            class="label">Saludar</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('pedir_datos')"><span class="emoji">📋</span><span
-                            class="label">Pedir datos</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('precio_caro')"><span class="emoji">💸</span><span
-                            class="label">"Está caro"</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('plan_pagos')"><span class="emoji">💳</span><span
-                            class="label">Plan pagos</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('no_contesta')"><span class="emoji">🔔</span><span
-                            class="label">No contesta</span></div>
-                    <div class="quick-btn" onclick="App.showResponse('cerrar')"><span class="emoji">✅</span><span
-                            class="label">Cerrar venta</span></div>
+                <div class="quick-card card">
+                    <div class="section-heading">
+                        <div>
+                            <div class="section-eyebrow">Atajos de servicio</div>
+                            <h3 class="section-title-lg">Responde en segundos</h3>
+                            <p class="section-sub">Acciones listas para saludar, pedir datos o dar seguimiento sin
+                                fricción.</p>
+                        </div>
+                        <div class="section-actions">
+                            <span class="badge-soft">Favoritos</span>
+                            <span class="badge-soft">Recientes</span>
+                        </div>
+                    </div>
+                    <div class="quick-grid">
+                        <button type="button" class="quick-btn" onclick="App.showResponse('saludo')"><span
+                                class="emoji">👋</span><span class="label">Saludar</span></button>
+                        <button type="button" class="quick-btn" onclick="App.showResponse('pedir_datos')"><span
+                                class="emoji">📋</span><span class="label">Pedir datos</span></button>
+                        <button type="button" class="quick-btn" onclick="App.showResponse('precio_caro')"><span
+                                class="emoji">💸</span><span class="label">"Está caro"</span></button>
+                        <button type="button" class="quick-btn" onclick="App.showResponse('plan_pagos')"><span
+                                class="emoji">💳</span><span class="label">Plan pagos</span></button>
+                        <button type="button" class="quick-btn" onclick="App.showResponse('no_contesta')"><span
+                                class="emoji">🔔</span><span class="label">No contesta</span></button>
+                        <button type="button" class="quick-btn" onclick="App.showResponse('cerrar')"><span
+                                class="emoji">✅</span><span class="label">Cerrar venta</span></button>
+                    </div>
                 </div>
                 <div id="favorites-section" class="section" style="display:none;">
                     <div class="section-header"><span class="section-title">⭐ Favoritos</span></div>
@@ -100,36 +145,41 @@
                 <div class="section">
                     <div class="section-header"><span class="section-title">📊 Etapa del cliente</span></div>
                     <div class="stage-grid">
-                        <div class="stage-btn" onclick="App.showStage('nuevo')"><span class="icon">🆕</span>
+                        <button type="button" class="stage-btn" onclick="App.showStage('nuevo')"><span
+                                class="icon">🆕</span>
                             <div class="content">
                                 <div class="title">Cliente nuevo</div>
                                 <div class="subtitle">Primer contacto</div>
                             </div><span class="arrow">→</span>
-                        </div>
-                        <div class="stage-btn" onclick="App.showStage('preguntando')"><span class="icon">💬</span>
+                        </button>
+                        <button type="button" class="stage-btn" onclick="App.showStage('preguntando')"><span
+                                class="icon">💬</span>
                             <div class="content">
                                 <div class="title">Preguntando</div>
                                 <div class="subtitle">Dudas, información</div>
                             </div><span class="arrow">→</span>
-                        </div>
-                        <div class="stage-btn" onclick="App.showStage('cotizado')"><span class="icon">📋</span>
+                        </button>
+                        <button type="button" class="stage-btn" onclick="App.showStage('cotizado')"><span
+                                class="icon">📋</span>
                             <div class="content">
                                 <div class="title">Ya cotizado</div>
                                 <div class="subtitle">Objeciones, seguimiento</div>
                             </div><span class="arrow">→</span>
-                        </div>
-                        <div class="stage-btn" onclick="App.showStage('cerrar')"><span class="icon">✅</span>
+                        </button>
+                        <button type="button" class="stage-btn" onclick="App.showStage('cerrar')"><span
+                                class="icon">✅</span>
                             <div class="content">
                                 <div class="title">Cerrar venta</div>
                                 <div class="subtitle">Confirmación</div>
                             </div><span class="arrow">→</span>
-                        </div>
-                        <div class="stage-btn" onclick="App.showStage('postventa')"><span class="icon">🎉</span>
+                        </button>
+                        <button type="button" class="stage-btn" onclick="App.showStage('postventa')"><span
+                                class="icon">🎉</span>
                             <div class="content">
                                 <div class="title">Post-venta</div>
                                 <div class="subtitle">Seguimiento, referidos</div>
                             </div><span class="arrow">→</span>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
