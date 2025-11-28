@@ -778,6 +778,14 @@ Salió una promoción que te puede interesar:
                     content: 'El ORIGINAL. 2 parques: Disneyland y California Adventure. Ideal viaje corto (2-3 días).'
                 },
                 {
+                    title: '🎆 Disneyland Park',
+                    content: '<b>Indispensable:</b> Rise of the Resistance, Space Mountain, Matterhorn, Pirates, Haunted Mansion, Peter Pan, fireworks.<br><b>Familias:</b> Fantasyland completo, Mickey\'s Toontown renovado, desfiles.<br><b>Tips:</b> Llega 30 min antes de abrir, usa Single Pass en Rise o Matterhorn, regrésate al hotel al mediodía si hace calor.'
+                },
+                {
+                    title: '🌆 Disney California Adventure',
+                    content: '<b>Indispensable:</b> Radiator Springs Racers, Web Slingers, Guardians Mission Breakout, Incredicoaster, Soarin’.<br><b>Familias:</b> Cars Land (noche imperdible), Pixar Pier, Mermaid, Redwood Creek.<br><b>Shows:</b> World of Color (haz Virtual Queue 12 pm), parade de temporada.<br><b>Tips:</b> Entra por puerta del hotel Grand Californian si te hospedas ahí, usa Single Pass en Radiator Springs.'
+                },
+                {
                     title: '💰 Precios aproximados',
                     content: '<b>Boletos:</b> desde $109 USD/día hasta $180+ (Park Hopper). <b>Paquete 4 días + hotel:</b> desde $2,000-2,500 USD familia de 4.'
                 },
