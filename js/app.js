@@ -201,6 +201,12 @@ const App = {
         // Show selected tab
         const tab = document.getElementById('tab-' + tabId);
         if (tab) tab.classList.add('active');
+
+        // Activate nav item even when navigation viene de accesos directos
+        if (!element) {
+            element = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+        }
+
         if (element) element.classList.add('active');
 
         this.state.currentTab = tabId;

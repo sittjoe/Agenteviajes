@@ -33,6 +33,42 @@
         <!-- TAB: INICIO -->
         <div id="tab-inicio" class="tab-content active">
             <div id="home-main" class="screen active">
+                <div class="experience-grid">
+                    <div class="hero-panel card-glass">
+                        <div class="hero-eyebrow">Suite premium de atención</div>
+                        <h2>Todo listo para impresionar a tus viajeros</h2>
+                        <p>Scripts curados, seguimiento impecable y cotizaciones listas para compartirse en minutos.
+                        </p>
+                        <div class="hero-actions">
+                            <button class="btn-primary btn-sm" onclick="App.showTab('cotizar')">Crear cotización</button>
+                            <button class="btn-secondary btn-sm"
+                                onclick="document.getElementById('globalSearch').focus()">Buscar guiones</button>
+                        </div>
+                        <div class="hero-pills">
+                            <span class="pill">Respuestas listas</span>
+                            <span class="pill">Seguimiento elegante</span>
+                            <span class="pill">Modo oscuro</span>
+                        </div>
+                    </div>
+                    <div class="hero-metrics card">
+                        <div class="metric">
+                            <span class="metric-label">Curaduría</span>
+                            <div class="metric-value">+80 guiones</div>
+                            <div class="metric-sub">Listos para copiar y pegar</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Cotizaciones</span>
+                            <div class="metric-value">Workflow 24/7</div>
+                            <div class="metric-sub">Previsualización instantánea</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Operativa</span>
+                            <div class="metric-value">CRM ligero</div>
+                            <div class="metric-sub">Clientes y pipeline</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="search-container">
                     <span class="search-icon">🔍</span>
                     <input type="text" id="globalSearch" class="search-input" placeholder="Buscar respuestas..."
@@ -623,19 +659,19 @@
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="App.showTab('inicio', this)"><span
+        <button class="nav-item active" data-tab="inicio" onclick="App.showTab('inicio', this)"><span
                 class="icon">🏠</span><span>Inicio</span></button>
-        <button class="nav-item" onclick="App.showTab('cotizar', this)"><span
+        <button class="nav-item" data-tab="cotizar" onclick="App.showTab('cotizar', this)"><span
                 class="icon">📝</span><span>Cotizar</span></button>
-        <button class="nav-item" onclick="App.switchTab('pipeline'); App.showTab('tools', this)">
+        <button class="nav-item" data-tab="tools" onclick="App.switchTab('pipeline'); App.showTab('tools', this)">
             <span class="icon">📊</span>
             <span>Pipeline</span>
         </button>
-        <button class="nav-item" onclick="App.switchTab('crm'); App.showTab('tools', this)">
+        <button class="nav-item" data-tab="tools" onclick="App.switchTab('crm'); App.showTab('tools', this)">
             <span class="icon">👥</span>
             <span>Clientes</span>
         </button>
-        <button class="nav-item" onclick="App.showTab('ajustes', this)"><span
+        <button class="nav-item" data-tab="ajustes" onclick="App.showTab('ajustes', this)"><span
                 class="icon">⚙️</span><span>Ajustes</span></button>
     </nav>
 
