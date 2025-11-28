@@ -37,6 +37,7 @@ const App = {
 
         // Setup event listeners
         this.setupEventListeners();
+        this.setupConnectionWatcher();
 
         // Register Service Worker
         this.registerSW();
@@ -100,6 +101,31 @@ const App = {
                 this.showShortcutsModal();
             }
         });
+    },
+
+    setupConnectionWatcher() {
+        const update = () => {
+            const online = navigator.onLine;
+            this.updateConnectionIndicator(online);
+            this.showToast(online ? '✅ Conectado' : '⚠️ Sin conexión', online ? 'success' : 'warning', 2500);
+        };
+        window.addEventListener('online', update);
+        window.addEventListener('offline', update);
+        update();
+    },
+
+    updateConnectionIndicator(isOnline) {
+        let chip = document.getElementById('connection-indicator');
+        if (!chip) {
+            chip = document.createElement('div');
+            chip.id = 'connection-indicator';
+            chip.className = 'status-chip';
+            document.body.appendChild(chip);
+        }
+        chip.textContent = isOnline ? 'Conectado' : 'Sin conexión';
+        chip.classList.toggle('online', isOnline);
+        chip.classList.toggle('offline', !isOnline);
+        document.body.classList.toggle('is-offline', !isOnline);
     },
 
     focusGlobalSearch() {
