@@ -203,6 +203,8 @@ Object.assign(App, {
         this.setInputValue('quote-notes-client', quote.notesClient || '');
         this.setInputValue('quote-itinerary', quote.itinerary || '');
         this.setInputValue('quote-payment-plan', quote.paymentPlan || '');
+        this.setInputValue('quote-payment-link', quote.paymentLink || '');
+        this.setInputValue('quote-next-steps', quote.nextSteps || '');
 
         // Status
         this.setInputValue('quote-status', quote.status || 'draft');
@@ -249,6 +251,8 @@ Object.assign(App, {
             monthly: monthly,
             deadline: this.getInputValue('quote-deadline'),
             paymentPlan: this.getInputValue('quote-payment-plan'),
+            paymentLink: this.getInputValue('quote-payment-link'),
+            nextSteps: this.getInputValue('quote-next-steps'),
 
             notesInternal: this.getInputValue('quote-notes-internal'),
             notesClient: this.getInputValue('quote-notes-client'),
@@ -368,8 +372,16 @@ Object.assign(App, {
                     <p>${quote.months} pagos de: <strong>${this.formatCurrency(monthly)}/mes</strong></p>
                     ${quote.deadline ? `<p>Pago final: <strong>${quote.deadline}</strong></p>` : ''}
                     ${quote.paymentPlan ? `<p class="muted" style="margin-top:8px;">${quote.paymentPlan.replace(/\n/g, '<br>')}</p>` : ''}
+                    ${quote.paymentLink ? `<p style="margin-top:8px;"><a href="${quote.paymentLink}" target="_blank">🔗 Link de pago</a></p>` : ''}
                 </div>
             </div>
+            
+            ${quote.nextSteps ? `
+            <div class="card">
+                <div class="card-title">✅ Qué sigue</div>
+                <div class="next-steps">${quote.nextSteps.replace(/\n/g, '<br>')}</div>
+            </div>
+            ` : ''}
             
             ${quote.notesClient ? `
             <div class="card">

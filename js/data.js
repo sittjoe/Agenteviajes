@@ -744,6 +744,10 @@ Salió una promoción que te puede interesar:
                     content: '<b>Icon of the Seas</b> (WOW factor), <b>Wonder of the Seas</b> (enorme), <b>Symphony</b> (muy completo). Toboganes, FlowRider, pared escalar.'
                 },
                 {
+                    title: '⚖️ Disney vs Royal (rápido)',
+                    content: '<b>Disney:</b> Más magia/personajes, refrescos incluidos, precio más alto, ideal niños chicos.<br><b>Royal:</b> Más actividades extremas, mejor precio, promos frecuentes (Kids Sail Free), ideal adolescentes/adultos.'
+                },
+                {
                     title: '💰 Precios aproximados',
                     content: 'Desde <b>$400 USD/persona</b> (interior 3-4 noches) hasta <b>$3,000+ USD</b> (suite 7 noches). Con Kids Sail Free baja mucho.'
                 },
@@ -932,6 +936,24 @@ Salió una promoción que te puede interesar:
                 {
                     title: '🤝 Tu valor',
                     content: '• Mismo precio que directo<br>• Monitoreas bajadas<br>• Ayudas con todo<br>• Soporte siempre<br>• "Mismo precio, cero estrés"'
+                }
+            ]
+        },
+        requirements: {
+            title: 'Requisitos y documentos',
+            icon: '🛂',
+            sections: [
+                {
+                    title: 'Pasaportes y visas',
+                    content: 'Pasaporte vigente +6 meses al viaje. Visa EE.UU. para cruceros Caribe/Bahamas con salida USA. Visa Schengen para Europa. Menores: carta permiso si viajan sin ambos padres.'
+                },
+                {
+                    title: 'Seguro de viaje',
+                    content: 'Recomendado siempre. Cobertura médica, cancelación, retrasos. Añade costo al presupuesto si no lo incluyen.'
+                },
+                {
+                    title: 'Check-in y apps',
+                    content: 'Cruceros: check-in en app Disney/Royal 30-45 días antes. Parques: enlazar boletos en app, configurar pagos, descargar QR.'
                 }
             ]
         }

@@ -25,24 +25,26 @@ const PWA = {
     /**
      * Paso 098: Cloud backup (preparation)
      */
-    async backupToCloud() {
+    buildBackup() {
         const data = {
             quotes: Storage.getQuotes(),
             clients: CRM?.getClients() || [],
             config: Storage.getConfig(),
             timestamp: new Date().toISOString()
         };
-
-        const json = JSON.stringify(data);
+        const json = JSON.stringify(data, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
+        return { data, blob };
+    },
+
+    async backupToCloud() {
+        const { blob } = this.buildBackup();
 
         // Download as backup file
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = `magia-backup-${new Date().toISOString().split('T')[0]}.json`;
         link.click();
-
-        return data;
     },
 
     async restoreFromBackup(file) {
@@ -55,6 +57,7 @@ const PWA = {
                     if (data.quotes) Storage.set('quotes', data.quotes);
                     if (data.clients) Storage.set('clients', data.clients);
                     if (data.config) Storage.set('config', data.config);
+                    if (data.timestamp) Storage.set('lastBackup', data.timestamp);
 
                     resolve(data);
                 } catch (error) {
@@ -63,6 +66,27 @@ const PWA = {
             };
             reader.readAsText(file);
         });
+    },
+
+    async backupToIndexedDB() {
+        try {
+            const { data } = this.buildBackup();
+            Storage.set('lastBackup', data.timestamp);
+            return true;
+        } catch (e) {
+            console.warn('Backup local falló', e);
+            return false;
+        }
+    },
+
+    async scheduleAutoBackup() {
+        const lastBackup = Storage.get('lastBackup');
+        const last = lastBackup ? new Date(lastBackup) : null;
+        const now = new Date();
+
+        if (!last || (now - last) / (1000 * 60 * 60 * 24) > 7) {
+            await this.backupToIndexedDB();
+        }
     },
 
     /**

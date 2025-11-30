@@ -278,7 +278,7 @@
                             <div class="card-title">✈️ Viaje</div>
                             <div class="form-row">
                                 <div class="form-group"><label class="form-label">Tipo</label><select id="quote-type"
-                                        class="form-select" onchange="App.markQuoteChanged();App.updateQuotePreview()">
+                                        class="form-select" onchange="App.markQuoteChanged();App.updateQuotePreview();App.applyQuoteTemplate();">
                                         <option value="crucero-disney">🚢 Crucero Disney</option>
                                         <option value="crucero-royal">⚓ Royal Caribbean</option>
                                         <option value="parques-wdw">🏰 Disney World</option>
@@ -376,6 +376,13 @@
                             <div class="form-group"><label class="form-label">Plan de pagos detallado</label><textarea
                                     id="quote-payment-plan" class="form-textarea"
                                     placeholder="Ej. Apartado hoy: $200 USD&#10;Pago 1: 15 de mayo&#10;Pago final: 30 de junio"
+                                    oninput="App.markQuoteChanged()"></textarea></div>
+                            <div class="form-group"><label class="form-label">Link de pago / CTA</label><input
+                                    type="url" id="quote-payment-link" class="form-input"
+                                    placeholder="https://pago.com/tu-link" oninput="App.markQuoteChanged()"></div>
+                            <div class="form-group"><label class="form-label">Próximos pasos (para cliente)</label><textarea
+                                    id="quote-next-steps" class="form-textarea"
+                                    placeholder="1) Confirmar datos de viajeros&#10;2) Realizar apartado hoy&#10;3) Subir pasaportes"
                                     oninput="App.markQuoteChanged()"></textarea></div>
                         </div>
                         <div class="card">

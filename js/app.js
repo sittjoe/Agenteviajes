@@ -17,6 +17,59 @@ const App = {
         currentWDWPark: 'magicKingdom'
     },
 
+    // ===== QUOTE TEMPLATES =====
+    populateQuoteTemplates() {
+        // Prefill select options if needed (UI placeholders)
+        const select = document.getElementById('quote-template-select');
+        if (!select) return;
+    },
+
+    applyQuoteTemplate(templateId) {
+        const templates = {
+            'crucero-disney': {
+                includes: 'Camarote con limpieza diaria\nComidas, snacks y refrescos\nShows estilo Broadway\nClubes para niños y adolescentes\nNoche pirata y personajes\nImpuestos portuarios',
+                excludes: 'Propinas ($14-18 por persona/noche)\nBebidas alcohólicas\nExcursiones\nRestaurantes de especialidad\nWifi',
+                itinerary: 'Día 1: Embarque y simulacro\nDía 2: Día en alta mar + shows\nDía 3: Castaway Cay (isla privada)\nDía 4: Regreso',
+                paymentPlan: 'Apartado desde $200 USD por camarote\nPagos mensuales sin intereses\nPago final 120 días antes'
+            },
+            'crucero-royal': {
+                includes: 'Camarote y limpieza diaria\nComidas buffet y restaurante principal\nShows y entretenimiento\nFlowRider, toboganes y muro de escalar\nKids Club\nImpuestos portuarios',
+                excludes: 'Propinas ($16-19 por persona/noche)\nBebidas alcohólicas y refrescos\nWifi\nExcursiones\nRestaurantes de especialidad',
+                itinerary: 'Día 1: Embarque y exploración del barco\nDía 2: Día en alta mar (FlowRider, toboganes)\nDía 3: Puerto / Perfect Day at CocoCay\nDía 4: Regreso',
+                paymentPlan: 'Apartado bajo, resto en pagos mensuales\nPago final 75 días antes'
+            },
+            'parques-wdw': {
+                includes: 'Hospedaje Disney\nBoletos parques (Park Hopper opcional)\nTransporte interno Disney\nEntrada anticipada (Early Entry)',
+                excludes: 'Vuelos\nComidas y bebidas\nLightning Lane (Multi Pass / Single Pass)\nSeguro de viaje',
+                itinerary: 'Día 1: Llegada y Disney Springs\nDía 2: Magic Kingdom (rope drop)\nDía 3: EPCOT (World Showcase tarde)\nDía 4: Hollywood Studios (Star Wars y Fantasmic)\nDía 5: Animal Kingdom y regreso',
+                paymentPlan: 'Apartado 20-30%\nPago final 45 días antes\nOpciones de meses sin intereses con tarjeta'
+            },
+            'parques-dl': {
+                includes: 'Hospedaje cercano\nBoletos Disneyland + California Adventure\nGenie+ / Multi Pass (opcional)\nFotos Disney PhotoPass (según promo)',
+                excludes: 'Vuelos\nComidas y bebidas\nSingle Pass atracciones top\nSeguro de viaje',
+                itinerary: 'Día 1: Disneyland Park\nDía 2: Disney California Adventure\nDía 3: Flex (compras/descanso)',
+                paymentPlan: 'Apartado 20%\nPago final 30 días antes'
+            },
+            'paquete': {
+                includes: 'Vuelos redondos\nHospedaje\nTraslados aeropuerto-hotel\nSeguro de viaje básico',
+                excludes: 'Impuestos locales\nEquipaje documentado (si aplica)\nPropinas\nExcursiones no mencionadas',
+                itinerary: 'Día 1: Llegada y check-in\nDía 2: Tour / actividad principal\nDía 3: Día libre o actividad opcional\nDía 4: Regreso',
+                paymentPlan: 'Apartado 30%\nPagos mensuales\nPago final 30 días antes'
+            }
+        };
+
+        const tpl = templates[document.getElementById('quote-type')?.value || templateId];
+        if (!tpl) return;
+
+        this.setInputValue('quote-includes', tpl.includes);
+        this.setInputValue('quote-excludes', tpl.excludes);
+        this.setInputValue('quote-itinerary', tpl.itinerary);
+        this.setInputValue('quote-payment-plan', tpl.paymentPlan);
+        this.markQuoteChanged();
+        this.calculateMonthly();
+        this.updateQuotePreview?.();
+    },
+
     // ===== INITIALIZATION =====
     init() {
         console.log('🚀 Iniciando Magia Disney & Royal v2.0');
@@ -35,6 +88,7 @@ const App = {
         this.renderProductInfoCards();
         this.populateQuickResponseFilters();
         this.renderQuickResponses();
+        this.populateQuoteTemplates();
 
         // Setup event listeners
         this.setupEventListeners();

@@ -125,7 +125,7 @@ const PDFGenerator = {
             doc.setTextColor(...this.colors.text);
             doc.text(`≈ ${App.formatCurrency(quote.total * mxnRate, 'MXN')} (tipo cambio ${mxnRate})`, margin, yPos + 6);
         }
-        yPos += 10;
+        yPos += 12;
 
         // Payment plan
         const deposit = quote.deposit || 0;
@@ -153,6 +153,36 @@ const PDFGenerator = {
         }
 
         yPos += 15;
+
+        // Next steps / CTA
+        if (quote.nextSteps || quote.paymentLink) {
+            if (yPos > pageHeight - 40) {
+                doc.addPage();
+                yPos = margin;
+            }
+            doc.setFontSize(12);
+            doc.setTextColor(...this.colors.primaryBlue);
+            doc.setFont('helvetica', 'bold');
+            doc.text('✅ Qué sigue', margin, yPos);
+            yPos += 6;
+
+            doc.setFontSize(10);
+            doc.setTextColor(...this.colors.text);
+            doc.setFont('helvetica', 'normal');
+            if (quote.nextSteps) {
+                const steps = doc.splitTextToSize(quote.nextSteps, pageWidth - 2 * margin);
+                steps.forEach((line, idx) => {
+                    doc.text(`${idx + 1}. ${line}`, margin, yPos);
+                    yPos += 5;
+                });
+            }
+            if (quote.paymentLink) {
+                yPos += 4;
+                doc.setTextColor(...this.colors.primaryBlue);
+                doc.text(`🔗 Link de pago: ${quote.paymentLink}`, margin, yPos);
+            }
+            yPos += 10;
+        }
 
         // Itinerary
         if (quote.itinerary) {
@@ -327,6 +357,18 @@ const PDFGenerator = {
             doc.setTextColor(...this.colors.text);
             doc.text(config.business.instagram, margin + 30, yPos);
             yPos += 8;
+        }
+
+        if (quote.paymentLink) {
+            yPos += 6;
+            doc.setFontSize(11);
+            doc.setTextColor(...this.colors.primaryBlue);
+            doc.text('🔗 Link de pago', margin, yPos);
+            doc.setFontSize(10);
+            doc.setTextColor(...this.colors.text);
+            const linkLines = doc.splitTextToSize(quote.paymentLink, pageWidth - 2 * margin);
+            doc.text(linkLines, margin, yPos + 5);
+            yPos += linkLines.length * 5 + 5;
         }
 
         yPos += 10;
