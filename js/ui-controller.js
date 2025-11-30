@@ -238,7 +238,7 @@ const Pipeline_UI = {
         container.innerHTML = Object.entries(statusLabels).map(([status, info]) => {
             const statusQuotes = groupedQuotes[status] || [];
             const totalValue = statusQuotes.reduce((sum, q) => sum + (parseFloat(q.total) || 0), 0);
-            
+
             return `
                 <div class="pipeline-section">
                     <div class="pipeline-section-header" style="border-left: 4px solid ${info.color}">
@@ -271,7 +271,7 @@ const Pipeline_UI = {
                     <span class="pipeline-quote-date">${new Date(quote.createdAt).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}</span>
                 </div>
                 ${urgency === 'high' || urgency === 'overdue' ?
-                    `<div class="urgency-badge ${urgency}">⚠️ ${urgency === 'overdue' ? 'Vencida' : 'Pronto vence'}</div>`
+                `<div class="urgency-badge ${urgency}">⚠️ ${urgency === 'overdue' ? 'Vencida' : 'Pronto vence'}</div>`
                 : ''}
             </div>
         `;
@@ -295,7 +295,7 @@ function initToolsNavUpdates() {
     // Store original switchTab
     const originalSwitchTab = App.switchTab;
 
-    App.switchTab = function(viewId) {
+    App.switchTab = function (viewId) {
         // Call original implementation first
         if (typeof originalSwitchTab === 'function') {
             originalSwitchTab.call(App, viewId);
@@ -324,3 +324,7 @@ if (document.readyState === 'loading') {
 } else {
     initToolsNavUpdates();
 }
+
+// Make globally available
+window.CRM_UI = CRM_UI;
+window.Pipeline_UI = Pipeline_UI;

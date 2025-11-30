@@ -251,7 +251,7 @@ const App = {
         // Reset screens within tab
         if (tabId === 'inicio') this.showHomeMain();
         if (tabId === 'cotizar') this.showQuotesList();
-        if (tabId === 'clientes') this.renderClientsList();
+        if (tabId === 'clientes' && window.CRM_UI) window.CRM_UI.renderClientList();
 
         Storage.setLastTab(tabId);
 

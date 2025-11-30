@@ -17,13 +17,13 @@ const Analytics_UI = {
         // Calculate KPIs
         const wonQuotes = quotes.filter(q => q.status === 'accepted');
         const totalSales = wonQuotes.reduce((sum, q) => sum + (parseFloat(q.total) || 0), 0);
-        
+
         const activeQuotes = quotes.filter(q => q.status !== 'accepted' && q.status !== 'rejected');
         const pipelineValue = activeQuotes.reduce((sum, q) => sum + (parseFloat(q.total) || 0), 0);
-        
+
         const closedQuotesCount = quotes.filter(q => q.status === 'accepted' || q.status === 'rejected').length;
         const conversionRate = closedQuotesCount > 0 ? ((wonQuotes.length / closedQuotesCount) * 100).toFixed(1) : 0;
-        
+
         const avgTicket = wonQuotes.length > 0 ? totalSales / wonQuotes.length : 0;
 
         // Update KPI displays
@@ -135,11 +135,11 @@ const Analytics_UI = {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { 
+                    plugins: {
+                        legend: {
                             position: 'right',
                             labels: { boxWidth: 12, font: { size: 11 } }
-                        } 
+                        }
                     }
                 }
             });
@@ -185,4 +185,5 @@ const Analytics_UI = {
     }
 };
 
-// Initialize when analytics view is shown - will be called by ui-controller.js
+// Make globally available
+window.Analytics_UI = Analytics_UI;
