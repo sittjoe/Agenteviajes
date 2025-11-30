@@ -91,6 +91,7 @@ const App = {
         this.populateQuoteTemplates();
         this.loadClientChecklist();
         this.renderReminders();
+        this.notifyDueReminders?.();
 
         // Setup event listeners
         this.setupEventListeners();

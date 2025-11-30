@@ -204,6 +204,29 @@ Restante: ${this.formatCurrency(remaining)}
         if (t.includes('vuelo')) return '✈️';
         return '⏰';
     },
+
+    notifyDueReminders() {
+        const reminders = Storage.get('reminders') || [];
+        if (!reminders.length) return;
+
+        const today = new Date().toISOString().slice(0, 10);
+        const notified = Storage.get('remindersNotified', {});
+
+        reminders.forEach((r, idx) => {
+            if (!r.date) return;
+            const dateStr = r.date.trim();
+            const key = `${dateStr}-${r.title}`;
+
+            // Simple YYYY-MM-DD check
+            const due = dateStr <= today;
+            if (due && !notified[key]) {
+                this.showToast?.(`⏰ Hoy: ${r.title}`, 'info', 5000);
+                notified[key] = true;
+            }
+        });
+
+        Storage.set('remindersNotified', notified);
+    },
     
     // ===== STATS =====
     updateStats() {

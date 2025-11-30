@@ -399,6 +399,160 @@ Object.assign(App, {
         this.switchScreen('tab-cotizar', 'quote-view');
     },
 
+    // ===== PUBLIC PORTAL =====
+    openPublicQuote() {
+        const quote = this.state.viewingQuoteId
+            ? Storage.getQuoteById(this.state.viewingQuoteId)
+            : this.getQuoteFromForm?.();
+        if (!quote) {
+            this.showToast('Cotización no encontrada', 'error');
+            return;
+        }
+
+        const config = Storage.getConfig();
+        const type = Data.productTypes[quote.type] || Data.productTypes.otro;
+        const mxnRate = parseFloat(config.quotes?.exchangeRate) || null;
+        const monthly = quote.months > 0 ? Math.ceil(Math.max(0, (quote.total || 0) - (quote.deposit || 0)) / quote.months) : 0;
+        const travelChecklist = Storage.getClientChecklist ? Storage.getClientChecklist() : {};
+
+        const timeline = [];
+        if (quote.dateStart) timeline.push({ label: 'Salida / check-in', date: quote.dateStart, icon: '🧳' });
+        if (quote.deadline) timeline.push({ label: 'Pago final', date: quote.deadline, icon: '💳' });
+        if (quote.dateEnd) timeline.push({ label: 'Regreso', date: quote.dateEnd, icon: '🏁' });
+
+        const checklistLabels = {
+            docs: 'Pasaportes y visas vigentes',
+            payment: 'Pago/apartado realizado',
+            insurance: 'Seguro de viaje',
+            checkin: 'Check-in completado',
+            transfers: 'Traslados confirmados',
+            extras: 'Restaurantes/actividades reservadas'
+        };
+
+        const renderChecklist = () => Object.entries(checklistLabels).map(([id, label]) => {
+            const checked = travelChecklist[id];
+            return `<li>${checked ? '✅' : '⬜'} ${label}</li>`;
+        }).join('');
+
+        const itinerary = (quote.itinerary || '').split('\n').filter(Boolean).map((line, idx) => `<li><strong>Día ${idx + 1}:</strong> ${line}</li>`).join('');
+        const includes = (quote.includes || '').split('\n').filter(Boolean).map(i => `<li>${i}</li>`).join('');
+        const excludes = (quote.excludes || '').split('\n').filter(Boolean).map(i => `<li>${i}</li>`).join('');
+        const nextSteps = (quote.nextSteps || '').split('\n').filter(Boolean).map((s, i) => `<li>${i + 1}. ${s}</li>`).join('');
+
+        const upsells = [
+            { label: 'Seguro de viaje premium', desc: 'Cobertura médica y cancelación', icon: '🛡️' },
+            { label: 'Upgrade habitación/camarote', desc: 'Mejor vista y beneficios', icon: '⬆️' },
+            { label: 'Excursiones top', desc: 'Opciones seleccionadas para tu familia', icon: '🎟️' }
+        ];
+
+        const portal = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${quote.product || 'Cotización'} - Portal del Cliente</title>
+    <style>
+        body { font-family: Arial, sans-serif; background:#f5f5f5; color:#1c1917; margin:0; padding:0; line-height:1.6; }
+        .hero { background:linear-gradient(135deg,#1e3c72,#2a5298); color:#fff; padding:24px; }
+        .container { max-width:900px; margin: -40px auto 40px; background:#fff; padding:24px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.08);}
+        .badge { display:inline-block; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.15); margin-right:8px; }
+        h1 { margin:0 0 8px 0; }
+        .grid { display:grid; gap:16px; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); }
+        .card { border:1px solid #e7e5e4; border-radius:10px; padding:16px; background:#fff; }
+        .section-title { font-weight:700; margin:8px 0; }
+        .timeline { list-style:none; padding:0; margin:0; }
+        .timeline li { padding:8px 0; border-bottom:1px solid #e7e5e4; }
+        .cta { display:inline-block; padding:12px 16px; border-radius:10px; text-decoration:none; margin-right:8px; font-weight:700; }
+        .cta-primary { background:#f59e0b; color:#1c1917; }
+        .cta-secondary { background:#0ea5e9; color:#fff; }
+        .muted { color:#6b7280; }
+        .two-col { display:grid; gap:16px; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); }
+        ul { padding-left:18px; margin:8px 0; }
+        .chip { display:inline-block; background:#f3f4f6; padding:6px 10px; border-radius:999px; margin:4px 6px 4px 0; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="badge">${type.icon} ${type.name}</div>
+        <h1>${quote.product || 'Tu viaje'}</h1>
+        <div>${quote.client?.name || 'Cliente'}</div>
+        <div class="muted">${quote.dates || ''} ${quote.travelers ? '• ' + quote.travelers : ''}</div>
+        <div style="margin-top:12px;">
+            ${quote.paymentLink ? `<a class="cta cta-primary" href="${quote.paymentLink}" target="_blank">💳 Pagar / Apartar</a>` : ''}
+            <a class="cta cta-secondary" href="https://wa.me/${(config.business?.phone || '').replace(/\\D/g,'')}" target="_blank">💬 WhatsApp</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="grid">
+            <div class="card">
+                <div class="section-title">💰 Inversión</div>
+                <div style="font-size:24px;font-weight:800;">${this.formatCurrency(quote.total || 0)}</div>
+                ${mxnRate && quote.total ? `<div class="muted">≈ ${this.formatCurrency(quote.total * mxnRate, 'MXN')} (TC ${mxnRate})</div>` : ''}
+                <div class="muted" style="margin-top:6px;">Apartado: ${this.formatCurrency(quote.deposit || 0)}</div>
+                <div class="muted">${quote.months || 1} pagos de ${this.formatCurrency(monthly)}/mes</div>
+                ${quote.deadline ? `<div class="muted">Pago final: ${quote.deadline}</div>` : ''}
+                ${quote.paymentPlan ? `<div style="margin-top:8px;">${quote.paymentPlan.replace(/\\n/g,'<br>')}</div>` : ''}
+            </div>
+            <div class="card">
+                <div class="section-title">🧭 Timeline</div>
+                <ul class="timeline">
+                    ${timeline.map(t => `<li>${t.icon} <strong>${t.label}</strong> • ${t.date}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="card">
+                <div class="section-title">🗺️ Itinerario</div>
+                ${itinerary ? `<ul>${itinerary}</ul>` : '<div class="muted">Añade tu plan día a día.</div>'}
+            </div>
+            <div class="card">
+                <div class="section-title">✅ Qué sigue</div>
+                ${nextSteps ? `<ol>${nextSteps}</ol>` : '<div class="muted">Define los siguientes pasos.</div>'}
+            </div>
+        </div>
+
+        <div class="two-col" style="margin-top:16px;">
+            <div class="card">
+                <div class="section-title">Incluye</div>
+                ${includes ? `<ul>${includes}</ul>` : '<div class="muted">Añade lo incluido.</div>'}
+            </div>
+            <div class="card">
+                <div class="section-title">No incluye</div>
+                ${excludes ? `<ul>${excludes}</ul>` : '<div class="muted">Añade lo no incluido.</div>'}
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+            <div class="section-title">🧳 Checklist de viaje</div>
+            <ul>${renderChecklist()}</ul>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+            <div class="section-title">🚀 Mejora tu viaje</div>
+            ${upsells.map(u => `<div class="chip">${u.icon} ${u.label} — ${u.desc}</div>`).join('')}
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+            <div class="section-title">🤝 Tu concierge</div>
+            <div>${config.business?.name || 'Magia Disney & Royal'}</div>
+            <div class="muted">${config.business?.phone || ''} • ${config.business?.email || ''}</div>
+            <div class="muted">${config.business?.instagram || ''} ${config.business?.facebook || ''}</div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+            <div class="section-title">🌟 Después del viaje</div>
+            <div>Nos encantará tu reseña y referidos. ¡Gracias por viajar con nosotros!</div>
+        </div>
+    </div>
+</body>
+</html>
+        `;
+
+        const win = window.open('', '_blank');
+        if (win) {
+            win.document.write(portal);
+            win.document.close();
+        }
+    },
     // ===== QUOTE ACTIONS =====
     copyQuoteText() {
         const quote = this.getQuoteFromForm();
