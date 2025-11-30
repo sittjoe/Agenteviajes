@@ -28,8 +28,6 @@ const App = {
         this.renderBusinessIdentity();
 
         // Initialize UI
-        this.renderFavorites();
-        this.renderRecents();
         this.renderQuotesList();
         this.loadChecklist();
         this.updateStats();
@@ -63,174 +61,15 @@ const App = {
             this.handleBackNavigation();
         });
 
-        // Global keyboard shortcuts
+        // Simple keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                if (e.key === 's') {
-                    e.preventDefault();
-                    this.handleQuickSave();
-                    return;
-                }
-                if (e.key.toLowerCase() === 'k') {
-                    e.preventDefault();
-                    this.focusGlobalSearch();
-                    return;
-                }
-                if (e.key.toLowerCase() === 'n') {
-                    e.preventDefault();
-                    this.showTab('cotizar');
-                    this.showNewQuote();
-                    return;
-                }
-                if (e.key.toLowerCase() === 'b') {
-                    e.preventDefault();
-                    this.toggleDarkMode();
-                    return;
-                }
-                if (e.shiftKey && e.key.toLowerCase() === 'p') {
-                    e.preventDefault();
-                    this.openCommandPalette();
-                    return;
-                }
-            }
             if (e.key === 'Escape') {
-                this.closeAllModals();
-            }
-            if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-                e.preventDefault();
-                this.focusGlobalSearch();
-            }
-            if (e.shiftKey && e.key === '?') {
-                e.preventDefault();
-                this.showShortcutsModal();
+                this.clearSearch();
             }
         });
     },
 
-    focusGlobalSearch() {
-        const input = document.getElementById('globalSearch');
-        if (input) {
-            input.focus();
-            input.select();
-            this.showSearchResults();
-        }
-    },
 
-    showShortcutsModal() {
-        const content = `
-            <div class="list" style="display:grid;gap:8px;">
-                <div class="u-flex" style="justify-content:space-between;">
-                    <span><b>Ctrl/Cmd + K</b> Buscar</span><span><b>Ctrl/Cmd + B</b> Modo oscuro</span>
-                </div>
-                <div class="u-flex" style="justify-content:space-between;">
-                    <span><b>Ctrl/Cmd + N</b> Nueva cotización</span><span><b>Ctrl/Cmd + S</b> Guardar rápido</span>
-                </div>
-                <div class="u-flex" style="justify-content:space-between;">
-                    <span><b>/</b> Enfocar buscador</span><span><b>Shift + ?</b> Ver atajos</span>
-                </div>
-                <div class="u-flex" style="justify-content:space-between;">
-                    <span><b>Esc</b> Cerrar modales</span><span><b>Alt + ←/→</b> Navegar navegador</span>
-                </div>
-            </div>
-        `;
-        this.showModal('Atajos rápidos', content, () => true, true);
-    },
-
-    openCommandPalette() {
-        const actions = this.getCommandPaletteActions();
-        const body = `
-            <div class="command-palette">
-                <input id="cmd-search" class="form-input" placeholder="Escribe un comando... (Ej. 'cotizar', 'clientes', 'modo oscuro')">
-                <div id="cmd-list" class="cmd-list"></div>
-            </div>
-        `;
-        this.showModal('Paleta de comandos', body, null, true);
-        setTimeout(() => {
-            const input = document.getElementById('cmd-search');
-            const list = document.getElementById('cmd-list');
-            if (!input || !list) return;
-
-            const render = (query = '') => {
-                const q = query.toLowerCase();
-                const filtered = actions.filter(a =>
-                    a.label.toLowerCase().includes(q) ||
-                    (a.keywords && a.keywords.some(k => k.includes(q)))
-                );
-                list.innerHTML = filtered.map((a, idx) => `
-                    <button class="cmd-item" data-idx="${idx}">
-                        <div class="cmd-title">${a.label}</div>
-                        <div class="cmd-meta">${a.shortcut || ''}</div>
-                    </button>
-                `).join('') || '<div class="cmd-empty">Sin resultados</div>';
-
-                list.querySelectorAll('.cmd-item').forEach(btn => {
-                    btn.onclick = () => {
-                        const idx = parseInt(btn.dataset.idx, 10);
-                        const action = filtered[idx];
-                        if (action?.run) action.run();
-                        this.closeModal();
-                    };
-                });
-            };
-
-            input.addEventListener('input', () => render(input.value));
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const first = list.querySelector('.cmd-item');
-                    if (first) first.click();
-                }
-            });
-            input.focus();
-            render();
-        }, 10);
-    },
-
-    getCommandPaletteActions() {
-        return [
-            {
-                label: 'Nueva cotización',
-                shortcut: 'Ctrl/Cmd + N',
-                keywords: ['cotizar', 'quote', 'nuevo'],
-                run: () => { this.showTab('cotizar'); this.showNewQuote(); }
-            },
-            {
-                label: 'Ver cotizaciones',
-                shortcut: 'Cotizar',
-                keywords: ['cotizar', 'lista'],
-                run: () => { this.showTab('cotizar'); this.showQuotesList(); }
-            },
-            {
-                label: 'Abrir CRM',
-                shortcut: 'Clientes',
-                keywords: ['crm', 'clientes'],
-                run: () => { this.showTab('tools'); this.switchTab('crm'); }
-            },
-            {
-                label: 'Abrir Pipeline',
-                shortcut: 'Pipeline',
-                keywords: ['pipeline', 'kanban'],
-                run: () => { this.showTab('tools'); this.switchTab('pipeline'); }
-            },
-            {
-                label: 'Buscar respuestas',
-                shortcut: 'Ctrl/Cmd + K',
-                keywords: ['buscar', 'search'],
-                run: () => this.focusGlobalSearch()
-            },
-            {
-                label: 'Alternar modo oscuro',
-                shortcut: 'Ctrl/Cmd + B',
-                keywords: ['tema', 'oscuro', 'dark'],
-                run: () => this.toggleDarkMode()
-            },
-            {
-                label: 'Ver atajos',
-                shortcut: 'Shift + ?',
-                keywords: ['atajos', 'shortcuts'],
-                run: () => this.showShortcutsModal()
-            }
-        ];
-    },
 
     registerSW() {
         if ('serviceWorker' in navigator) {
@@ -470,16 +309,9 @@ const App = {
         }
 
         this.state.currentResponse = responseId;
-        Storage.addRecent(responseId);
-        this.renderRecents();
 
         // Render breadcrumb
-        const isFav = Storage.isFavorite(responseId);
-        let breadcrumb = `
-            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="App.toggleFavorite('${responseId}')">
-                ${isFav ? '⭐' : '☆'}
-            </button>
-        `;
+        let breadcrumb = '';
         if (this.state.currentStage) {
             breadcrumb += `
                 <span class="breadcrumb-item">${Data.stages[this.state.currentStage].name}</span>
@@ -513,8 +345,6 @@ const App = {
                 </div>
             </div>
 
-            <div class="vote-box" id="vote-container"></div>
-
             <div class="tip-box">
                 <h4>💡 Tip</h4>
                 <p>${response.tip}</p>
@@ -530,9 +360,6 @@ const App = {
         `;
 
         this.switchScreen('tab-inicio', 'home-response');
-
-        // Render votes after DOM is updated
-        this.renderVoteControls(responseId);
     },
 
     copyMessage() {
@@ -562,108 +389,7 @@ const App = {
         }
     },
 
-    // ===== FAVORITES & RECENTS =====
-    renderFavorites() {
-        const favorites = Storage.getFavorites();
-        const section = document.getElementById('favorites-section');
-        const list = document.getElementById('favorites-list');
 
-        if (!section || !list) return;
-
-        if (favorites.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-
-        section.style.display = 'block';
-        list.innerHTML = favorites.map(id => {
-            const r = Data.responses[id];
-            if (!r) return '';
-            return `
-                <div class="option-item compact" onclick="App.showResponse('${id}')">
-                    <span class="emoji">⭐</span>
-                    <div class="content">
-                        <div class="title">${r.title}</div>
-                    </div>
-                    <span class="arrow">→</span>
-                </div>
-            `;
-        }).join('');
-    },
-
-    renderRecents() {
-        const recents = Storage.getRecents();
-        const section = document.getElementById('recents-section');
-        const list = document.getElementById('recents-list');
-
-        if (!section || !list) return;
-
-        if (recents.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-
-        section.style.display = 'block';
-        list.innerHTML = recents.map(id => {
-            const r = Data.responses[id];
-            if (!r) return '';
-            return `
-                <div class="option-item compact" onclick="App.showResponse('${id}')">
-                    <span class="emoji">🕐</span>
-                    <div class="content">
-                        <div class="title">${r.title}</div>
-                    </div>
-                    <span class="arrow">→</span>
-                </div>
-            `;
-        }).join('');
-    },
-
-    toggleFavorite(id) {
-        const isNowFav = Storage.toggleFavorite(id);
-        this.showToast(isNowFav ? '⭐ Agregado a favoritos' : 'Eliminado de favoritos', 'success');
-        this.renderFavorites();
-
-        // Update button if visible
-        const btn = document.querySelector('.fav-btn');
-        if (btn) {
-            btn.classList.toggle('active', isNowFav);
-            btn.textContent = isNowFav ? '⭐' : '☆';
-        }
-    },
-
-    // ===== RESPONSE VOTES =====
-    renderVoteControls(responseId) {
-        const container = document.getElementById('vote-container');
-        if (!container) return;
-
-        const { up, down, userVote } = Storage.getResponseVoteStatus(responseId);
-        const total = up + down;
-        const helpfulPercent = total > 0 ? Math.round((up / total) * 100) : 0;
-
-        container.innerHTML = `
-            <div class="vote-actions">
-                <button class="vote-btn ${userVote === 1 ? 'active' : ''}" onclick="App.handleVote('${responseId}', 1)">👍 Útil</button>
-                <button class="vote-btn ${userVote === -1 ? 'active' : ''}" onclick="App.handleVote('${responseId}', -1)">👎 No útil</button>
-            </div>
-            <div class="vote-stats">
-                <span>${up} votos útiles</span>
-                <span>${down} votos no útiles</span>
-                <span>${helpfulPercent}% de utilidad</span>
-            </div>
-        `;
-    },
-
-    handleVote(responseId, value) {
-        const result = Storage.toggleResponseVote(responseId, value);
-        this.renderVoteControls(responseId);
-
-        let message = 'Voto eliminado';
-        if (result.userVote === 1) message = '👍 Gracias por marcarlo como útil';
-        if (result.userVote === -1) message = '🤔 Registrado como no útil';
-
-        this.showToast(message, 'success');
-    },
 
     // ===== SEARCH =====
     handleSearch() {
