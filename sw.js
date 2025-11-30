@@ -37,17 +37,44 @@ const ASSETS_TO_CACHE = [
     asset('assets/logo-premium.jpg')
 ];
 
+// External assets (CDN/fonts) to keep available offline
+const EXTERNAL_ASSETS = [
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js',
+    'https://cdn.jsdelivr.net/npm/chart.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
+];
+
+const ALLOWED_EXTERNAL_HOSTS = [
+    'cdnjs.cloudflare.com',
+    'cdn.jsdelivr.net',
+    'fonts.googleapis.com',
+    'fonts.gstatic.com'
+];
+
 // Install event - cache assets
 self.addEventListener('install', (event) => {
     console.log('[SW] Installing Service Worker', CACHE_VERSION);
 
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('[SW] Caching app shell');
-                return cache.addAll(ASSETS_TO_CACHE);
-            })
-            .then(() => self.skipWaiting())
+        caches.open(CACHE_NAME).then(async (cache) => {
+            console.log('[SW] Caching app shell');
+
+            try {
+                await cache.addAll(ASSETS_TO_CACHE);
+            } catch (err) {
+                console.warn('[SW] Some app shell assets failed to cache', err);
+            }
+
+            for (const url of EXTERNAL_ASSETS) {
+                try {
+                    await cache.add(url);
+                } catch (err) {
+                    console.warn('[SW] Skipping external asset (cache):', url);
+                }
+            }
+        }).then(() => self.skipWaiting())
     );
 });
 
@@ -71,13 +98,14 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
-    // Skip external requests
-    if (!event.request.url.startsWith(self.location.origin)) {
-        return;
-    }
+    const url = new URL(event.request.url);
+    const isSameOrigin = url.origin === self.location.origin;
+    const isAllowedExternal = ALLOWED_EXTERNAL_HOSTS.includes(url.hostname);
+
+    if (!isSameOrigin && !isAllowedExternal) return;
 
     event.respondWith(
-        caches.match(event.request)
+        caches.match(event.request, { ignoreSearch: false })
             .then(cachedResponse => {
                 if (cachedResponse) {
                     // Return cached version and update in background
@@ -99,7 +127,9 @@ self.addEventListener('fetch', (event) => {
                     })
                     .catch(() => {
                         // Network failed, show offline page
-                        return caches.match(asset('index.html'));
+                        if (isSameOrigin) {
+                            return caches.match(asset('index.html'));
+                        }
                     });
             })
     );

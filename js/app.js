@@ -661,7 +661,12 @@ const App = {
 };
 
 // Initialize on DOM ready
-document.addEventListener('DOMContentLoaded', () => App.init());
+document.addEventListener('DOMContentLoaded', async () => {
+    if (window.Storage?.init) {
+        await Storage.init();
+    }
+    App.init();
+});
 
 // Make App available globally
 window.App = App;

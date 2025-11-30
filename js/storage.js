@@ -6,6 +6,13 @@
 const Storage = {
     PREFIX: 'mdr_',
     VERSION: '2.0',
+    DB: {
+        NAME: 'magia-storage',
+        VERSION: 1,
+        STORE: 'data'
+    },
+    _db: null,
+    _dbReady: false,
     
     KEYS: {
         CONFIG: 'config',
@@ -27,6 +34,81 @@ const Storage = {
     _getKey(key) {
         return this.PREFIX + key;
     },
+
+    async init() {
+        if (!('indexedDB' in window)) return;
+
+        try {
+            this._db = await this._openDB();
+            this._dbReady = true;
+            await this._hydrateFromIDB();
+        } catch (e) {
+            console.warn('IndexedDB init failed; fallback a localStorage', e);
+            this._dbReady = false;
+        }
+    },
+
+    _openDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(this.DB.NAME, this.DB.VERSION);
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains(this.DB.STORE)) {
+                    db.createObjectStore(this.DB.STORE);
+                }
+            };
+
+            request.onsuccess = (event) => resolve(event.target.result);
+            request.onerror = (event) => reject(event.target.error);
+        });
+    },
+
+    async _hydrateFromIDB() {
+        if (!this._dbReady) return;
+
+        const data = await this._readAllFromIDB();
+        Object.entries(data).forEach(([key, value]) => {
+            const localKey = this._getKey(key);
+            if (!localStorage.getItem(localKey)) {
+                localStorage.setItem(localKey, JSON.stringify(value));
+            }
+        });
+    },
+
+    _readAllFromIDB() {
+        return new Promise((resolve, reject) => {
+            const tx = this._db.transaction(this.DB.STORE, 'readonly');
+            const store = tx.objectStore(this.DB.STORE);
+            const data = {};
+
+            const request = store.openCursor();
+            request.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                    data[cursor.key] = cursor.value;
+                    cursor.continue();
+                } else {
+                    resolve(data);
+                }
+            };
+            request.onerror = (event) => reject(event.target.error);
+        });
+    },
+
+    _persistToIDB(key, value) {
+        if (!this._dbReady || !this._db) return;
+        const tx = this._db.transaction(this.DB.STORE, 'readwrite');
+        const store = tx.objectStore(this.DB.STORE);
+        store.put(value, key);
+    },
+
+    _deleteFromIDB(key) {
+        if (!this._dbReady || !this._db) return;
+        const tx = this._db.transaction(this.DB.STORE, 'readwrite');
+        const store = tx.objectStore(this.DB.STORE);
+        store.delete(key);
+    },
     
     get(key, defaultValue = null) {
         try {
@@ -42,6 +124,7 @@ const Storage = {
     set(key, value) {
         try {
             localStorage.setItem(this._getKey(key), JSON.stringify(value));
+            this._persistToIDB(key, value);
             return true;
         } catch (e) {
             if (e.name === 'QuotaExceededError') {
@@ -55,6 +138,7 @@ const Storage = {
     remove(key) {
         try {
             localStorage.removeItem(this._getKey(key));
+            this._deleteFromIDB(key);
             return true;
         } catch (e) {
             console.error('Storage.remove error:', e);
@@ -367,6 +451,11 @@ const Storage = {
         Object.values(this.KEYS).forEach(key => {
             this.remove(key);
         });
+
+        if (this._dbReady && this._db) {
+            const tx = this._db.transaction(this.DB.STORE, 'readwrite');
+            tx.objectStore(this.DB.STORE).clear();
+        }
     },
     
     // ===== UTILS =====
