@@ -10,9 +10,9 @@ Object.assign(App, {
     calculatePayment() {
         const total = parseFloat(this.getInputValue('calc-total')) || 0;
         const deposit = parseFloat(this.getInputValue('calc-deposit')) || 0;
-        const months = parseInt(this.getInputValue('calc-months')) || 6;
+        const months = Math.max(1, parseInt(this.getInputValue('calc-months')) || 1);
         
-        const remaining = total - deposit;
+        const remaining = Math.max(0, total - deposit);
         const monthly = months > 0 ? Math.ceil(remaining / months) : 0;
         
         // Update display
@@ -30,8 +30,8 @@ Object.assign(App, {
     copyCalcResult() {
         const total = parseFloat(this.getInputValue('calc-total')) || 0;
         const deposit = parseFloat(this.getInputValue('calc-deposit')) || 0;
-        const months = parseInt(this.getInputValue('calc-months')) || 6;
-        const remaining = total - deposit;
+        const months = Math.max(1, parseInt(this.getInputValue('calc-months')) || 1);
+        const remaining = Math.max(0, total - deposit);
         const monthly = months > 0 ? Math.ceil(remaining / months) : 0;
         
         const text = `💰 Plan de pagos
@@ -90,6 +90,47 @@ Restante: ${this.formatCurrency(remaining)}
             .join('\n');
         
         const text = `📋 Datos pendientes del cliente:\n\n${items}`;
+        this.copyToClipboard(text);
+    },
+
+    // ===== CLIENT TRAVEL CHECKLIST =====
+    loadClientChecklist() {
+        const saved = Storage.getClientChecklist();
+        document.querySelectorAll('.client-checklist-item').forEach(item => {
+            const id = item.dataset.id;
+            if (id && saved[id]) {
+                item.classList.add('checked');
+            }
+        });
+    },
+
+    toggleClientCheckItem(element) {
+        element.classList.toggle('checked');
+
+        const checklist = {};
+        document.querySelectorAll('.client-checklist-item').forEach(item => {
+            const id = item.dataset.id;
+            if (id) checklist[id] = item.classList.contains('checked');
+        });
+        Storage.saveClientChecklist(checklist);
+    },
+
+    resetClientChecklist() {
+        document.querySelectorAll('.client-checklist-item').forEach(item => item.classList.remove('checked'));
+        Storage.saveClientChecklist({});
+        this.showToast('🔄 Checklist de viaje reiniciado', 'success');
+    },
+
+    copyClientChecklist() {
+        const items = Array.from(document.querySelectorAll('.client-checklist-item'))
+            .map(item => {
+                const checked = item.classList.contains('checked');
+                const text = item.querySelector('.checklist-text')?.textContent || '';
+                return `${checked ? '✅' : '⬜'} ${text}`;
+            })
+            .join('\n');
+
+        const text = `📋 Checklist de viaje para el cliente:\n\n${items}\n\nEstoy al pendiente para ayudarte con cada paso.`;
         this.copyToClipboard(text);
     },
     

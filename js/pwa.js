@@ -117,6 +117,7 @@ const PWA = {
      */
     init() {
         this.registerServiceWorker();
+        this.scheduleAutoBackup();
 
         // Handle install prompt
         window.addEventListener('beforeinstallprompt', (e) => {

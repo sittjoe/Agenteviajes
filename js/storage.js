@@ -21,6 +21,7 @@ const Storage = {
         FAVORITES: 'favorites',
         RECENTS: 'recents',
         CHECKLIST: 'checklist',
+        CLIENT_CHECKLIST: 'clientChecklist',
         STATS: 'stats',
         ONBOARDING: 'onboarding',
         THEME: 'theme',
@@ -369,6 +370,14 @@ const Storage = {
     
     saveChecklist(checklist) {
         return this.set(this.KEYS.CHECKLIST, checklist);
+    },
+
+    getClientChecklist() {
+        return this.get(this.KEYS.CLIENT_CHECKLIST, {});
+    },
+
+    saveClientChecklist(checklist) {
+        return this.set(this.KEYS.CLIENT_CHECKLIST, checklist);
     },
     
     // ===== STATS =====

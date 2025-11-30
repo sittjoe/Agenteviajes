@@ -534,6 +534,33 @@
                                 onclick="App.copyChecklist()">📋
                                 Copiar pendientes</button>
                         </div>
+                        <div class="checklist">
+                            <div
+                                style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                                <h3 style="font-size:16px;font-weight:600;">🧳 Checklist de viaje (para el cliente)</h3><button
+                                    class="btn-secondary btn-sm" onclick="App.resetClientChecklist()">🔄</button>
+                            </div>
+                            <div class="checklist-item client-checklist-item" data-id="docs" onclick="App.toggleClientCheckItem(this)">
+                                <div class="checkbox">✓</div><span class="checklist-text">Pasaportes y visas vigentes</span>
+                            </div>
+                            <div class="checklist-item client-checklist-item" data-id="payment" onclick="App.toggleClientCheckItem(this)">
+                                <div class="checkbox">✓</div><span class="checklist-text">Pago/apartado realizado</span>
+                            </div>
+                            <div class="checklist-item client-checklist-item" data-id="insurance" onclick="App.toggleClientCheckItem(this)">
+                                <div class="checkbox">✓</div><span class="checklist-text">Seguro de viaje</span>
+                            </div>
+                            <div class="checklist-item client-checklist-item" data-id="checkin" onclick="App.toggleClientCheckItem(this)">
+                                <div class="checkbox">✓</div><span class="checklist-text">Check-in (crucero/parques) completado</span>
+                            </div>
+                            <div class="checklist-item client-checklist-item" data-id="transfers" onclick="App.toggleClientCheckItem(this)">
+                                <div class="checkbox">✓</div><span class="checklist-text">Traslados confirmados</span>
+                            </div>
+                            <div class="checklist-item client-checklist-item" data-id="extras" onclick="App.toggleClientCheckItem(this)">
+                                <div class="checkbox">✓</div><span class="checklist-text">Restaurantes/actividades reservadas</span>
+                            </div>
+                            <button class="btn-secondary btn-block btn-sm" style="margin-top:12px;"
+                                onclick="App.copyClientChecklist()">📋 Copiar para enviar</button>
+                        </div>
                         <div class="card">
                             <div class="card-title">📊 Estadísticas</div>
                             <div class="stats-grid">

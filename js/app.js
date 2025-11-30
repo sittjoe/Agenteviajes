@@ -89,6 +89,7 @@ const App = {
         this.populateQuickResponseFilters();
         this.renderQuickResponses();
         this.populateQuoteTemplates();
+        this.loadClientChecklist();
 
         // Setup event listeners
         this.setupEventListeners();
