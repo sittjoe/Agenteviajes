@@ -1,52 +1,200 @@
-# Magia Disney & Royal - Agente de Viajes PWA
+# Magia Disney & Royal
 
-Una aplicación web progresiva (PWA) profesional diseñada para agentes de viajes especializados en Disney y Royal Caribbean. Gestiona clientes, cotizaciones y pipeline de ventas con una interfaz premium.
+Plataforma profesional para cotizaciones de viajes Disney y Royal Caribbean. PWA optimizada para iPhone y desktop con diseño neutral profesional.
 
-## Características
+## 🚀 URL en Producción
 
--   **Cotizador Rápido:** Crea cotizaciones detalladas en segundos.
--   **CRM Integrado:** Gestión de clientes con historial y perfiles.
--   **Pipeline de Ventas:** Tablero Kanban para visualizar el estado de tus ventas.
--   **Analytics:** Dashboard con KPIs y gráficos de rendimiento.
--   **Modo Offline:** Funciona sin internet gracias a su arquitectura PWA.
--   **Exportación PDF:** Genera cotizaciones listas para imprimir o enviar.
--   **Respaldo de Datos:** Exporta e importa toda tu información en formato JSON.
+**https://sittjoe.github.io/Agenteviajes/**
 
-## Instalación (Desarrollo Local)
+## ✨ Características Principales
 
-1.  Clona este repositorio o descarga los archivos.
-2.  Abre la carpeta en tu editor de código favorito (VS Code recomendado).
-3.  Usa una extensión como "Live Server" para servir los archivos (necesario para Service Workers y módulos ES6).
+- **Cotizador Profesional:** Crea cotizaciones detalladas en segundos
+- **CRM Integrado:** Gestión completa de clientes con historial
+- **Pipeline de Ventas:** Tablero Kanban visual para seguimiento
+- **Analytics Dashboard:** KPIs y gráficos de rendimiento
+- **PWA Offline:** Funciona completamente sin conexión
+- **Exportación PDF:** Cotizaciones profesionales listas para enviar
+- **WhatsApp Integration:** Comparte cotizaciones directamente
+- **Dark Mode:** Modo oscuro automático
+- **Touch Optimized:** Todos los elementos ≥44px (Apple HIG)
+- **Safe Area Support:** Compatible con notch de iPhone
 
-## Despliegue (Producción)
+## 🎨 Diseño Profesional
 
-Esta aplicación es estática (HTML/CSS/JS), por lo que se puede desplegar fácilmente en cualquier hosting estático.
+**Paleta de Colores:**
+- Primario: `#f59e0b` (Amber cálido)
+- Neutros: Familia de grises piedra (`#fafaf9` → `#1c1917`)
+- Success: `#10b981` (Emerald)
+- Danger: `#ef4444` (Red)
+- WhatsApp: `#25D366`
 
-### GitHub Pages
-1.  Sube los archivos a un repositorio de GitHub.
-2.  Ve a `Settings` > `Pages`.
-3.  Selecciona la rama `main` y la carpeta `/root`.
-4.  ¡Listo! Tu app estará disponible en `https://usuario.github.io/repo`.
+**Características de UI:**
+- Diseño neutral y profesional
+- Typography: Inter (Google Fonts)
+- Spacing: 8px grid system
+- Shadows: Sutiles y neutrales
+- Responsive: Mobile-first design
 
-### Netlify / Vercel
-1.  Conecta tu repositorio.
-2.  Configura el directorio de publicación como la raíz (`.`).
-3.  Despliega.
+## 📱 Compatibilidad Mobile
 
-## Estructura del Proyecto
+Optimizado para todos los tamaños de iPhone:
+- iPhone SE (375px)
+- iPhone 12/13/14 (390px)
+- iPhone Pro Max (428px)
+- iPad (768px+)
+- Desktop (1024px+)
 
--   `index.html`: Punto de entrada principal.
--   `css/`: Estilos (Base, Premium, Print).
--   `js/`: Lógica de la aplicación (App, CRM, Pipeline, UI).
--   `assets/`: Imágenes e iconos.
+## 🚀 Despliegue en GitHub Pages
 
-## Tecnologías
+### Configuración Automática
 
--   HTML5, CSS3 (Variables, Grid, Flexbox)
--   JavaScript (ES6+, Módulos)
--   Chart.js (Gráficos)
--   LocalStorage (Persistencia de datos)
+La aplicación está **lista para GitHub Pages**. Solo sigue estos pasos:
 
-## Créditos
+1. **Push al repositorio:**
+```bash
+git add .
+git commit -m "Deploy to GitHub Pages"
+git push origin main
+```
 
-Desarrollado para Magia Disney & Royal.
+2. **Habilitar GitHub Pages:**
+   - Ve a: `Settings` → `Pages`
+   - Source: `Deploy from a branch`
+   - Branch: `main` / `root`
+   - Click `Save`
+
+3. **Esperar 1-2 minutos** y visita:
+   `https://sittjoe.github.io/Agenteviajes/`
+
+### Archivos de Configuración
+
+- ✅ `.nojekyll` - Evita procesamiento Jekyll
+- ✅ `manifest.json` - Configurado con rutas relativas
+- ✅ `sw.js` - Service Worker con soporte BASE_PATH
+- ✅ Todas las rutas son relativas (compatibles con subcarpetas)
+
+## 💻 Desarrollo Local
+
+```bash
+# Opción 1: Python
+python -m http.server 8000
+
+# Opción 2: Node.js
+npx serve
+
+# Opción 3: VS Code Live Server
+# Instala extensión "Live Server" → Click derecho → "Open with Live Server"
+```
+
+Luego abre: `http://localhost:8000`
+
+## 📦 Estructura del Proyecto
+
+```
+/Agenteviajes/
+├── index.html          # App principal
+├── manifest.json       # PWA manifest
+├── sw.js              # Service Worker
+├── .nojekyll          # GitHub Pages config
+│
+├── css/
+│   ├── styles.css     # Estilos principales (38KB)
+│   └── print.css      # Estilos de impresión
+│
+├── js/                # 18 módulos JavaScript
+│   ├── app.js         # Controlador principal
+│   ├── storage.js     # LocalStorage manager
+│   ├── quotes.js      # Gestión cotizaciones
+│   ├── crm.js         # CRM
+│   ├── analytics.js   # Analytics
+│   ├── pipeline.js    # Kanban board
+│   └── ...
+│
+└── assets/            # Imágenes y logos
+```
+
+## 📱 Instalar como App
+
+**iPhone (Safari):**
+1. Abre `https://sittjoe.github.io/Agenteviajes/`
+2. Toca botón "Compartir" (⬆️)
+3. Selecciona "Añadir a pantalla de inicio"
+4. ¡Listo! App instalada con ícono ámbar
+
+**Android (Chrome):**
+1. Abre la URL en Chrome
+2. Menú (⋮) → "Instalar aplicación"
+3. App instalada y funcionando offline
+
+## 🛠️ Tecnologías
+
+- **Frontend:** Vanilla JavaScript (sin frameworks)
+- **Estilos:** CSS Custom Properties
+- **PWA:** Service Worker + Cache API
+- **Persistencia:** LocalStorage
+- **Charts:** Chart.js
+- **PDF:** jsPDF + AutoTable
+- **QR Codes:** QRCode.js
+
+## 🔧 Configuración PWA
+
+**Service Worker (`sw.js`):**
+- Cache version: `v2.0.0`
+- Estrategia: Cache-first con network fallback
+- Assets cacheados: 25+ archivos críticos
+- Soporte para subcarpetas (GitHub Pages)
+
+**Manifest (`manifest.json`):**
+- Display: `standalone` (sin browser UI)
+- Orientation: `portrait-primary`
+- Theme color: `#f59e0b` (Amber)
+- Background: `#fafaf9` (Warm neutral)
+
+## 🎯 Funcionalidades
+
+1. **Cotizaciones:**
+   - Crear, editar, duplicar
+   - Multi-pasajero con edades
+   - Plan de pagos flexible
+   - Estados: Draft, Sent, Negotiating, Accepted, Rejected
+
+2. **CRM:**
+   - Base de datos de clientes
+   - Estados: Lead, Cliente, VIP
+   - Timeline de actividades
+   - Tags personalizados
+
+3. **Analytics:**
+   - KPIs en tiempo real
+   - Gráficos interactivos (Chart.js)
+   - Filtros por período
+   - Métricas de conversión
+
+4. **Templates:**
+   - Respuestas por etapa de venta
+   - Info de productos
+   - Tips de ventas
+   - Guías visuales
+
+5. **Exportación:**
+   - PDF profesional
+   - WhatsApp directo
+   - Backup JSON completo
+
+## 📝 Notas de Versión
+
+**v2.0.0 (Noviembre 2024)**
+- ✅ Rediseño completo con paleta neutral profesional
+- ✅ Optimización iPhone (safe areas, touch targets)
+- ✅ GitHub Pages ready
+- ✅ Service Worker actualizado
+- ✅ CSS consolidado (eliminados archivos no usados)
+- ✅ Bottom nav mejorada con glassmorphism
+- ✅ Breakpoints para todos los iPhone
+- ✅ Dark mode refinado
+
+---
+
+**Versión:** 2.0.0
+**Desarrollado para:** Magia Disney & Royal
+**Diseño:** Profesional neutral con acentos ámbar

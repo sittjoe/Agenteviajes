@@ -6,28 +6,28 @@
 /* ==================== CSS VARIABLES ==================== */
 :root {
     /* === PROFESSIONAL COLOR PALETTE === */
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --primary-light: #3b82f6;
+    --primary: #f59e0b;
+    --primary-hover: #d97706;
+    --primary-light: #fbbf24;
     --secondary: #0ea5e9;
     --accent: #f59e0b;
     --success: #10b981;
     --danger: #ef4444;
     --warning: #f59e0b;
-    --info: #3b82f6;
+    --info: #6366f1;
     --whatsapp: #25D366;
 
-    /* === NEUTRAL COLORS === */
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-400: #9ca3af;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
+    /* === NEUTRAL COLORS - WARM STONE FAMILY === */
+    --gray-50: #fafaf9;
+    --gray-100: #f5f5f4;
+    --gray-200: #e7e5e4;
+    --gray-300: #d6d3d1;
+    --gray-400: #a8a29e;
+    --gray-500: #78716c;
+    --gray-600: #57534e;
+    --gray-700: #44403c;
+    --gray-800: #292524;
+    --gray-900: #1c1917;
 
     /* === SEMANTIC COLORS === */
     --bg: var(--gray-50);
@@ -38,12 +38,12 @@
     --text-secondary: var(--gray-600);
     --text-muted: var(--gray-500);
 
-    /* === SHADOWS === */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* === SHADOWS - NEUTRAL === */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
     /* === SPACING === */
     --space-1: 0.25rem;
@@ -87,19 +87,19 @@
 
     /* === LAYOUT === */
     --header-height: 64px;
-    --nav-height: 68px;
+    --nav-height: 72px;
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --max-width: 1200px;
 }
 
 /* === DARK MODE === */
 .dark-mode {
-    --bg: var(--gray-900);
-    --bg-alt: var(--gray-800);
-    --card: var(--gray-800);
+    --bg: #0a0a0a;
+    --bg-alt: #171717;
+    --card: #262626;
     --border: var(--gray-700);
-    --text: var(--gray-50);
-    --text-secondary: var(--gray-300);
+    --text: #fafaf9;
+    --text-secondary: #a8a29e;
     --text-muted: var(--gray-400);
 }
 
@@ -124,15 +124,15 @@ body {
     color: var(--text);
     line-height: 1.6;
     min-height: 100vh;
-    padding-top: var(--header-height);
-    padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + var(--space-4));
+    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + var(--space-4));
     transition: background var(--transition-slow), color var(--transition-slow);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-    background: rgba(37, 99, 235, 0.2);
+    background: rgba(245, 158, 11, 0.2);
     color: var(--text);
 }
 
@@ -277,12 +277,14 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: var(--header-height);
+    height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
     background: var(--card);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--space-4);
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
     z-index: 1000;
     border-bottom: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
@@ -330,7 +332,7 @@ body {
 .header-search .search-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
 .header-search .search-icon {
@@ -421,11 +423,16 @@ body {
     right: 0;
     height: calc(var(--nav-height) + var(--safe-bottom));
     padding-bottom: var(--safe-bottom);
-    background: var(--card);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
     display: flex;
     border-top: 1px solid var(--border);
     z-index: 1000;
-    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.dark-mode .bottom-nav {
+    background: rgba(38, 38, 38, 0.95);
 }
 
 .nav-item {
@@ -447,12 +454,13 @@ body {
 }
 
 .nav-item .icon {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     margin-bottom: var(--space-1);
 }
 
 .nav-item.active {
     color: var(--primary);
+    background: rgba(245, 158, 11, 0.1);
 }
 
 .nav-item.active::before {
@@ -1038,7 +1046,7 @@ body {
 .form-textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
 .form-textarea {
@@ -1750,6 +1758,40 @@ body {
 
 /* ==================== ENHANCED MOBILE OPTIMIZATION ==================== */
 @media (max-width: 768px) {
+    /* Touch Target Optimization - Minimum 44px */
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost,
+    .btn-danger,
+    .btn-success,
+    .btn-whatsapp {
+        min-height: 48px;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .quick-btn,
+    .stage-btn {
+        min-height: 56px;
+        padding: var(--space-3);
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        min-height: 48px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    .nav-item {
+        min-height: 64px;
+    }
+
+    .contact-chip {
+        min-height: 60px;
+        padding: var(--space-3);
+    }
+
+    /* Layout Adjustments */
     .hero-grid {
         grid-template-columns: 1fr;
         gap: var(--space-3);
@@ -1874,6 +1916,41 @@ body {
     .stage-btn:hover,
     .option-item:hover {
         transform: none;
+    }
+}
+
+/* ==================== IPHONE SE OPTIMIZATION (375px) ==================== */
+@media (max-width: 375px) {
+    .header-title h1 {
+        font-size: 0.9375rem;
+    }
+
+    .metric-card {
+        padding: var(--space-2);
+    }
+
+    .main-content {
+        padding: var(--space-2);
+    }
+
+    .welcome-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2);
+    }
+}
+
+/* ==================== IPHONE PRO MAX OPTIMIZATION (429px-767px) ==================== */
+@media (min-width: 429px) and (max-width: 767px) {
+    .welcome-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .quick-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .contact-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 

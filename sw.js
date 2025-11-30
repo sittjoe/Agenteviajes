@@ -14,7 +14,7 @@ const ASSETS_TO_CACHE = [
     asset('index.html'),
     asset('manifest.json'),
     asset('css/styles.css'),
-    asset('css/premium.css'),
+    asset('css/print.css'),
     asset('js/storage.js'),
     asset('js/data.js'),
     asset('js/app.js'),
@@ -28,8 +28,11 @@ const ASSETS_TO_CACHE = [
     asset('js/templates.js'),
     asset('js/advanced-quotes.js'),
     asset('js/analytics.js'),
+    asset('js/analytics-ui.js'),
     asset('js/personalization.js'),
     asset('js/pwa.js'),
+    asset('js/data-manager.js'),
+    asset('js/ui-controller.js'),
     asset('assets/logo.png'),
     asset('assets/logo-premium.jpg')
 ];
