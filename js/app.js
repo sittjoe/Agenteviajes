@@ -90,6 +90,7 @@ const App = {
         this.renderQuickResponses();
         this.populateQuoteTemplates();
         this.loadClientChecklist();
+        this.renderReminders();
 
         // Setup event listeners
         this.setupEventListeners();

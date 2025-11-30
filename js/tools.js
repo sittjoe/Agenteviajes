@@ -133,6 +133,77 @@ Restante: ${this.formatCurrency(remaining)}
         const text = `📋 Checklist de viaje para el cliente:\n\n${items}\n\nEstoy al pendiente para ayudarte con cada paso.`;
         this.copyToClipboard(text);
     },
+
+    // ===== REMINDERS =====
+    renderReminders() {
+        const list = document.getElementById('reminders-list');
+        if (!list) return;
+        const reminders = Storage.get('reminders') || [];
+
+        if (reminders.length === 0) {
+            list.innerHTML = '<p class="muted">Sin recordatorios. Agrega uno nuevo.</p>';
+            return;
+        }
+
+        list.innerHTML = reminders.map((r, idx) => `
+            <div class="reminder-item">
+                <div>
+                    <div><strong>${r.title}</strong></div>
+                    <div class="reminder-meta">${r.typeIcon || '⏰'} ${r.typeLabel || ''} • ${r.date || ''}</div>
+                    ${r.message ? `<div class="muted">${r.message}</div>` : ''}
+                </div>
+                <button class="btn-secondary btn-sm" onclick="App.copyReminder(${idx})">📋 Copiar</button>
+                <button class="btn-danger btn-sm" onclick="App.deleteReminder(${idx})">🗑️</button>
+            </div>
+        `).join('');
+    },
+
+    addReminder() {
+        const title = prompt('Título del recordatorio (ej. Pago final, Check-in):');
+        if (!title) return;
+        const date = prompt('Fecha o vencimiento (ej. 2024-06-15 o \"en 7 días\"):', '') || '';
+        const typeLabel = prompt('Tipo (ej. Pago, Check-in, FastPass):', '') || '';
+        const message = prompt('Mensaje (usa {cliente}, {total}, {fecha} si quieres merge):', '') || '';
+
+        const reminder = {
+            title,
+            date,
+            typeLabel,
+            typeIcon: this.inferReminderIcon(typeLabel),
+            message
+        };
+
+        const reminders = Storage.get('reminders') || [];
+        reminders.unshift(reminder);
+        Storage.set('reminders', reminders.slice(0, 50));
+
+        this.renderReminders();
+    },
+
+    copyReminder(idx) {
+        const reminders = Storage.get('reminders') || [];
+        const r = reminders[idx];
+        if (!r) return;
+
+        const msg = this.buildResponseMessage({ message: r.message || r.title });
+        this.copyToClipboard(`⏰ ${r.title}\n${r.date ? `📅 ${r.date}\n` : ''}${msg}`);
+    },
+
+    deleteReminder(idx) {
+        const reminders = Storage.get('reminders') || [];
+        reminders.splice(idx, 1);
+        Storage.set('reminders', reminders);
+        this.renderReminders();
+    },
+
+    inferReminderIcon(typeLabel) {
+        const t = (typeLabel || '').toLowerCase();
+        if (t.includes('pago')) return '💳';
+        if (t.includes('check')) return '✅';
+        if (t.includes('fast') || t.includes('lightning')) return '⚡';
+        if (t.includes('vuelo')) return '✈️';
+        return '⏰';
+    },
     
     // ===== STATS =====
     updateStats() {

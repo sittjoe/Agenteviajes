@@ -479,6 +479,7 @@
                             Clientes</button>
                         <button class="tools-nav-btn" onclick="App.switchTab('analytics')" data-view="analytics">📈
                             Analytics</button>
+                        <button class="tools-nav-btn" onclick="App.switchTab('reminders')" data-view="reminders">⏰ Recordatorios</button>
                     </div>
 
                     <!-- Vista principal de herramientas -->
@@ -673,6 +674,15 @@
                                 <canvas id="leadsChart"></canvas>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Reminders View -->
+                    <div id="view-reminders" class="view-section" style="display: none;">
+                        <div class="crm-header">
+                            <h2>⏰ Recordatorios</h2>
+                            <button class="btn-primary btn-sm" onclick="App.addReminder()">➕ Nuevo</button>
+                        </div>
+                        <div id="reminders-list" class="card"></div>
                     </div>
                 </div>
 
