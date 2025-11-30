@@ -41,9 +41,9 @@ const App = {
         // Register Service Worker
         this.registerSW();
 
-        // Check onboarding
+        // Complete onboarding silently to evitar popups
         if (!Storage.isOnboardingComplete()) {
-            setTimeout(() => this.showOnboarding(), 500);
+            Storage.completeOnboarding();
         }
 
         console.log('✅ App iniciada correctamente');
