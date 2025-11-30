@@ -201,6 +201,8 @@ Object.assign(App, {
         // Notes
         this.setInputValue('quote-notes-internal', quote.notesInternal || '');
         this.setInputValue('quote-notes-client', quote.notesClient || '');
+        this.setInputValue('quote-itinerary', quote.itinerary || '');
+        this.setInputValue('quote-payment-plan', quote.paymentPlan || '');
 
         // Status
         this.setInputValue('quote-status', quote.status || 'draft');
@@ -215,8 +217,8 @@ Object.assign(App, {
     getQuoteFromForm() {
         const total = parseFloat(this.getInputValue('quote-total')) || 0;
         const deposit = parseFloat(this.getInputValue('quote-deposit')) || 0;
-        const months = parseInt(this.getInputValue('quote-months')) || 6;
-        const monthly = months > 0 ? Math.ceil((total - deposit) / months) : 0;
+        const months = Math.max(1, parseInt(this.getInputValue('quote-months')) || 1);
+        const monthly = months > 0 ? Math.ceil(Math.max(0, total - deposit) / months) : 0;
 
         return {
             id: this.getInputValue('quote-id') || Storage.generateQuoteId(),
@@ -239,12 +241,14 @@ Object.assign(App, {
             travelers: this.formatTravelers(),
             includes: this.getInputValue('quote-includes'),
             excludes: this.getInputValue('quote-excludes'),
+            itinerary: this.getInputValue('quote-itinerary'),
 
             total: total,
             deposit: deposit,
             months: months,
             monthly: monthly,
             deadline: this.getInputValue('quote-deadline'),
+            paymentPlan: this.getInputValue('quote-payment-plan'),
 
             notesInternal: this.getInputValue('quote-notes-internal'),
             notesClient: this.getInputValue('quote-notes-client'),
@@ -315,7 +319,7 @@ Object.assign(App, {
         const config = Storage.getConfig();
 
         // Calculate monthly
-        const monthly = quote.months > 0 ? Math.ceil((quote.total - quote.deposit) / quote.months) : 0;
+        const monthly = quote.months > 0 ? Math.ceil((quote.total - (quote.deposit || 0)) / quote.months) : 0;
 
         // Format includes/excludes
         const includesList = quote.includes?.split('\n').filter(i => i.trim()).map(i => `<li>${i.trim()}</li>`).join('') || '';
@@ -339,6 +343,7 @@ Object.assign(App, {
                 <p><strong>${quote.product || 'Sin producto'}</strong></p>
                 ${quote.dates ? `<p>📅 ${quote.dates}</p>` : ''}
                 ${quote.travelers ? `<p>👥 ${quote.travelers}</p>` : ''}
+                ${quote.itinerary ? `<div class="muted" style="margin-top:8px;">${quote.itinerary.replace(/\n/g, '<br>')}</div>` : ''}
             </div>
             
             ${includesList ? `
@@ -359,9 +364,10 @@ Object.assign(App, {
                 <div class="card-title">💰 Inversión</div>
                 <div class="price-big">${this.formatCurrency(quote.total)}</div>
                 <div class="price-details">
-                    <p>Apartado: <strong>${this.formatCurrency(quote.deposit)}</strong></p>
+                    <p>Apartado: <strong>${this.formatCurrency(quote.deposit || 0)}</strong></p>
                     <p>${quote.months} pagos de: <strong>${this.formatCurrency(monthly)}/mes</strong></p>
                     ${quote.deadline ? `<p>Pago final: <strong>${quote.deadline}</strong></p>` : ''}
+                    ${quote.paymentPlan ? `<p class="muted" style="margin-top:8px;">${quote.paymentPlan.replace(/\n/g, '<br>')}</p>` : ''}
                 </div>
             </div>
             
@@ -569,9 +575,9 @@ ${config.quotes?.legalText || ''}`;
     calculateMonthly() {
         const total = parseFloat(this.getInputValue('quote-total')) || 0;
         const deposit = parseFloat(this.getInputValue('quote-deposit')) || 0;
-        const months = parseInt(this.getInputValue('quote-months')) || 6;
+        const months = Math.max(1, parseInt(this.getInputValue('quote-months')) || 1);
 
-        const monthly = months > 0 ? Math.ceil((total - deposit) / months) : 0;
+        const monthly = months > 0 ? Math.ceil(Math.max(0, total - deposit) / months) : 0;
 
         const display = document.getElementById('monthly-display');
         if (display) {

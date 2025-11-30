@@ -316,7 +316,7 @@ const App = {
                     <span>📱</span> Mensaje para enviar
                 </div>
                 <div class="composer-body">
-                    <div class="message-preview">${this.escapeHtml(response.message)}</div>
+                    <div class="message-preview">${this.escapeHtml(this.buildResponseMessage(response))}</div>
                     <div class="btn-row">
                         <button class="btn-success" onclick="App.copyMessage()">
                             📋 Copiar
@@ -384,9 +384,10 @@ const App = {
                     </div>
                     ${r.tags ? `<div class="response-tags">${r.tags.slice(0, 3).map(t => `<span>${t}</span>`).join('')}</div>` : ''}
                 </div>
-                <div class="response-card-body">${this.escapeHtml(r.message)}</div>
+                <div class="response-card-body">${this.escapeHtml(this.buildResponseMessage(r))}</div>
                 <div class="response-card-actions">
                     <button class="btn-success btn-sm" onclick="App.copyResponseById('${r.id}')">📋 Copiar</button>
+                    <button class="btn-secondary btn-sm" onclick="App.copyResponseById('${r.id}', true)">📋 Sin emojis</button>
                     <button class="btn-whatsapp btn-sm" onclick="App.sendWhatsAppById('${r.id}')">💬 WhatsApp</button>
                     ${r.next ? `<span class="muted">Siguiente: ${r.next}</span>` : ''}
                 </div>
@@ -407,30 +408,31 @@ const App = {
         this.renderQuickResponses(stage, query);
     },
 
-    copyResponseById(id) {
+    copyResponseById(id, stripEmoji = false) {
         const response = Data.responses[id];
         if (!response) return;
-        this.copyToClipboard(response.message);
+        const msg = this.buildResponseMessage(response, { stripEmoji });
+        this.copyToClipboard(msg);
     },
 
     sendWhatsAppById(id) {
         const response = Data.responses[id];
         if (!response) return;
-        const text = encodeURIComponent(response.message);
+        const text = encodeURIComponent(this.buildResponseMessage(response));
         window.open(`https://wa.me/?text=${text}`, '_blank');
     },
 
     copyMessage() {
         const response = Data.responses[this.state.currentResponse];
         if (response) {
-            this.copyToClipboard(response.message);
+            this.copyToClipboard(this.buildResponseMessage(response));
         }
     },
 
     sendWhatsApp() {
         const response = Data.responses[this.state.currentResponse];
         if (response) {
-            const text = encodeURIComponent(response.message);
+            const text = encodeURIComponent(this.buildResponseMessage(response));
             window.open(`https://wa.me/?text=${text}`, '_blank');
         }
     },
@@ -517,6 +519,41 @@ const App = {
     setInputValue(id, value) {
         const el = document.getElementById(id);
         if (el) el.value = value || '';
+    },
+
+    // Build response message with context placeholders
+    buildResponseMessage(response, options = {}) {
+        if (!response) return '';
+
+        const cfg = Storage.getConfig();
+        const quote = this.state.viewingQuoteId
+            ? Storage.getQuoteById(this.state.viewingQuoteId)
+            : this.getQuoteFromForm?.();
+
+        const placeholders = {
+            cliente: quote?.client?.name || 'tu familia',
+            destino: quote?.product || 'tu viaje',
+            fecha: quote?.dates || `${quote?.dateStart || ''} ${quote?.dateEnd || ''}`.trim(),
+            viajeros: quote?.travelers || '',
+            total: quote?.total ? this.formatCurrency(quote.total) : '',
+            apartado: quote?.deposit ? this.formatCurrency(quote.deposit) : '',
+            mensualidad: quote?.monthly ? this.formatCurrency(quote.monthly) : '',
+            mxn: quote?.total && cfg.quotes?.exchangeRate ? this.formatCurrency(quote.total * cfg.quotes.exchangeRate, 'MXN') : '',
+            whatsapp: cfg.business?.phone || '',
+            cotizacion: quote?.id || '',
+            link_pago: quote?.paymentLink || ''
+        };
+
+        let msg = response.message;
+        Object.entries(placeholders).forEach(([key, value]) => {
+            msg = msg.replace(new RegExp(`{${key}}`, 'g'), value || '');
+        });
+
+        if (options.stripEmoji) {
+            msg = msg.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '');
+        }
+
+        return msg.trim();
     },
 
     escapeHtml(text) {

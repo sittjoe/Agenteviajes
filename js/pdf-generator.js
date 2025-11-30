@@ -117,24 +117,70 @@ const PDFGenerator = {
 
         doc.setFontSize(24);
         doc.setTextColor(...this.colors.primaryGold);
-        doc.text(App.formatCurrency(quote.total), margin, yPos);
+        doc.text(App.formatCurrency(quote.total || 0), margin, yPos);
+        const config = Storage.getConfig();
+        const mxnRate = parseFloat(config.quotes?.exchangeRate) || null;
+        if (mxnRate && quote.total) {
+            doc.setFontSize(10);
+            doc.setTextColor(...this.colors.text);
+            doc.text(`≈ ${App.formatCurrency(quote.total * mxnRate, 'MXN')} (tipo cambio ${mxnRate})`, margin, yPos + 6);
+        }
         yPos += 10;
 
         // Payment plan
-        const monthly = quote.months > 0 ? Math.ceil((quote.total - quote.deposit) / quote.months) : 0;
+        const deposit = quote.deposit || 0;
+        const months = Math.max(1, quote.months || 1);
+        const monthly = typeof quote.monthly === 'number'
+            ? quote.monthly
+            : months > 0 ? Math.ceil(Math.max(0, (quote.total || 0) - deposit) / months) : 0;
 
         doc.setFontSize(10);
         doc.setTextColor(...this.colors.text);
         doc.setFont('helvetica', 'normal');
-        doc.text(`💳 Apartado: ${App.formatCurrency(quote.deposit)}`, margin, yPos);
+        doc.text(`💳 Apartado: ${App.formatCurrency(deposit)}`, margin, yPos);
         yPos += 5;
-        doc.text(`📅 ${quote.months} pagos mensuales de ${App.formatCurrency(monthly)}`, margin, yPos);
+        doc.text(`📅 ${months} pagos mensuales de ${App.formatCurrency(monthly)}`, margin, yPos);
         yPos += 5;
         if (quote.deadline) {
             doc.text(`⏰ Pago final antes de: ${quote.deadline}`, margin, yPos);
         }
+        if (quote.paymentPlan) {
+            yPos += 6;
+            doc.setTextColor(...this.colors.textLight);
+            const schedule = doc.splitTextToSize(quote.paymentPlan, pageWidth - 2 * margin);
+            doc.text(schedule, margin, yPos);
+            yPos += schedule.length * 5;
+        }
 
         yPos += 15;
+
+        // Itinerary
+        if (quote.itinerary) {
+            if (yPos > pageHeight - 40) {
+                doc.addPage();
+                yPos = margin;
+            }
+            doc.setFontSize(12);
+            doc.setTextColor(...this.colors.primaryBlue);
+            doc.setFont('helvetica', 'bold');
+            doc.text('🗺️ Itinerario sugerido', margin, yPos);
+            yPos += 6;
+
+            doc.setFontSize(10);
+            doc.setTextColor(...this.colors.text);
+            doc.setFont('helvetica', 'normal');
+            const itineraryLines = quote.itinerary.split('\n').filter(i => i.trim());
+            itineraryLines.forEach((line, index) => {
+                if (yPos > pageHeight - 20) {
+                    doc.addPage();
+                    yPos = margin;
+                }
+                doc.text(`${index + 1}. ${line.trim()}`, margin, yPos);
+                yPos += 5;
+            });
+
+            yPos += 10;
+        }
 
         // Includes/Excludes
         if (quote.includes || quote.excludes) {
@@ -236,7 +282,6 @@ const PDFGenerator = {
         doc.text('📱 ¡Contacta con nosotros!', margin, yPos);
         yPos += 10;
 
-        const config = Storage.getConfig();
         const phone = config.business?.phone || '55 8095 5139';
 
         // QR Code for WhatsApp
@@ -332,7 +377,7 @@ const PDFGenerator = {
     async addLogo(doc, pageWidth, yPos) {
         try {
             // Try to load the logo
-            const logo = await this.loadImage('/Users/joesittm/Desktop/agente de viajes/Agenteviajes/assets/logo-premium.jpg');
+            const logo = await this.loadImage('assets/logo-premium.jpg');
             const logoWidth = 80;
             const logoHeight = 40;
             const logoX = (pageWidth - logoWidth) / 2;

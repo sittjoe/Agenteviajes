@@ -345,6 +345,10 @@
                                     id="quote-excludes" class="form-textarea"
                                     placeholder="Vuelos&#10;Comidas&#10;Propinas"
                                     oninput="App.markQuoteChanged()"></textarea></div>
+                            <div class="form-group"><label class="form-label">Itinerario / plan del viaje</label><textarea
+                                    id="quote-itinerary" class="form-textarea"
+                                    placeholder="Día 1: Llegada y check-in&#10;Día 2: Parque Magic Kingdom&#10;Día 3: Disney Wish zarpa..."
+                                    oninput="App.markQuoteChanged()"></textarea></div>
                         </div>
                         <div class="card">
                             <div class="card-title">💰 Inversión</div>
@@ -369,6 +373,10 @@
                                         id="quote-valid-until" class="form-input" oninput="App.markQuoteChanged()">
                                 </div>
                             </div>
+                            <div class="form-group"><label class="form-label">Plan de pagos detallado</label><textarea
+                                    id="quote-payment-plan" class="form-textarea"
+                                    placeholder="Ej. Apartado hoy: $200 USD&#10;Pago 1: 15 de mayo&#10;Pago final: 30 de junio"
+                                    oninput="App.markQuoteChanged()"></textarea></div>
                         </div>
                         <div class="card">
                             <div class="card-title">📝 Notas</div>
