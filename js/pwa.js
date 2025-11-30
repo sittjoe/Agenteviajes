@@ -15,31 +15,17 @@ const PWA = {
                 const swUrl = new URL('sw.js', window.location.href);
                 const registration = await navigator.serviceWorker.register(swUrl.pathname);
                 console.log('✅ Service Worker registered:', registration);
+
+                registration.addEventListener('updatefound', () => {
+                    if (window.App?.showToast) {
+                        App.showToast('🔄 Nueva versión disponible. Recarga para actualizar.', 'info', 5000);
+                    }
+                });
+
                 return registration;
             } catch (error) {
                 console.error('❌ Service Worker registration failed:', error);
             }
-        }
-    },
-
-    /**
-     * Paso 097: Push notifications
-     */
-    async requestNotificationPermission() {
-        if ('Notification' in window) {
-            const permission = await Notification.requestPermission();
-            return permission === 'granted';
-        }
-        return false;
-    },
-
-    async sendNotification(title, options) {
-        if (await this.requestNotificationPermission()) {
-            new Notification(title, {
-                icon: '/assets/logo-premium.jpg',
-                badge: '/assets/logo.png',
-                ...options
-            });
         }
     },
 

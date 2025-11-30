@@ -36,9 +36,6 @@ const App = {
         // Setup event listeners
         this.setupEventListeners();
 
-        // Register Service Worker
-        this.registerSW();
-
         // Complete onboarding silently to evitar popups
         if (!Storage.isOnboardingComplete()) {
             Storage.completeOnboarding();
@@ -68,23 +65,6 @@ const App = {
             }
         });
     },
-
-
-
-    registerSW() {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => {
-                    console.log('✅ Service Worker registrado');
-                    // Check for updates
-                    reg.addEventListener('updatefound', () => {
-                        this.showToast('🔄 Nueva versión disponible. Recarga para actualizar.', 'info', 5000);
-                    });
-                })
-                .catch(err => console.error('SW error:', err));
-        }
-    },
-
     // ===== THEME =====
     loadTheme() {
         const isDark = Storage.isDarkMode();

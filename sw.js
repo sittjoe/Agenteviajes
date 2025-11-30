@@ -120,32 +120,6 @@ function updateCache(request) {
         });
 }
 
-// Push notification event
-self.addEventListener('push', (event) => {
-    const data = event.data ? event.data.json() : {};
-    const title = data.title || 'Magia Disney & Royal';
-    const options = {
-        body: data.body || 'Tienes una nueva notificación',
-        icon: asset('assets/logo-premium.jpg'),
-        badge: asset('assets/logo.png'),
-        vibrate: [200, 100, 200],
-        data: data.url || BASE_PATH
-    };
-
-    event.waitUntil(
-        self.registration.showNotification(title, options)
-    );
-});
-
-// Notification click event
-self.addEventListener('notificationclick', (event) => {
-    event.notification.close();
-
-    event.waitUntil(
-        clients.openWindow(event.notification.data || BASE_PATH)
-    );
-});
-
 // Background sync (future)
 self.addEventListener('sync', (event) => {
     if (event.tag === 'sync-quotes') {
