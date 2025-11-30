@@ -4,30 +4,34 @@
 const CACHE_VERSION = 'v2.0.0';
 const CACHE_NAME = `magia-disney-${CACHE_VERSION}`;
 
+// Base path helper to soportar despliegues en subcarpetas
+const BASE_PATH = self.location.pathname.replace(/sw\.js$/, '');
+const asset = (path) => `${BASE_PATH}${path}`;
+
 // Assets to cache
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/css/styles.css',
-    '/css/premium.css',
-    '/js/storage.js',
-    '/js/data.js',
-    '/js/app.js',
-    '/js/quotes.js',
-    '/js/tools.js',
-    '/js/pdf-generator.js',
-    '/js/form-validation.js',
-    '/js/form-enhancer.js',
-    '/js/crm.js',
-    '/js/pipeline.js',
-    '/js/templates.js',
-    '/js/advanced-quotes.js',
-    '/js/analytics.js',
-    '/js/personalization.js',
-    '/js/pwa.js',
-    '/assets/logo.png',
-    '/assets/logo-premium.jpg'
+    BASE_PATH,
+    asset('index.html'),
+    asset('manifest.json'),
+    asset('css/styles.css'),
+    asset('css/premium.css'),
+    asset('js/storage.js'),
+    asset('js/data.js'),
+    asset('js/app.js'),
+    asset('js/quotes.js'),
+    asset('js/tools.js'),
+    asset('js/pdf-generator.js'),
+    asset('js/form-validation.js'),
+    asset('js/form-enhancer.js'),
+    asset('js/crm.js'),
+    asset('js/pipeline.js'),
+    asset('js/templates.js'),
+    asset('js/advanced-quotes.js'),
+    asset('js/analytics.js'),
+    asset('js/personalization.js'),
+    asset('js/pwa.js'),
+    asset('assets/logo.png'),
+    asset('assets/logo-premium.jpg')
 ];
 
 // Install event - cache assets
@@ -92,7 +96,7 @@ self.addEventListener('fetch', (event) => {
                     })
                     .catch(() => {
                         // Network failed, show offline page
-                        return caches.match('/index.html');
+                        return caches.match(asset('index.html'));
                     });
             })
     );
@@ -119,10 +123,10 @@ self.addEventListener('push', (event) => {
     const title = data.title || 'Magia Disney & Royal';
     const options = {
         body: data.body || 'Tienes una nueva notificación',
-        icon: '/assets/logo-premium.jpg',
-        badge: '/assets/logo.png',
+        icon: asset('assets/logo-premium.jpg'),
+        badge: asset('assets/logo.png'),
         vibrate: [200, 100, 200],
-        data: data.url || '/'
+        data: data.url || BASE_PATH
     };
 
     event.waitUntil(
@@ -135,7 +139,7 @@ self.addEventListener('notificationclick', (event) => {
     event.notification.close();
 
     event.waitUntil(
-        clients.openWindow(event.notification.data || '/')
+        clients.openWindow(event.notification.data || BASE_PATH)
     );
 });
 

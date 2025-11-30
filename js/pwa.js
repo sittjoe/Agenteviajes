@@ -12,7 +12,8 @@ const PWA = {
     async registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
-                const registration = await navigator.serviceWorker.register('/sw.js');
+                const swUrl = new URL('sw.js', window.location.href);
+                const registration = await navigator.serviceWorker.register(swUrl.pathname);
                 console.log('✅ Service Worker registered:', registration);
                 return registration;
             } catch (error) {
