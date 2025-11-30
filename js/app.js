@@ -404,6 +404,9 @@ const App = {
         if (tab) tab.classList.add('active');
         if (element) element.classList.add('active');
 
+        const matchingNavs = document.querySelectorAll(`.nav-item[data-tab="${tabId}"]`);
+        matchingNavs.forEach(n => n.classList.add('active'));
+
         this.state.currentTab = tabId;
 
         // Reset screens within tab

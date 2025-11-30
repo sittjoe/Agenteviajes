@@ -1266,44 +1266,6 @@ body::before {
     gap: 10px;
 }
 
-.onboarding-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    display: grid;
-    place-items: center;
-    padding: 16px;
-    z-index: 40;
-}
-
-.onboarding-card {
-    text-align: center;
-    display: grid;
-    gap: 8px;
-}
-
-.onboarding-card .emoji {
-    font-size: 34px;
-}
-
-.onboarding-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 8px;
-}
-
-.onboarding-feature {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: center;
-    padding: 10px 12px;
-    border-radius: var(--radius);
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    font-weight: 700;
-}
-
 @media (max-width: 640px) {
     .header {
         padding-inline: 12px;

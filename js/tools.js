@@ -550,23 +550,6 @@ Restante: ${this.formatCurrency(remaining)}
         if (body) body.classList.toggle('open');
     },
     
-    // ===== ONBOARDING =====
-    showOnboarding() {
-        const overlay = document.getElementById('onboarding-overlay');
-        if (overlay) {
-            overlay.classList.add('show');
-        }
-    },
-    
-    completeOnboarding() {
-        Storage.completeOnboarding();
-        const overlay = document.getElementById('onboarding-overlay');
-        if (overlay) {
-            overlay.classList.remove('show');
-        }
-        this.showToast('¡Bienvenido! 🎉', 'success');
-    },
-    
     // ===== STORAGE INFO =====
     showStorageInfo() {
         const usage = Storage.getStorageUsage();

@@ -1537,52 +1537,6 @@ body.loading {
     justify-content: flex-end;
 }
 
-/* Onboarding */
-.onboarding-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 200;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.onboarding-overlay.show {
-    display: flex;
-}
-
-.onboarding-card {
-    background: var(--card);
-    border-radius: var(--radius-lg);
-    max-width: 360px;
-    width: 100%;
-    padding: 30px;
-    text-align: center;
-}
-
-.onboarding-card .emoji {
-    font-size: 64px;
-    margin-bottom: 20px;
-}
-
-.onboarding-card h2 {
-    font-size: 22px;
-    margin-bottom: 12px;
-}
-
-.onboarding-card p {
-    color: var(--text-secondary);
-    margin-bottom: 24px;
-    line-height: 1.6;
-}
-
-.onboarding-features {
-    text-align: left;
-    margin-bottom: 24px;
-}
-
 .onboarding-feature {
     display: flex;
     align-items: center;
