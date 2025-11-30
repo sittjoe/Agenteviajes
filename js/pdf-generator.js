@@ -371,6 +371,43 @@ const PDFGenerator = {
             yPos += linkLines.length * 5 + 5;
         }
 
+        // Client travel checklist (if saved globally)
+        const travelChecklist = Storage.getClientChecklist ? Storage.getClientChecklist() : {};
+        const checklistLabels = {
+            docs: 'Pasaportes y visas vigentes',
+            payment: 'Pago/apartado realizado',
+            insurance: 'Seguro de viaje',
+            checkin: 'Check-in completado',
+            transfers: 'Traslados confirmados',
+            extras: 'Restaurantes/actividades reservadas'
+        };
+
+        const checklistEntries = Object.entries(checklistLabels).map(([id, label]) => {
+            const checked = travelChecklist[id];
+            return `${checked ? '✅' : '⬜'} ${label}`;
+        });
+
+        if (checklistEntries.length) {
+            yPos += 4;
+            doc.setFontSize(12);
+            doc.setTextColor(...this.colors.primaryBlue);
+            doc.setFont('helvetica', 'bold');
+            doc.text('🧳 Checklist de viaje', margin, yPos);
+            yPos += 6;
+
+            doc.setFontSize(10);
+            doc.setTextColor(...this.colors.text);
+            doc.setFont('helvetica', 'normal');
+            checklistEntries.forEach(line => {
+                if (yPos > pageHeight - 20) {
+                    doc.addPage();
+                    yPos = margin;
+                }
+                doc.text(line, margin, yPos);
+                yPos += 5;
+            });
+        }
+
         yPos += 10;
 
         // Legal text
