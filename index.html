@@ -404,126 +404,32 @@
 
                 <!-- TAB: INFO -->
                 <div id="tab-info" class="tab-content">
-                    <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">📚 Información</h2>
-                    <div class="info-card">
+                    <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">📚 Información y respuestas</h2>
+                    <div class="info-card open">
                         <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span
-                                class="icon">🚢</span><span class="title">Disney Cruise Line</span><span
+                                class="icon">💬</span><span class="title">Respuestas rápidas (WhatsApp)</span><span
                                 class="arrow">▼</span></div>
-                        <div class="info-card-body">
-                            <div class="info-section">
-                                <div class="info-section-title">🚢 Barcos</div>
-                                <div class="info-section-content"><b>Wish</b> (2022), <b>Treasure</b> (2024), Fantasy,
-                                    Dream,
-                                    Magic</div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">💰 Precios</div>
-                                <div class="info-section-content">Desde <b>$1,500/persona</b> hasta $5,000+ USD</div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">✅ Incluye</div>
-                                <div class="info-section-content">Comidas, refrescos, shows, clubs niños, Castaway Cay
+                        <div class="info-card-body open">
+                            <div class="info-filters">
+                                <div class="filter-field">
+                                    <label for="quick-response-search">Buscar</label>
+                                    <input type="text" id="quick-response-search" class="form-input"
+                                        placeholder="Ej. pagar a meses, kids sail free"
+                                        oninput="App.filterQuickResponses()">
+                                </div>
+                                <div class="filter-field">
+                                    <label for="quick-response-stage">Etapa</label>
+                                    <select id="quick-response-stage" class="form-select"
+                                        onchange="App.filterQuickResponses()">
+                                        <option value="all">Todas</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="info-section">
-                                <div class="info-section-title">❌ No incluye</div>
-                                <div class="info-section-content">Alcohol, excursiones, wifi, propinas ($14.50/noche)
-                                </div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">💳 Pagos</div>
-                                <div class="info-section-content">Apartado $200 • Pago final 120 días antes</div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">📔 Guías de viaje por barco</div>
-                                <div class="info-section-content">
-                                    <b>Disney Wish:</b> Bahamas 3-4 noches desde Puerto Cañaveral; reserva Arendelle y
-                                    Worlds of Marble primeros días.
-                                    <br><b>Disney Treasure:</b> Caribe desde Puerto Cañaveral/Miami; ideal rotar cenas
-                                    temáticas para ver todos los shows.
-                                    <br><b>Disney Dream:</b> Caribe y Europa; llega temprano a Castaway Cay para playas
-                                    menos llenas.
-                                    <br><b>Disney Fantasy:</b> Caribe oriental y occidental 7 noches; separa día en alta
-                                    mar para disfraces de Pirate Night.
-                                    <br><b>Disney Magic:</b> Mediterráneo y Alaska; lleva abrigo ligero para noches en
-                                    cubierta y aprovecha Rapunzel’s Royal Table.
-                                    <br><b>Disney Wonder:</b> Alaska y Riviera Mexicana; reserva Palo en día de
-                                    navegación y haz check-in para personajes Marvel/Princess Gathering.
-                                </div>
-                            </div>
+                            <div id="quick-responses-grid" class="response-grid"></div>
                         </div>
                     </div>
-                    <div class="info-card">
-                        <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span
-                                class="icon">⚓</span><span class="title">Royal Caribbean</span><span
-                                class="arrow">▼</span></div>
-                        <div class="info-card-body">
-                            <div class="info-section">
-                                <div class="info-section-title">🚢 Barcos</div>
-                                <div class="info-section-content"><b>Icon of the Seas</b> (el más grande), Oasis Class,
-                                    Quantum
-                                </div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">💰 Precios</div>
-                                <div class="info-section-content">Desde <b>$400/persona</b> hasta $3,000+ USD</div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">🎁 Kids Sail Free</div>
-                                <div class="info-section-content">3er y 4to pasajero GRATIS (ahorro $800-1,500)</div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">❌ No incluye</div>
-                                <div class="info-section-content">Refrescos ($15/día), alcohol, propinas
-                                    ($16-18.50/noche)</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span
-                                class="icon">🏰</span><span class="title">Parques Disney</span><span
-                                class="arrow">▼</span></div>
-                        <div class="info-card-body">
-                            <div class="info-section">
-                                <div class="info-section-title">🏰 Disney World</div>
-                                <div class="info-section-content">4 parques: Magic Kingdom, EPCOT, Hollywood Studios,
-                                    Animal
-                                    Kingdom</div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">💰 Precios</div>
-                                <div class="info-section-content">Boletos desde <b>$109/día</b>. Paquete familia 4:
-                                    $2,000-2,500
-                                </div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">📅 Mejor época</div>
-                                <div class="info-section-content"><b>IDEAL:</b> Septiembre, enero, febrero.
-                                    <b>EVITAR:</b>
-                                    Semana Santa, verano, Navidad
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-card-header" onclick="App.toggleInfoCard(this)"><span
-                                class="icon">💡</span><span class="title">Tips de Venta</span><span
-                                class="arrow">▼</span></div>
-                        <div class="info-card-body">
-                            <div class="info-section">
-                                <div class="info-section-title">💸 "Está caro"</div>
-                                <div class="info-section-content">• NUNCA justifiques<br>• Enfócate en soluciones<br>•
-                                    "¿Qué te
-                                    funcionaría mejor?"</div>
-                            </div>
-                            <div class="info-section">
-                                <div class="info-section-title">🤝 Tu valor</div>
-                                <div class="info-section-content">Mismo precio • Monitoreas bajadas • Soporte siempre •
-                                    <b>"Mismo precio, cero estrés"</b>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    <div id="product-info-cards"></div>
                     <div class="wdw-guide-card">
                         <div class="wdw-guide-header">
                             <div>

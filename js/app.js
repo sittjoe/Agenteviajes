@@ -32,6 +32,9 @@ const App = {
         this.loadChecklist();
         this.updateStats();
         this.renderWDWGuide();
+        this.renderProductInfoCards();
+        this.populateQuickResponseFilters();
+        this.renderQuickResponses();
 
         // Setup event listeners
         this.setupEventListeners();
@@ -342,6 +345,81 @@ const App = {
         this.switchScreen('tab-inicio', 'home-response');
     },
 
+    // ===== RESPUESTAS RÁPIDAS (Info tab) =====
+    renderQuickResponses(stageFilter = 'all', query = '') {
+        const container = document.getElementById('quick-responses-grid');
+        if (!container) return;
+
+        const normalizedQuery = query.toLowerCase();
+        const stageOrder = Object.keys(Data.stages || {}).reduce((acc, key, index) => {
+            acc[key] = index;
+            return acc;
+        }, {});
+
+        const responses = Object.values(Data.responses).filter(r => {
+            const matchesStage = stageFilter === 'all' || r.stage === stageFilter;
+            const haystack = `${r.title} ${r.message} ${(r.tags || []).join(' ')}`.toLowerCase();
+            const matchesQuery = !normalizedQuery || haystack.includes(normalizedQuery);
+            return matchesStage && matchesQuery;
+        }).sort((a, b) => {
+            const stageDiff = (stageOrder[a.stage] || 99) - (stageOrder[b.stage] || 99);
+            if (stageDiff !== 0) return stageDiff;
+            return a.title.localeCompare(b.title);
+        });
+
+        if (responses.length === 0) {
+            container.innerHTML = '<p class="muted">No hay respuestas para ese filtro.</p>';
+            return;
+        }
+
+        container.innerHTML = responses.map(r => `
+            <div class="response-card">
+                <div class="response-card-header">
+                    <div class="response-meta">
+                        <span class="emoji">${r.icon}</span>
+                        <div>
+                            <div class="response-title">${r.title}</div>
+                            <div class="response-stage">${Data.stages?.[r.stage]?.name || ''}</div>
+                        </div>
+                    </div>
+                    ${r.tags ? `<div class="response-tags">${r.tags.slice(0, 3).map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+                </div>
+                <div class="response-card-body">${this.escapeHtml(r.message)}</div>
+                <div class="response-card-actions">
+                    <button class="btn-success btn-sm" onclick="App.copyResponseById('${r.id}')">📋 Copiar</button>
+                    <button class="btn-whatsapp btn-sm" onclick="App.sendWhatsAppById('${r.id}')">💬 WhatsApp</button>
+                    ${r.next ? `<span class="muted">Siguiente: ${r.next}</span>` : ''}
+                </div>
+            </div>
+        `).join('');
+    },
+
+    populateQuickResponseFilters() {
+        const select = document.getElementById('quick-response-stage');
+        if (!select || !Data.stages) return;
+        select.innerHTML = `<option value="all">Todas</option>` + Object.entries(Data.stages)
+            .map(([id, stage]) => `<option value="${id}">${stage.name}</option>`).join('');
+    },
+
+    filterQuickResponses() {
+        const stage = this.getInputValue('quick-response-stage') || 'all';
+        const query = this.getInputValue('quick-response-search') || '';
+        this.renderQuickResponses(stage, query);
+    },
+
+    copyResponseById(id) {
+        const response = Data.responses[id];
+        if (!response) return;
+        this.copyToClipboard(response.message);
+    },
+
+    sendWhatsAppById(id) {
+        const response = Data.responses[id];
+        if (!response) return;
+        const text = encodeURIComponent(response.message);
+        window.open(`https://wa.me/?text=${text}`, '_blank');
+    },
+
     copyMessage() {
         const response = Data.responses[this.state.currentResponse];
         if (response) {
@@ -532,6 +610,40 @@ const App = {
     },
 
     // ===== WDW VISUAL GUIDE =====
+    renderProductInfoCards() {
+        const container = document.getElementById('product-info-cards');
+        const info = Data.productInfo || {};
+        if (!container) return;
+
+        const desiredOrder = ['disneyCruise', 'royalCaribbean', 'disneyland', 'disneyHotels', 'seasons', 'salesTips'];
+        const keys = desiredOrder.filter(k => info[k]).concat(
+            Object.keys(info).filter(k => k !== 'wdwParksGuide' && !desiredOrder.includes(k))
+        );
+
+        container.innerHTML = keys.map(key => {
+            const item = info[key];
+            const sections = item.sections?.map(section => `
+                <div class="info-section">
+                    <div class="info-section-title">${section.title}</div>
+                    <div class="info-section-content">${section.content}</div>
+                </div>
+            `).join('') || '';
+
+            return `
+                <div class="info-card open">
+                    <div class="info-card-header" onclick="App.toggleInfoCard(this)">
+                        <span class="icon">${item.icon || 'ℹ️'}</span>
+                        <span class="title">${item.title}</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="info-card-body open">
+                        ${sections}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    },
+
     renderWDWGuide() {
         const guide = Data.productInfo?.wdwParksGuide;
         const selector = document.getElementById('wdw-park-selector');
