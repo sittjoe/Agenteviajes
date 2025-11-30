@@ -15,13 +15,6 @@ const PWA = {
                 const swUrl = new URL('sw.js', window.location.href);
                 const registration = await navigator.serviceWorker.register(swUrl.pathname);
                 console.log('✅ Service Worker registered:', registration);
-
-                registration.addEventListener('updatefound', () => {
-                    if (window.App?.showToast) {
-                        App.showToast('🔄 Nueva versión disponible. Recarga para actualizar.', 'info', 5000);
-                    }
-                });
-
                 return registration;
             } catch (error) {
                 console.error('❌ Service Worker registration failed:', error);
