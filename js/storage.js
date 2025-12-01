@@ -161,7 +161,7 @@ const Storage = {
     // ===== CONFIG =====
     
     getConfig() {
-        return this.get(this.KEYS.CONFIG, {
+        const config = this.get(this.KEYS.CONFIG, {
             business: {
                 name: 'Magia Disney & Royal',
                 slogan: 'Parques • Cruceros • Descuentos',
@@ -179,11 +179,20 @@ const Storage = {
                 showMXN: false,
                 legalText: 'Precios sujetos a disponibilidad y cambios sin previo aviso. Cotización válida por el tiempo indicado.'
             },
+            ai: {
+                provider: 'openai',
+                apiKey: '',
+                model: 'gpt-4o-mini'
+            },
             appearance: {
                 darkMode: false,
                 theme: 'default'
             }
         });
+
+        // Garantiza que nuevas secciones existan aunque el usuario tenga un config previo
+        config.ai = config.ai || { provider: 'openai', apiKey: '', model: 'gpt-4o-mini' };
+        return config;
     },
     
     saveConfig(config) {

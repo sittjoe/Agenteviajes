@@ -260,6 +260,28 @@
                         </div>
                         <div class="form-group"><label class="form-label">Número</label><input type="text" id="quote-id"
                                 class="form-input" readonly style="background:var(--bg-alt);"></div>
+                        <div class="card ai-card">
+                            <div class="card-title">🤖 Crear cotización con IA + fotos</div>
+                            <p class="muted" style="margin-bottom:12px;">Sube fotos con los detalles del viaje (capturas de pantalla, itinerarios, tablas) y agrega contexto. La IA leerá las imágenes y rellenará la cotización.</p>
+                            <div id="ai-dropzone" class="ai-dropzone" onclick="document.getElementById('ai-file-input').click()" ondragover="App.handleAIDragOver(event)" ondragenter="App.handleAIDragOver(event)" ondragleave="App.handleAIDragLeave(event)" ondrop="App.handleAIDrop(event)">
+                                <div class="ai-drop-icon">📸</div>
+                                <div>
+                                    <div class="ai-drop-title">Arrastra imágenes o toca para subir</div>
+                                    <div class="ai-drop-sub">JPG, PNG, HEIC • Hasta 4 fotos</div>
+                                </div>
+                                <input id="ai-file-input" type="file" accept="image/*" multiple onchange="App.handleAIFileInput(event)">
+                            </div>
+                            <div id="ai-upload-list" class="ai-upload-list"></div>
+                            <div class="form-group"><label class="form-label">Qué debe proponer la IA</label><textarea
+                                    id="ai-notes" class="form-textarea"
+                                    placeholder="Ej. Familia de 4 (2 niños 5 y 9). Crucero Disney Wish, julio, presupuesto 4200 USD. Quiero propuesta premium y plan de pagos suave."></textarea>
+                            </div>
+                            <div class="form-row ai-actions">
+                                <button id="ai-generate-btn" type="button" class="btn-primary" onclick="App.generateQuoteFromAI()">✨ Crear con IA</button>
+                                <button type="button" class="btn-ghost" onclick="App.resetAIQuoteInputs()">Limpiar</button>
+                            </div>
+                            <p class="muted" style="font-size:12px;margin-top:4px;">Necesitas tu clave de OpenAI (Ajustes → IA). Se guarda solo en este dispositivo.</p>
+                        </div>
                         <div class="card">
                             <div class="card-title">👤 Cliente</div>
                             <div class="form-group"><label class="form-label required">Nombre</label><input type="text"
@@ -735,6 +757,14 @@
                                 class="toggle"><input type="checkbox" id="config-darkmode"
                                     onchange="App.toggleDarkMode()"><span class="toggle-slider"></span></label></div>
                     </div>
+                    <div class="config-section">
+                        <div class="config-section-title">🤖 IA</div>
+                        <div class="form-group"><label class="form-label">OpenAI API Key</label><input type="password"
+                                id="config-ai-key" class="form-input" placeholder="sk-..."></div>
+                        <div class="form-group"><label class="form-label">Modelo (con visión)</label><input type="text"
+                                id="config-ai-model" class="form-input" placeholder="gpt-4o-mini"></div>
+                        <p class="muted" style="font-size:12px;margin-top:-4px;">Se guarda solo en este dispositivo. Usa modelos con visión (gpt-4o/gpt-4o-mini) para leer tus fotos.</p>
+                    </div>
                     <button class="btn-primary btn-block" onclick="App.saveConfig()">💾 Guardar</button>
                     <div class="config-section" style="margin-top:24px;">
                         <div class="config-section-title">📤 Datos</div>
@@ -783,6 +813,7 @@
     <script src="js/storage.js"></script>
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/ai-quoter.js"></script>
     <script src="js/pdf-generator.js"></script>
     <script src="js/form-validation.js"></script>
     <script src="js/form-enhancer.js"></script>

@@ -126,6 +126,10 @@ Object.assign(App, {
             return;
         }
 
+        if (this.resetAIQuoteInputs) {
+            this.resetAIQuoteInputs();
+        }
+
         this.state.editingQuoteId = id;
         this.fillQuoteForm(quote);
 
@@ -135,6 +139,10 @@ Object.assign(App, {
     },
 
     clearQuoteForm() {
+        if (this.resetAIQuoteInputs) {
+            this.resetAIQuoteInputs();
+        }
+
         // Client
         this.setInputValue('quote-client-name', '');
         this.setInputValue('quote-client-phone', '');
@@ -651,6 +659,10 @@ ${config.quotes?.legalText || ''}`;
     duplicateQuote() {
         const quote = Storage.getQuoteById(this.state.viewingQuoteId);
         if (!quote) return;
+
+        if (this.resetAIQuoteInputs) {
+            this.resetAIQuoteInputs();
+        }
 
         // Create copy with new ID
         const newQuote = { ...quote };

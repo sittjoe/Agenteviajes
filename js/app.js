@@ -14,7 +14,8 @@ const App = {
         viewingQuoteId: null,
         unsavedChanges: false,
         isLoading: false,
-        currentWDWPark: 'magicKingdom'
+        currentWDWPark: 'magicKingdom',
+        aiUploads: []
     },
 
     // ===== QUOTE TEMPLATES =====
@@ -158,6 +159,10 @@ const App = {
         this.setInputValue('config-exchange', config.quotes?.exchangeRate || 17.5);
         this.setInputValue('config-legal', config.quotes?.legalText || 'Precios sujetos a disponibilidad.');
 
+        // AI
+        this.setInputValue('config-ai-key', config.ai?.apiKey || '');
+        this.setInputValue('config-ai-model', config.ai?.model || 'gpt-4o-mini');
+
         // Appearance
         const checkbox = document.getElementById('config-darkmode');
         if (checkbox) checkbox.checked = config.appearance?.darkMode || false;
@@ -182,6 +187,12 @@ const App = {
             currency: this.getInputValue('config-currency') || 'USD',
             exchangeRate: parseFloat(this.getInputValue('config-exchange')) || 17.5,
             legalText: this.getInputValue('config-legal')
+        };
+
+        config.ai = {
+            provider: 'openai',
+            apiKey: this.getInputValue('config-ai-key') || '',
+            model: this.getInputValue('config-ai-model') || 'gpt-4o-mini'
         };
 
         config.appearance = {
