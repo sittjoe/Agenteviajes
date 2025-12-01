@@ -161,7 +161,7 @@ const App = {
 
         // AI
         this.setInputValue('config-ai-key', config.ai?.apiKey || '');
-        this.setInputValue('config-ai-model', config.ai?.model || 'gpt-4o-mini');
+        this.loadAIModelSelect(config.ai?.model || 'gpt-4o-mini');
 
         // Appearance
         const checkbox = document.getElementById('config-darkmode');
@@ -192,7 +192,7 @@ const App = {
         config.ai = {
             provider: 'openai',
             apiKey: this.getInputValue('config-ai-key') || '',
-            model: this.getInputValue('config-ai-model') || 'gpt-4o-mini'
+            model: this.getSelectedAIModel()
         };
 
         config.appearance = {
@@ -587,6 +587,42 @@ const App = {
     setInputValue(id, value) {
         const el = document.getElementById(id);
         if (el) el.value = value || '';
+    },
+
+    // ===== AI MODEL SELECT =====
+    loadAIModelSelect(modelValue) {
+        const select = document.getElementById('config-ai-model');
+        const customGroup = document.getElementById('config-ai-model-custom-group');
+        const customInput = document.getElementById('config-ai-model-custom');
+        if (!select) return;
+
+        const exists = Array.from(select.options).some(o => o.value === modelValue);
+        select.value = exists ? modelValue : 'custom';
+
+        if (customGroup && customInput) {
+            const isCustom = !exists;
+            customGroup.style.display = isCustom ? '' : 'none';
+            customInput.value = isCustom ? modelValue : '';
+        }
+    },
+
+    handleAIModelSelect() {
+        const select = document.getElementById('config-ai-model');
+        const customGroup = document.getElementById('config-ai-model-custom-group');
+        const customInput = document.getElementById('config-ai-model-custom');
+        if (!select || !customGroup || !customInput) return;
+
+        const isCustom = select.value === 'custom';
+        customGroup.style.display = isCustom ? '' : 'none';
+        if (!isCustom) customInput.value = '';
+    },
+
+    getSelectedAIModel() {
+        const selectValue = this.getInputValue('config-ai-model');
+        if (selectValue === 'custom') {
+            return this.getInputValue('config-ai-model-custom') || 'gpt-4o-mini';
+        }
+        return selectValue || 'gpt-4o-mini';
     },
 
     // Build response message with context placeholders

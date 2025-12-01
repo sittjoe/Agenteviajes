@@ -761,9 +761,18 @@
                         <div class="config-section-title">🤖 IA</div>
                         <div class="form-group"><label class="form-label">OpenAI API Key</label><input type="password"
                                 id="config-ai-key" class="form-input" placeholder="sk-..."></div>
-                        <div class="form-group"><label class="form-label">Modelo (con visión)</label><input type="text"
-                                id="config-ai-model" class="form-input" placeholder="gpt-4o-mini"></div>
-                        <p class="muted" style="font-size:12px;margin-top:-4px;">Se guarda solo en este dispositivo. Usa modelos con visión (gpt-4o/gpt-4o-mini) para leer tus fotos.</p>
+                        <div class="form-group"><label class="form-label">Modelo (con visión)</label><select
+                                id="config-ai-model" class="form-select" onchange="App.handleAIModelSelect()">
+                                <option value="gpt-4o-mini">gpt-4o-mini (rápido, económico)</option>
+                                <option value="gpt-4o">gpt-4o (equilibrado)</option>
+                                <option value="gpt-4.1">gpt-4.1 (avanzado)</option>
+                                <option value="gpt-4.1-mini">gpt-4.1-mini (rápido, avanzado)</option>
+                                <option value="custom">Otro modelo</option>
+                            </select></div>
+                        <div class="form-group" id="config-ai-model-custom-group" style="display:none;"><label
+                                class="form-label">Nombre del modelo</label><input type="text"
+                                id="config-ai-model-custom" class="form-input" placeholder="ej. gpt-4.1-preview"></div>
+                        <p class="muted" style="font-size:12px;margin-top:-4px;">Elige un modelo con visión. Para resultados premium usa gpt-4o o gpt-4.1. Se guarda solo en este dispositivo.</p>
                     </div>
                     <button class="btn-primary btn-block" onclick="App.saveConfig()">💾 Guardar</button>
                     <div class="config-section" style="margin-top:24px;">
